@@ -1,0 +1,633 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title>Action Deck Card Manifest</title>
+  <meta name="Description" content="Action Deck card manifest; filter by card type, CP; full text search">
+<style type="text/css" title="currentStyle" media="screen">
+body {
+    background: #2a2a2a;
+    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
+    margin: 0;
+    padding: 20px;
+    color: #d0d0d0;
+}
+
+h1 {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
+    font-weight: 600;
+    font-size: 240%;
+    color: #e8e8e8;
+    letter-spacing: 0.08em;
+    border-bottom: 3px double #707070;
+    padding-bottom: 15px;
+}
+
+#content {
+    width: 90%;
+    margin-left: 10px;
+}
+
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 15px;
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    font-size: 0.95rem;
+}
+
+.controls label {
+    color: #d8d8d8;
+    font-weight: 500;
+}
+
+.controls select,
+.controls input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid #606060;
+    background: #2a2a2a;
+    color: #d0d0d0;
+    font-family: 'Baskerville', 'Georgia', serif;
+    font-size: 0.95rem;
+}
+
+.controls select:focus,
+.controls input[type="text"]:focus {
+    outline: none;
+    border-color: #888888;
+    background: #323232;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #353535;
+    border: 1px solid #555555;
+}
+
+thead th {
+    background: #4a4a4a;
+    color: #e8e8e8;
+    padding: 14px 10px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #666666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+tbody tr {
+    background: #353535;
+    border-bottom: 1px solid #484848;
+}
+
+tbody tr:nth-child(even) {
+    background: #3a3a3a;
+}
+
+tbody tr:hover {
+    background: #404040;
+}
+
+td {
+    padding: 12px 10px;
+    border-right: 1px solid #484848;
+    vertical-align: middle;
+    font-size: 0.95rem;
+    color: #c8c8c8;
+}
+
+td:last-child {
+    border-right: none;
+}
+
+td.center {
+    text-align: center;
+}
+
+td a {
+    color: #d8d8d8;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+td a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+#pagination-info {
+    padding: 15px 10px;
+    color: #b8b8b8;
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    border-top: none;
+    font-size: 0.9rem;
+}
+
+#pagination-controls {
+    padding: 15px 10px;
+    text-align: center;
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    border-top: none;
+}
+
+#pagination-controls a {
+    padding: 6px 12px;
+    margin: 0 3px;
+    border: 1px solid #606060;
+    background: #353535;
+    color: #d0d0d0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+#pagination-controls a:hover {
+    background: #4a4a4a;
+    border-color: #777777;
+}
+
+#pagination-controls a.current {
+    background: #555555;
+    border-color: #888888;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Lightbox overlay */
+#lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.90);
+    z-index: 9998;
+}
+
+#lightbox-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2a2a2a;
+    padding: 25px;
+    border: 2px solid #707070;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+#lightbox-container.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lightbox-image {
+    max-width: 100%;
+    max-height: 70vh;
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #606060;
+}
+
+#lightbox-close {
+    background: #555555;
+    color: #e8e8e8;
+    border: 1px solid #707070;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Baskerville', 'Georgia', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: all 0.2s;
+}
+
+#lightbox-close:hover {
+    background: #707070;
+    color: #ffffff;
+    border-color: #888888;
+}
+
+#lightbox-info {
+    text-align: center;
+    padding: 10px;
+    color: #b8b8b8;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+</style>
+</style>
+</head>
+
+<body>
+<div>
+	<h1>Action Deck Card Manifest</h1>
+</div>
+
+<div id="content">
+    <div class="controls" style="margin-bottom: 15px; display: flex; gap: 15px; align-items: center;">
+        <label>Show 
+            <select id="page-size">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="-1">All</option>
+            </select>
+        entries</label>
+        
+        <label>Search Title:
+            <input type="text" id="filter-title" placeholder="Search title..." style="padding: 5px; width: 200px;">
+        </label>
+        
+        <label>Card Type:
+            <select id="filter-type" style="padding: 5px;">
+                <option value="">All</option>
+                <option value="Home">Home</option>
+                <option value="Event">Event</option>
+                <option value="GE Objective">GE Objective</option>
+                <option value="UK Objective">UK Objective</option>
+                <option value="FR Objective">FR Objective</option>
+                <option value="AU Objective">AU Objective</option>
+                <option value="RU Objective">RU Objective</option>
+                <option value="OT Objective">OT Objective</option>
+                <option value="GW Event">GW Event</option>
+            </select>
+        </label>
+    </div>
+    
+    <table cellpadding="0" cellspacing="0" border="0" id="inventory">
+  <thead>
+    <tr>
+	  <th style="width:60px;">Number</th>
+	  <th>Title</th>
+	  <th style="width:120px;">Card Type</th>
+	  <th style="width:80px;">CP (or VP)</th>
+	</tr>
+  </thead>
+  <tbody id="card-tbody">
+  </tbody>
+</table>
+    
+    <div id="pagination-info" style="padding: 10px; color: #39342e;"></div>
+    <div id="pagination-controls" style="padding: 10px; text-align: center;"></div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox-overlay"></div>
+<div id="lightbox-container">
+    <div id="lightbox-info"></div>
+    <img id="lightbox-image" src="" alt="">
+    <button id="lightbox-close">CLOSE ✕</button>
+</div>
+
+<script>
+const cardData = [
+    { name: "German General Staff", cp: "3", num: "1", img: "Home Card 1 GE.png", type: "Home" },
+    { name: "Otto von Bismarck", cp: "3", num: "2", img: "Home Card 2 GE.png", type: "Home" },
+    { name: "Sun Never Sets", cp: "3", num: "3", img: "Home Card 3 UK.png", type: "Home" },
+    { name: "Balance of Power", cp: "3", num: "4", img: "Home Card 4 UK.png", type: "Home" },
+    { name: "The City of Light", cp: "3", num: "5", img: "Home Card 5 FR.png", type: "Home" },
+    { name: "Aux Armes, Citoyens!", cp: "3", num: "6", img: "Home Card 6 FR.png", type: "Home" },
+    { name: "Habsburg Dynasty", cp: "3", num: "7", img: "Home Card 7 AU.png", type: "Home" },
+    { name: "Kaiserreich", cp: "3", num: "8", img: "Home Card 8 AU.png", type: "Home" },
+    { name: "Russo-Turkish Wars", cp: "3", num: "9", img: "Home Card 9 RU.png", type: "Home" },
+    { name: "God Save the Tsar", cp: "3", num: "10", img: "Home Card 10 RU.png", type: "Home" },
+    { name: "Modernization", cp: "3", num: "11", img: "Home Card 11 OT.png", type: "Home" },
+    { name: "Jihad", cp: "3", num: "12", img: "Home Card 12 OT.png", type: "Home" },
+    { name: "European Keys", cp: "* VP", num: "1", img: "Card GE Objective 1.png", type: "GE Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "2", img: "Card GE Objective 2.png", type: "GE Objective" },
+    { name: "Look to Berlin", cp: "* VP", num: "3", img: "Card GE Objective 3.png", type: "GE Objective" },
+    { name: "Stability", cp: "* VP", num: "4", img: "Card GE Objective 4.png", type: "GE Objective" },
+    { name: "Our Place in the Sun", cp: "3 VP", num: "5", img: "Card GE Objective 5.png", type: "GE Objective" },
+    { name: "Peace in Our Time", cp: "3 VP", num: "6", img: "Card GE Objective 6.png", type: "GE Objective" },
+    { name: "Surrounded", cp: "3 VP", num: "7", img: "Card GE Objective 7.png", type: "GE Objective" },
+    { name: "Unification", cp: "4 VP", num: "8", img: "Card GE Objective 8.png", type: "GE Objective" },
+    { name: "Scramble for Africa", cp: "* VP", num: "9", img: "Card UK Objective 9.png", type: "UK Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "10", img: "Card UK Objective 10.png", type: "UK Objective" },
+    { name: "Look to London", cp: "* VP", num: "11", img: "Card UK Objective 11.png", type: "UK Objective" },
+    { name: "Stability", cp: "* VP", num: "12", img: "Card UK Objective 12.png", type: "UK Objective" },
+    { name: "Two Power Standard", cp: "3 VP", num: "13", img: "Card UK Objective 13.png", type: "UK Objective" },
+    { name: "Peace in Our Time", cp: "3 VP", num: "14", img: "Card UK Objective 14.png", type: "UK Objective" },
+    { name: "Rule Britannia", cp: "3 VP", num: "15", img: "Card UK Objective 15.png", type: "UK Objective" },
+    { name: "Balance of Power", cp: "4 VP", num: "16", img: "Card UK Objective 16.png", type: "UK Objective" },
+    { name: "European Keys", cp: "* VP", num: "17", img: "Card FR Objective 17.png", type: "FR Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "18", img: "Card FR Objective 18.png", type: "FR Objective" },
+    { name: "Look to Paris", cp: "* VP", num: "19", img: "Card FR Objective 19.png", type: "FR Objective" },
+    { name: "Stability", cp: "* VP", num: "20", img: "Card FR Objective 20.png", type: "FR Objective" },
+    { name: "France Resurgent", cp: "3 VP", num: "21", img: "Card FR Objective 21.png", type: "FR Objective" },
+    { name: "City of Light", cp: "3 VP", num: "23", img: "Card FR Objective 23.png", type: "FR Objective" },
+    { name: "Napoleon's Legacy", cp: "4 VP", num: "24", img: "Card FR Objective 24.png", type: "FR Objective" },
+    { name: "European Keys", cp: "* VP", num: "25", img: "Card AU Objective 25.png", type: "AU Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "26", img: "Card AU Objective 26.png", type: "AU Objective" },
+    { name: "Look to Vienna", cp: "* VP", num: "27", img: "Card AU Objective 27.png", type: "AU Objective" },
+    { name: "Stability", cp: "* VP", num: "28", img: "Card AU Objective 28.png", type: "AU Objective" },
+    { name: "Contain Italy", cp: "3 VP", num: "29", img: "Card AU Objective 29.png", type: "AU Objective" },
+    { name: "Contain Prussia", cp: "3 VP", num: "30", img: "Card AU Objective 30.png", type: "AU Objective" },
+    { name: "Precarious Position", cp: "3 VP", num: "31", img: "Card AU Objective 31.png", type: "AU Objective" },
+    { name: "Peace in Our Time", cp: "3 VP", num: "32", img: "Card AU Objective 32.png", type: "AU Objective" },
+    { name: "Bind Them Together", cp: "4 VP", num: "33", img: "Card AU Objective 33.png", type: "AU Objective" },
+    { name: "European Keys", cp: "* VP", num: "34", img: "Card RU Objective 34.png", type: "RU Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "35", img: "Card RU Objective 35.png", type: "RU Objective" },
+    { name: "Look to St. Petersburg", cp: "* VP", num: "36", img: "Card RU Objective 36.png", type: "RU Objective" },
+    { name: "Stability", cp: "* VP", num: "37", img: "Card RU Objective 37.png", type: "RU Objective" },
+    { name: "Eastern Ambitions", cp: "3 VP", num: "38", img: "Card RU Objective 38.png", type: "RU Objective" },
+    { name: "Peace in Our Time", cp: "3 VP", num: "39", img: "Card RU Objective 39.png", type: "RU Objective" },
+    { name: "Finish off the Turks", cp: "3 VP", num: "40", img: "Card RU Objective 40.png", type: "RU Objective" },
+    { name: "Russian Hegemony", cp: "4 VP", num: "41", img: "Card RU Objective 41.png", type: "RU Objective" },
+    { name: "Scramble for Africa", cp: "* VP", num: "42", img: "Card OT Objective 42.png", type: "OT Objective" },
+    { name: "Flashpoints", cp: "* VP", num: "43", img: "Card OT Objective 43.png", type: "OT Objective" },
+    { name: "Look to Istanbul", cp: "* VP", num: "44", img: "Card OT Objective 44.png", type: "OT Objective" },
+    { name: "Stability", cp: "* VP", num: "45", img: "Card OT Objective 45.png", type: "OT Objective" },
+    { name: "Precarious Position", cp: "3 VP", num: "46", img: "Card OT Objective 46.png", type: "OT Objective" },
+    { name: "Peace in Our Time", cp: "3 VP", num: "47", img: "Card OT Objective 47.png", type: "OT Objective" },
+    { name: "Europeanization", cp: "3 VP", num: "48", img: "Card OT Objective 48.png", type: "OT Objective" },
+    { name: "Death Grip", cp: "4 VP", num: "49", img: "Card OT Objective 49.png", type: "OT Objective" },
+    { name: "Colonial Conflict", cp: "2", num: "13", img: "Action Card 13_result.jpg", type: "Event" },
+    { name: "Colonial Conflict", cp: "2", num: "14", img: "Action Card 14_result.jpg", type: "Event" },
+    { name: "Shifting Alliances", cp: "2", num: "15", img: "Action Card 15_result.jpg", type: "Event" },
+    { name: "Liberal Reforms", cp: "2", num: "16", img: "Action Card 16_result.jpg", type: "Event" },
+    { name: "Assassination!", cp: "2", num: "17", img: "Action Card 17_result.jpg", type: "Event" },
+    { name: "Socialist Musings", cp: "1", num: "18", img: "Action Card 18_result.jpg", type: "Event" },
+    { name: "Skilled Diplomats", cp: "2", num: "19", img: "Action Card 19_result.jpg", type: "Event" },
+    { name: "Diplomatic Incident", cp: "1", num: "20", img: "Action Card 20_result.jpg", type: "Event" },
+    { name: "National Railroad", cp: "3", num: "21", img: "Action Card 21_result.jpg", type: "Event" },
+    { name: "New Administration", cp: "2", num: "22", img: "Action Card 22_result.jpg", type: "Event" },
+    { name: "New Rifles", cp: "3", num: "23", img: "Action Card 23_result.jpg", type: "Event" },
+    { name: "New Artillery", cp: "3", num: "24", img: "Action Card 24_result.jpg", type: "Event" },
+    { name: "Divide and Conquer", cp: "2", num: "25", img: "Action Card 25_result.jpg", type: "Event" },
+    { name: "Chinese Intervention", cp: "2", num: "26", img: "Action Card 26_result.jpg", type: "Event" },
+    { name: "Foreign Investment", cp: "2", num: "27", img: "Action Card 27_result.jpg", type: "Event" },
+    { name: "Power Projection", cp: "2", num: "28", img: "Action Card 28_result.jpg", type: "Event" },
+    { name: "Economic Boom", cp: "-", num: "29", img: "Action Card 29_result.jpg", type: "Event" },
+    { name: "Italy", cp: "2", num: "30", img: "Action Card 30_result.jpg", type: "Event" },
+    { name: "Graveyard of Empires", cp: "2", num: "31", img: "Action Card 31_result.jpg", type: "Event" },
+    { name: "American Civil War", cp: "2", num: "32", img: "Action Card 32_result.jpg", type: "Event" },
+    { name: "Sepoy Mutiny", cp: "2", num: "33", img: "Action Card 33_result.jpg", type: "Event" },
+    { name: "Decline of the Qing", cp: "2", num: "34", img: "Action Card 34_result.jpg", type: "Event" },
+    { name: "Sick Man of Europe", cp: "3", num: "35", img: "Action Card 35_result.jpg", type: "Event" },
+    { name: "Rebellions in China", cp: "2", num: "36", img: "Action Card 36_result.jpg", type: "Event" },
+    { name: "The Great Game", cp: "2", num: "37", img: "Action Card 37_result.jpg", type: "Event" },
+    { name: "The Second Opium War", cp: "1", num: "38", img: "Action Card 38_result.jpg", type: "Event" },
+    { name: "Uprising in Ireland", cp: "2", num: "39", img: "Action Card 39_result.jpg", type: "Event" },
+    { name: "British Trade", cp: "1", num: "40", img: "Action Card 40_result.jpg", type: "Event" },
+    { name: "Prussian Military Tradition", cp: "2", num: "41", img: "Action Card 41_result.jpg", type: "Event" },
+    { name: "The Ruhr", cp: "4", num: "42", img: "Action Card 42_result.jpg", type: "Event" },
+    { name: "At Any Cost", cp: "2", num: "43", img: "Action Card 43_result.jpg", type: "Event" },
+    { name: "Paris Commune", cp: "1", num: "44", img: "Action Card 44_result.jpg", type: "Event" },
+    { name: "Folie de Grandeur", cp: "3", num: "45", img: "Action Card 45_result.jpg", type: "Event" },
+    { name: "French Intervention", cp: "2", num: "46", img: "Action Card 46_result.jpg", type: "Event" },
+    { name: "The Dual Monarchy", cp: "2", num: "47", img: "Action Card 47_result.jpg", type: "Event" },
+    { name: "Multicultural Empire", cp: "1", num: "48", img: "Action Card 48_result.jpg", type: "Event" },
+    { name: "South German Confederation", cp: "3", num: "49", img: "Action Card 49_result.jpg", type: "Event" },
+    { name: "Reforms of the 1860s", cp: "1", num: "50", img: "Action Card 50_result.jpg", type: "Event" },
+    { name: "Polish Revolt", cp: "2", num: "51", img: "Action Card 51_result.jpg", type: "Event" },
+    { name: "Eastern Orthodoxy", cp: "3", num: "52", img: "Action Card 52_result.jpg", type: "Event" },
+    { name: "Power Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
+    { name: "Failed reforms", cp: "3", num: "54", img: "Action Card 54_result.jpg", type: "Event" },
+    { name: "Suez Canal", cp: "2", num: "55", img: "Action Card 55_result.jpg", type: "Event" },
+    { name: "Nationalism", cp: "3", num: "56", img: "Action Card 56_result.jpg", type: "Event" },
+    { name: "Impregnable", cp: "3", num: "57", img: "Action Card 57_result.jpg", type: "Event" },
+    { name: "Siege Guns", cp: "1", num: "58", img: "Action Card 58_result.jpg", type: "Event" },
+    { name: "Flank Attack", cp: "1", num: "59", img: "Action Card 59_result.jpg", type: "Event" },
+    { name: "Charge of the Light Brigade", cp: "1", num: "60", img: "Action Card 60_result.jpg", type: "Event" },
+    { name: "Ironclads", cp: "2", num: "61", img: "Action Card 61_result.jpg", type: "Event" },
+    { name: "Miscommunication", cp: "2", num: "62", img: "Action Card 62_result.jpg", type: "Event" },
+    { name: "Rapid Mobilization", cp: "1", num: "63", img: "Action Card 63_result.jpg", type: "Event" },
+    { name: "Secret Treaty", cp: "3", num: "64", img: "Action Card 64_result.jpg", type: "Event" },
+    { name: "Indian Ocean Arms Trade", cp: "1", num: "65", img: "Action Card 65_result.jpg", type: "Event" },
+    { name: "Damn the Torpedoes", cp: "2", num: "66", img: "Action Card 66_result.jpg", type: "Event" },
+    { name: "International Conference", cp: "4", num: "67", img: "Action Card 67_result.jpg", type: "Event" },
+    { name: "The United States", cp: "4", num: "68", img: "Action Card 68_result.jpg", type: "Event" },
+    { name: "Concert of Europe", cp: "2", num: "69", img: "Action Card 69_result.jpg", type: "Event" },
+    { name: "Papal Influence", cp: "2", num: "70", img: "Action Card 70_result.jpg", type: "Event" },
+    { name: "Urabi Revolt", cp: "2", num: "71", img: "Action Card 71_result.jpg", type: "Event" },
+    { name: "Meiji Restoration", cp: "2", num: "72", img: "Action Card 72_result.jpg", type: "Event" },
+    { name: "Economic Panic", cp: "2", num: "73", img: "Action Card 73_result.jpg", type: "Event" },
+    { name: "Berlin Conference", cp: "2", num: "74", img: "Action Card 74_result.jpg", type: "Event" },
+    { name: "Second Industrial Revolution", cp: "4", num: "75", img: "Action Card 75_result.jpg", type: "Event" },
+    { name: "Zulus", cp: "1", num: "76", img: "Action Card 76_result.jpg", type: "Event" },
+    { name: "Indian Nationalism", cp: "2", num: "77", img: "Action Card 77ab_result.png", type: "Event" },
+    { name: "Crack Colonial Troops", cp: "3", num: "77", img: "Action Card 77_result.jpg", type: "Event" },
+    { name: "Loose Grip", cp: "3", num: "78", img: "Action Card 78_result.jpg", type: "Event" },
+    { name: "Machine Guns", cp: "2", num: "79", img: "Action Card 79_result.jpg", type: "Event" },
+    { name: "Conquest of Central Asia", cp: "1", num: "80", img: "Action Card 80_result.jpg", type: "Event" },
+    { name: "Wilhelm II", cp: "2", num: "81", img: "Action Card 81_result.jpg", type: "Event" },
+    { name: "Quagmire", cp: "3", num: "83", img: "Action Card 83_result.jpg", type: "Event" },
+    { name: "Nationalist Uprising", cp: "3", num: "84", img: "Action Card 84_result.jpg", type: "Event" },
+    { name: "Hungarian Obstinacy", cp: "2", num: "85", img: "Action Card 85_result.jpg", type: "Event" },
+    { name: "Boer Wars", cp: "1", num: "86", img: "Action Card 86_result.jpg", type: "Event" },
+    { name: "Mahdist War", cp: "1", num: "87", img: "Action Card 87_result.jpg", type: "Event" },
+    { name: "Our Place in the Sun", cp: "3", num: "88", img: "Action Card 88_result.jpg", type: "Event" },
+    { name: "Cossacks", cp: "2", num: "89", img: "Action Card 89_result.jpg", type: "Event" },
+    { name: "The Eiffel Tower", cp: "1", num: "90", img: "Action Card 90_result.jpg", type: "Event" },
+    { name: "Hydraulic Recoil", cp: "2", num: "91", img: "Action Card 91_result.jpg", type: "Event" },
+    { name: "Naval Arms race", cp: "2", num: "92", img: "Action Card 92_result.jpg", type: "Event" },
+    { name: "Nicholas II", cp: "2", num: "93", img: "Action Card 93_result.jpg", type: "Event" },
+    { name: "The Boxer Rebellion", cp: "2", num: "94", img: "Action Card 94_result.jpg", type: "Event" },
+    { name: "Death of Franz Joseph", cp: "2", num: "95", img: "Action Card 95_result.jpg", type: "Event" },
+    { name: "Empire of the Sun", cp: "1", num: "96", img: "Action Card 96_result.jpg", type: "Event" },
+    { name: "Diplomatic Recognition", cp: "1", num: "97", img: "Action Card 97_result.jpg", type: "Event" },
+    { name: "Dreyfus Affair", cp: "1", num: "98", img: "Action Card 98_result.jpg", type: "Event" },
+    { name: "Dreadnaught", cp: "1", num: "99", img: "Action Card 99_result.jpg", type: "Event" },
+    { name: "The Balkan Wars", cp: "2", num: "100", img: "Action Card 100_result.jpg", type: "Event" },
+    { name: "The Black Hand", cp: "2", num: "101", img: "Action Card 101_result.jpg", type: "Event" },
+    { name: "Moroccan Crisis", cp: "3", num: "102", img: "Action Card 102_result.jpg", type: "Event" },
+    { name: "Bosnian Crisis", cp: "1", num: "103", img: "Action Card 103_result.jpg", type: "Event" },
+    { name: "The Funeral of Edward VII", cp: "2", num: "104", img: "Action Card 104_result.jpg", type: "Event" },
+    { name: "Impulsive Ruler", cp: "2", num: "105", img: "Action Card 105_result.jpg", type: "Event" },
+    { name: "The Young Turks", cp: "2", num: "106", img: "Action Card 106_result.jpg", type: "Event" },
+    { name: "World's Fair", cp: "3", num: "107", img: "Action Card 107_result.jpg", type: "Event" },
+    { name: "High Seas Fleet", cp: "1", num: "108", img: "Action Card 108_result.jpg", type: "Event" },
+    { name: "Revolution of 1905", cp: "2", num: "109", img: "Action Card 109_result.jpg", type: "Event" },
+    { name: "Extreme Militarism", cp: "2", num: "110", img: "Action Card 110_result.jpg", type: "Event" },
+    { name: "The Alliance System", cp: "2", num: "111", img: "Action Card 111_result.jpg", type: "Event" },
+    { name: "Franz Ferdinand", cp: "1", num: "112", img: "Action Card 112_result.jpg", type: "Event" },
+    { name: "Minor Power Entry", cp: "1", num: "1", img: "Great War Card 1.png", type: "GW Event" },
+    { name: "Major Power Entry", cp: "1", num: "2", img: "Great War Card 2.png", type: "GW Event" },
+    { name: "Technological Terror", cp: "1", num: "3", img: "Great War Card 3.png", type: "GW Event" },
+    { name: "Dawn of Modern Warfare", cp: "1", num: "4", img: "Great War Card 4.png", type: "GW Event" },
+    { name: "Capable Commander", cp: "1", num: "5", img: "Great War Card 5.png", type: "GW Event" },
+    { name: "They Shall Not Pass", cp: "1", num: "6", img: "Great War Card 6.png", type: "GW Event" },
+    { name: "Submarines", cp: "1", num: "7", img: "Great War Card 7.png", type: "GW Event" },
+    { name: "Political Pressure", cp: "1", num: "8", img: "Great War Card 8.png", type: "GW Event" },
+    { name: "Political Pressure", cp: "1", num: "9", img: "Great War Card 9.png", type: "GW Event" },
+    { name: "Exhaustion", cp: "1", num: "10", img: "Great War Card 10.png", type: "GW Event" }
+];
+
+// Populate table
+const tbody = document.getElementById('card-tbody');
+let currentIndex = 0;
+let allRows = [];
+let currentPage = 1;
+let pageSize = 10;
+let filteredData = [...cardData];
+
+function renderTable() {
+    tbody.innerHTML = '';
+    allRows = [];
+    
+    const start = (currentPage - 1) * pageSize;
+    const end = pageSize === -1 ? filteredData.length : start + pageSize;
+    const pageData = filteredData.slice(start, end);
+    
+    pageData.forEach((card, index) => {
+        const globalIndex = filteredData.indexOf(card);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="center">${card.num}</td>
+            <td><a href="#" class="card-link" data-index="${globalIndex}">${card.name}</a></td>
+            <td class="center">${card.type}</td>
+            <td class="center">${card.cp}</td>
+        `;
+        row.dataset.number = card.num;
+        row.dataset.title = card.name.toLowerCase();
+        row.dataset.type = card.type;
+        row.dataset.cp = card.cp;
+        tbody.appendChild(row);
+        allRows.push(row);
+    });
+    
+    // Re-attach event listeners
+    document.querySelectorAll('.card-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const index = parseInt(e.target.getAttribute('data-index'));
+            openLightbox(cardData.indexOf(filteredData[index]));
+        });
+    });
+    
+    updatePaginationInfo();
+    updatePaginationControls();
+}
+
+function updatePaginationInfo() {
+    const info = document.getElementById('pagination-info');
+    const start = (currentPage - 1) * pageSize + 1;
+    const end = pageSize === -1 ? filteredData.length : Math.min(start + pageSize - 1, filteredData.length);
+    
+    if (filteredData.length === 0) {
+        info.textContent = 'Showing 0 to 0 of 0 entries';
+    } else {
+        info.textContent = `Showing ${start} to ${end} of ${filteredData.length} entries`;
+    }
+}
+
+function updatePaginationControls() {
+    const controls = document.getElementById('pagination-controls');
+    const totalPages = pageSize === -1 ? 1 : Math.ceil(filteredData.length / pageSize);
+    
+    if (totalPages <= 1) {
+        controls.innerHTML = '';
+        return;
+    }
+    
+    let html = '';
+    
+    // First and Previous buttons
+    html += `<a href="#" onclick="goToPage(1); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">First</a> `;
+    html += `<a href="#" onclick="goToPage(${currentPage - 1}); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">Previous</a> `;
+    
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+            html += `<a href="#" onclick="goToPage(${i}); return false;" class="${i === currentPage ? 'current' : ''}">${i}</a> `;
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+            html += '... ';
+        }
+    }
+    
+    // Next and Last buttons
+    html += `<a href="#" onclick="goToPage(${currentPage + 1}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Next</a> `;
+    html += `<a href="#" onclick="goToPage(${totalPages}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Last</a>`;
+    
+    controls.innerHTML = html;
+}
+
+function goToPage(page) {
+    const totalPages = pageSize === -1 ? 1 : Math.ceil(filteredData.length / pageSize);
+    if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        renderTable();
+    }
+}
+
+// Filter functionality
+function applyFilters() {
+    const titleFilter = document.getElementById('filter-title').value.toLowerCase();
+    const typeFilter = document.getElementById('filter-type').value;
+    
+    filteredData = cardData.filter(card => {
+        const matchTitle = titleFilter === '' || card.name.toLowerCase().includes(titleFilter);
+        const matchType = typeFilter === '' || card.type === typeFilter;
+        
+        return matchTitle && matchType;
+    });
+    
+    currentPage = 1; // Reset to first page when filtering
+    renderTable();
+}
+
+// Event listeners for filters
+document.getElementById('filter-title').addEventListener('keyup', applyFilters);
+document.getElementById('filter-type').addEventListener('change', applyFilters);
+
+// Event listener for page size
+document.getElementById('page-size').addEventListener('change', function() {
+    pageSize = parseInt(this.value);
+    currentPage = 1;
+    renderTable();
+});
+
+// Initial render
+renderTable();
+
+// Lightbox functionality
+const overlay = document.getElementById('lightbox-overlay');
+const container = document.getElementById('lightbox-container');
+const image = document.getElementById('lightbox-image');
+const info = document.getElementById('lightbox-info');
+const closeBtn = document.getElementById('lightbox-close');
+
+function openLightbox(index) {
+    currentIndex = index;
+    const card = cardData[index];
+    image.src = card.img;
+    info.textContent = `Image ${index + 1} of ${cardData.length}`;
+    overlay.style.display = 'block';
+    container.classList.add('active');
+}
+
+function closeLightbox() {
+    overlay.style.display = 'none';
+    container.classList.remove('active');
+}
+
+closeBtn.addEventListener('click', closeLightbox);
+overlay.addEventListener('click', closeLightbox);
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+});
+</script>
+
+</body>
+</html>
