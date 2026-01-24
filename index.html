@@ -12,6 +12,10 @@ body {
     color: #d0d0d0;
 }
 
+body.hand-mode {
+    padding-bottom: 220px;
+}
+
 h1 {
     margin-left: 10px;
     margin-bottom: 10px;
@@ -31,6 +35,7 @@ h1 {
     display: flex;
     gap: 25px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header-links a,
@@ -159,6 +164,60 @@ td a:hover {
     text-decoration: underline;
 }
 
+/* Add to hand button in table */
+.add-to-hand-btn {
+    background: #4a5a4a;
+    color: #d8d8d8;
+    border: 1px solid #6a7a6a;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'Baskerville', 'Georgia', serif;
+    transition: all 0.2s;
+}
+
+.add-to-hand-btn:hover {
+    background: #5a6a5a;
+    border-color: #8a9a8a;
+    color: #ffffff;
+}
+
+.add-to-hand-btn.in-hand {
+    background: #6a5a5a;
+    border-color: #8a6a6a;
+}
+
+.add-to-hand-btn.in-hand:hover {
+    background: #7a5a5a;
+}
+
+/* Hand column - hidden by default */
+.hand-column {
+    display: none;
+}
+
+body.hand-mode .hand-column {
+    display: table-cell;
+}
+
+/* Gallery add button - hidden by default */
+.gallery-card .add-to-hand-btn {
+    display: none;
+}
+
+body.hand-mode .gallery-card .add-to-hand-btn {
+    display: block;
+}
+
+/* Lightbox add button - hidden by default */
+#lightbox-add-btn {
+    display: none;
+}
+
+body.hand-mode #lightbox-add-btn {
+    display: block;
+}
+
 #pagination-info {
     padding: 15px 10px;
     color: #b8b8b8;
@@ -227,6 +286,7 @@ td a:hover {
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
 }
 
 .gallery-card:hover {
@@ -257,6 +317,12 @@ td a:hover {
 .gallery-card-details {
     color: #a0a0a0;
     font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.gallery-card .add-to-hand-btn {
+    width: calc(100% - 24px);
+    margin: 0 12px 12px 12px;
 }
 
 .gallery-section {
@@ -308,9 +374,9 @@ td a:hover {
 
 #lightbox-image {
     max-width: 100%;
-    max-height: 70vh;
+    max-height: 60vh;
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 1px solid #606060;
 }
 
@@ -339,8 +405,31 @@ td a:hover {
     padding: 10px;
     color: #b8b8b8;
     font-size: 0.9rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-style: italic;
+}
+
+#lightbox-add-btn {
+    background: #4a5a4a;
+    color: #e8e8e8;
+    border: 1px solid #6a7a6a;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Baskerville', 'Georgia', serif;
+    transition: all 0.2s;
+    margin-bottom: 15px;
+}
+
+#lightbox-add-btn:hover {
+    background: #5a6a5a;
+    border-color: #8a9a8a;
+}
+
+#lightbox-add-btn.in-hand {
+    background: #6a5a5a;
+    border-color: #8a6a6a;
 }
 
 /* Gallery size selector */
@@ -367,6 +456,277 @@ td a:hover {
     font-family: 'Baskerville', 'Georgia', serif;
     font-size: 0.95rem;
 }
+
+/* Hand Panel Styles */
+#hand-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2a2a2a;
+    border-top: 3px solid #606060;
+    z-index: 9000;
+    transition: transform 0.3s ease;
+    max-height: 250px;
+    display: none;
+}
+
+body.hand-mode #hand-panel {
+    display: block;
+}
+
+#hand-panel.collapsed {
+    transform: translateY(calc(100% - 45px));
+}
+
+#hand-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #3a3a3a;
+    border-bottom: 1px solid #555555;
+    cursor: pointer;
+}
+
+#hand-panel-header:hover {
+    background: #454545;
+}
+
+#hand-panel-title {
+    color: #e8e8e8;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#hand-panel-title span.hand-name {
+    color: #a0c0a0;
+}
+
+#hand-card-count {
+    background: #555555;
+    color: #e8e8e8;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+#hand-panel-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#hand-panel-controls button,
+#hand-panel-controls select {
+    background: #4a4a4a;
+    color: #d8d8d8;
+    border: 1px solid #606060;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Baskerville', 'Georgia', serif;
+    transition: all 0.2s;
+}
+
+#hand-panel-controls button:hover,
+#hand-panel-controls select:hover {
+    background: #5a5a5a;
+    border-color: #888888;
+}
+
+#hand-panel-controls button.danger {
+    background: #5a4a4a;
+    border-color: #7a5a5a;
+}
+
+#hand-panel-controls button.danger:hover {
+    background: #6a4a4a;
+}
+
+#hand-panel-controls button.success {
+    background: #4a5a4a;
+    border-color: #5a7a5a;
+}
+
+#hand-panel-controls button.success:hover {
+    background: #5a6a5a;
+}
+
+#hand-toggle-btn {
+    background: none;
+    border: none;
+    color: #d8d8d8;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+#hand-cards-container {
+    display: flex;
+    gap: 15px;
+    padding: 15px 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 140px;
+    align-items: flex-start;
+}
+
+.hand-card {
+    flex-shrink: 0;
+    width: 100px;
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.hand-card:hover {
+    border-color: #888888;
+    transform: translateY(-3px);
+}
+
+.hand-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hand-card-name {
+    padding: 6px;
+    font-size: 0.75rem;
+    color: #d8d8d8;
+    text-align: center;
+    background: #353535;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hand-card-remove {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: rgba(100, 60, 60, 0.9);
+    color: #fff;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.hand-card:hover .hand-card-remove {
+    opacity: 1;
+}
+
+.hand-card-remove:hover {
+    background: rgba(150, 60, 60, 1);
+}
+
+#hand-empty-message {
+    color: #808080;
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Modal styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #3a3a3a;
+    padding: 25px;
+    border: 2px solid #606060;
+    border-radius: 8px;
+    min-width: 300px;
+}
+
+.modal-content h3 {
+    color: #e8e8e8;
+    margin: 0 0 20px 0;
+    font-size: 1.2rem;
+}
+
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #606060;
+    background: #2a2a2a;
+    color: #d0d0d0;
+    font-family: 'Baskerville', 'Georgia', serif;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content input[type="text"]:focus {
+    outline: none;
+    border-color: #888888;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 8px 20px;
+    border: 1px solid #606060;
+    cursor: pointer;
+    font-family: 'Baskerville', 'Georgia', serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.modal-buttons button.cancel {
+    background: #4a4a4a;
+    color: #d8d8d8;
+}
+
+.modal-buttons button.cancel:hover {
+    background: #5a5a5a;
+}
+
+.modal-buttons button.confirm {
+    background: #4a5a4a;
+    color: #e8e8e8;
+    border-color: #5a7a5a;
+}
+
+.modal-buttons button.confirm:hover {
+    background: #5a6a5a;
+}
 </style>
 </head>
 
@@ -377,6 +737,7 @@ td a:hover {
 		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/rulebook_Prod_10mmBleed-upload.pdf?v=1756972319" target="_blank">Rules</a>
 		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/Playbook_Prod_10mmBleed-upload.pdf?v=1756972338" target="_blank">Playbook</a>
 		<button id="view-mode-toggle">📷 View Mode</button>
+		<button id="add-hand-btn">✋ Add Hand</button>
 	</div>
 </div>
 
@@ -420,6 +781,7 @@ td a:hover {
               <th>Title</th>
               <th style="width:120px;">Card Type</th>
               <th style="width:80px;">CP (or VP)</th>
+              <th style="width:100px;" class="hand-column">Hand</th>
             </tr>
           </thead>
           <tbody id="card-tbody">
@@ -448,12 +810,47 @@ td a:hover {
     </div>
 </div>
 
+<!-- Hand Panel -->
+<div id="hand-panel" class="collapsed">
+    <div id="hand-panel-header">
+        <div id="hand-panel-title">
+            🃏 Hand: <span class="hand-name" id="current-hand-name">No hand selected</span>
+            <span id="hand-card-count">0 cards</span>
+        </div>
+        <div id="hand-panel-controls">
+            <select id="hand-selector" title="Select a hand">
+                <option value="">-- Select Hand --</option>
+            </select>
+            <button id="random-card-btn" class="success" title="Add a random card">🎲 Random</button>
+            <button id="clear-hand-btn" class="danger" title="Clear current hand">🗑️ Clear</button>
+            <button id="delete-hand-btn" class="danger" title="Delete current hand">❌ Delete</button>
+            <button id="hand-toggle-btn">▲</button>
+        </div>
+    </div>
+    <div id="hand-cards-container">
+        <div id="hand-empty-message">No cards in hand. Click "+" on cards to add them, or use the Random button.</div>
+    </div>
+</div>
+
 <!-- Lightbox -->
 <div id="lightbox-overlay"></div>
 <div id="lightbox-container">
     <div id="lightbox-info"></div>
     <img id="lightbox-image" src="" alt="">
+    <button id="lightbox-add-btn">+ Add to Hand</button>
     <button id="lightbox-close">CLOSE ✕</button>
+</div>
+
+<!-- New Hand Modal -->
+<div id="new-hand-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Create New Hand</h3>
+        <input type="text" id="new-hand-name" placeholder="Enter hand name...">
+        <div class="modal-buttons">
+            <button class="cancel" id="modal-cancel">Cancel</button>
+            <button class="confirm" id="modal-confirm">Create</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -558,7 +955,7 @@ const cardData = [
     { name: "Reforms of the 1860s", cp: "1", num: "50", img: "Action Card 50_result.jpg", type: "Event" },
     { name: "Polish Revolt", cp: "2", num: "51", img: "Action Card 51_result.jpg", type: "Event" },
     { name: "Eastern Orthodoxy", cp: "3", num: "52", img: "Action Card 52_result.jpg", type: "Event" },
-    { name: "Powder Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
+    { name: "Power Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
     { name: "Failed reforms", cp: "3", num: "54", img: "Action Card 54_result.jpg", type: "Event" },
     { name: "Suez Canal", cp: "2", num: "55", img: "Action Card 55_result.jpg", type: "Event" },
     { name: "Nationalism", cp: "3", num: "56", img: "Action Card 56_result.jpg", type: "Event" },
@@ -630,10 +1027,226 @@ const cardData = [
     { name: "Exhaustion", cp: "1", num: "10", img: "Great War Card 10.png", type: "GW Event" }
 ];
 
-// View mode state
+// ==================== HAND MANAGEMENT ====================
+let hands = {};
+let currentHandId = null;
+
+function loadHands() {
+    const saved = localStorage.getItem('cardManifestHands');
+    if (saved) {
+        hands = JSON.parse(saved);
+    }
+    updateHandSelector();
+}
+
+function saveHands() {
+    localStorage.setItem('cardManifestHands', JSON.stringify(hands));
+}
+
+function createHand(name) {
+    const id = 'hand_' + Date.now();
+    hands[id] = {
+        name: name,
+        cards: []
+    };
+    saveHands();
+    updateHandSelector();
+    selectHand(id);
+    return id;
+}
+
+function deleteHand(id) {
+    if (hands[id]) {
+        delete hands[id];
+        saveHands();
+        updateHandSelector();
+        if (currentHandId === id) {
+            currentHandId = null;
+            document.body.classList.remove('hand-mode');
+            renderHandPanel();
+            // Re-render to hide hand column
+            if (isGalleryMode) {
+                renderGallery();
+            } else {
+                renderTable();
+            }
+        }
+    }
+}
+
+function selectHand(id) {
+    currentHandId = id;
+    document.getElementById('hand-selector').value = id || '';
+    
+    // Toggle hand-mode class on body
+    if (id) {
+        document.body.classList.add('hand-mode');
+    } else {
+        document.body.classList.remove('hand-mode');
+    }
+    
+    renderHandPanel();
+    // Expand panel when selecting a hand
+    if (id) {
+        document.getElementById('hand-panel').classList.remove('collapsed');
+        document.getElementById('hand-toggle-btn').textContent = '▼';
+    }
+    // Update all add buttons and re-render current view
+    if (isGalleryMode) {
+        renderGallery();
+    } else {
+        renderTable();
+    }
+    updateAllAddButtons();
+}
+
+function addCardToHand(cardIndex) {
+    if (!currentHandId) {
+        alert('Please create or select a hand first!');
+        return;
+    }
+    if (!hands[currentHandId].cards.includes(cardIndex)) {
+        hands[currentHandId].cards.push(cardIndex);
+        saveHands();
+        renderHandPanel();
+        updateAllAddButtons();
+    }
+}
+
+function removeCardFromHand(cardIndex) {
+    if (!currentHandId) return;
+    const idx = hands[currentHandId].cards.indexOf(cardIndex);
+    if (idx > -1) {
+        hands[currentHandId].cards.splice(idx, 1);
+        saveHands();
+        renderHandPanel();
+        updateAllAddButtons();
+    }
+}
+
+function clearCurrentHand() {
+    if (!currentHandId) return;
+    if (confirm('Clear all cards from this hand?')) {
+        hands[currentHandId].cards = [];
+        saveHands();
+        renderHandPanel();
+        updateAllAddButtons();
+    }
+}
+
+function addRandomCard() {
+    if (!currentHandId) {
+        alert('Please create or select a hand first!');
+        return;
+    }
+    const randomIndex = Math.floor(Math.random() * cardData.length);
+    addCardToHand(randomIndex);
+    
+    // Visual feedback - briefly highlight the added card
+    const container = document.getElementById('hand-cards-container');
+    const cards = container.querySelectorAll('.hand-card');
+    if (cards.length > 0) {
+        const lastCard = cards[cards.length - 1];
+        lastCard.style.boxShadow = '0 0 15px #8a9a8a';
+        setTimeout(() => {
+            lastCard.style.boxShadow = '';
+        }, 500);
+    }
+}
+
+function isCardInCurrentHand(cardIndex) {
+    if (!currentHandId || !hands[currentHandId]) return false;
+    return hands[currentHandId].cards.includes(cardIndex);
+}
+
+function updateHandSelector() {
+    const selector = document.getElementById('hand-selector');
+    const currentValue = selector.value;
+    selector.innerHTML = '<option value="">-- Select Hand --</option>';
+    
+    Object.keys(hands).forEach(id => {
+        const option = document.createElement('option');
+        option.value = id;
+        option.textContent = hands[id].name + ' (' + hands[id].cards.length + ')';
+        selector.appendChild(option);
+    });
+    
+    if (currentValue && hands[currentValue]) {
+        selector.value = currentValue;
+    }
+}
+
+function renderHandPanel() {
+    const container = document.getElementById('hand-cards-container');
+    const nameSpan = document.getElementById('current-hand-name');
+    const countSpan = document.getElementById('hand-card-count');
+    
+    if (!currentHandId || !hands[currentHandId]) {
+        nameSpan.textContent = 'No hand selected';
+        countSpan.textContent = '0 cards';
+        container.innerHTML = '<div id="hand-empty-message">Select or create a hand to get started.</div>';
+        return;
+    }
+    
+    const hand = hands[currentHandId];
+    nameSpan.textContent = hand.name;
+    countSpan.textContent = hand.cards.length + ' card' + (hand.cards.length !== 1 ? 's' : '');
+    
+    if (hand.cards.length === 0) {
+        container.innerHTML = '<div id="hand-empty-message">No cards in hand. Click "+" on cards to add them, or use the Random button.</div>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    hand.cards.forEach((cardIndex, i) => {
+        const card = cardData[cardIndex];
+        const cardEl = document.createElement('div');
+        cardEl.className = 'hand-card';
+        cardEl.innerHTML = `
+            <button class="hand-card-remove" title="Remove from hand">✕</button>
+            <img src="${card.img}" alt="${card.name}">
+            <div class="hand-card-name">${card.name}</div>
+        `;
+        
+        // Click card to open lightbox
+        cardEl.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('hand-card-remove')) {
+                openLightbox(cardIndex);
+            }
+        });
+        
+        // Remove button
+        cardEl.querySelector('.hand-card-remove').addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeCardFromHand(cardIndex);
+        });
+        
+        container.appendChild(cardEl);
+    });
+}
+
+function updateAllAddButtons() {
+    // Update table buttons
+    document.querySelectorAll('.add-to-hand-btn').forEach(btn => {
+        const cardIndex = parseInt(btn.dataset.cardIndex);
+        const inHand = isCardInCurrentHand(cardIndex);
+        btn.textContent = inHand ? '− Remove' : '+ Add';
+        btn.classList.toggle('in-hand', inHand);
+    });
+    
+    // Update lightbox button if open
+    const lightboxBtn = document.getElementById('lightbox-add-btn');
+    if (lightboxBtn.dataset.cardIndex) {
+        const inHand = isCardInCurrentHand(parseInt(lightboxBtn.dataset.cardIndex));
+        lightboxBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
+        lightboxBtn.classList.toggle('in-hand', inHand);
+    }
+}
+
+// ==================== VIEW MODE ====================
 let isGalleryMode = false;
 
-// Populate table
+// ==================== TABLE ====================
 const tbody = document.getElementById('card-tbody');
 let currentIndex = 0;
 let allRows = [];
@@ -650,13 +1263,19 @@ function renderTable() {
     const pageData = filteredData.slice(start, end);
     
     pageData.forEach((card, index) => {
-        const globalIndex = filteredData.indexOf(card);
+        const globalIndex = cardData.indexOf(card);
+        const inHand = isCardInCurrentHand(globalIndex);
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="center">${card.num}</td>
             <td><a href="#" class="card-link" data-index="${globalIndex}">${card.name}</a></td>
             <td class="center">${card.type}</td>
             <td class="center">${card.cp}</td>
+            <td class="center hand-column">
+                <button class="add-to-hand-btn ${inHand ? 'in-hand' : ''}" data-card-index="${globalIndex}">
+                    ${inHand ? '− Remove' : '+ Add'}
+                </button>
+            </td>
         `;
         row.dataset.number = card.num;
         row.dataset.title = card.name.toLowerCase();
@@ -666,12 +1285,25 @@ function renderTable() {
         allRows.push(row);
     });
     
-    // Re-attach event listeners
+    // Card link click handlers
     document.querySelectorAll('.card-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const index = parseInt(e.target.getAttribute('data-index'));
-            openLightbox(cardData.indexOf(filteredData[index]));
+            openLightbox(index);
+        });
+    });
+    
+    // Add to hand button handlers
+    document.querySelectorAll('#card-tbody .add-to-hand-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const cardIndex = parseInt(btn.dataset.cardIndex);
+            if (isCardInCurrentHand(cardIndex)) {
+                removeCardFromHand(cardIndex);
+            } else {
+                addCardToHand(cardIndex);
+            }
         });
     });
     
@@ -701,12 +1333,9 @@ function updatePaginationControls() {
     }
     
     let html = '';
-    
-    // First and Previous buttons
     html += `<a href="#" onclick="goToPage(1); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">First</a> `;
     html += `<a href="#" onclick="goToPage(${currentPage - 1}); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">Previous</a> `;
     
-    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
             html += `<a href="#" onclick="goToPage(${i}); return false;" class="${i === currentPage ? 'current' : ''}">${i}</a> `;
@@ -715,7 +1344,6 @@ function updatePaginationControls() {
         }
     }
     
-    // Next and Last buttons
     html += `<a href="#" onclick="goToPage(${currentPage + 1}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Next</a> `;
     html += `<a href="#" onclick="goToPage(${totalPages}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Last</a>`;
     
@@ -730,7 +1358,7 @@ function goToPage(page) {
     }
 }
 
-// Gallery rendering
+// ==================== GALLERY ====================
 function renderGallery() {
     const container = document.getElementById('gallery-container');
     const sizeSelect = document.getElementById('gallery-size');
@@ -740,6 +1368,8 @@ function renderGallery() {
     container.innerHTML = '';
     
     filteredData.forEach((card, index) => {
+        const globalIndex = cardData.indexOf(card);
+        const inHand = isCardInCurrentHand(globalIndex);
         const cardEl = document.createElement('div');
         cardEl.className = 'gallery-card';
         cardEl.innerHTML = `
@@ -748,17 +1378,34 @@ function renderGallery() {
                 <div class="gallery-card-name">${card.name}</div>
                 <div class="gallery-card-details">${card.type} • #${card.num} • CP: ${card.cp}</div>
             </div>
+            <button class="add-to-hand-btn ${inHand ? 'in-hand' : ''}" data-card-index="${globalIndex}">
+                ${inHand ? '− Remove' : '+ Add'}
+            </button>
         `;
-        cardEl.addEventListener('click', () => {
-            openLightbox(cardData.indexOf(card));
+        
+        // Click image to open lightbox
+        cardEl.querySelector('img').addEventListener('click', () => {
+            openLightbox(globalIndex);
         });
+        
+        // Add to hand button
+        cardEl.querySelector('.add-to-hand-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const cardIndex = parseInt(e.target.dataset.cardIndex);
+            if (isCardInCurrentHand(cardIndex)) {
+                removeCardFromHand(cardIndex);
+            } else {
+                addCardToHand(cardIndex);
+            }
+        });
+        
         container.appendChild(cardEl);
     });
     
     document.getElementById('gallery-count').textContent = `Showing ${filteredData.length} cards`;
 }
 
-// Toggle view mode
+// ==================== VIEW TOGGLE ====================
 document.getElementById('view-mode-toggle').addEventListener('click', function() {
     isGalleryMode = !isGalleryMode;
     
@@ -783,14 +1430,13 @@ document.getElementById('view-mode-toggle').addEventListener('click', function()
     }
 });
 
-// Gallery size change
 document.getElementById('gallery-size').addEventListener('change', function() {
     if (isGalleryMode) {
         renderGallery();
     }
 });
 
-// Filter functionality
+// ==================== FILTERS ====================
 function applyFilters() {
     const titleFilter = document.getElementById('filter-title').value.toLowerCase();
     const typeFilter = document.getElementById('filter-type').value;
@@ -798,11 +1444,10 @@ function applyFilters() {
     filteredData = cardData.filter(card => {
         const matchTitle = titleFilter === '' || card.name.toLowerCase().includes(titleFilter);
         const matchType = typeFilter === '' || card.type === typeFilter;
-        
         return matchTitle && matchType;
     });
     
-    currentPage = 1; // Reset to first page when filtering
+    currentPage = 1;
     
     if (isGalleryMode) {
         renderGallery();
@@ -811,50 +1456,156 @@ function applyFilters() {
     }
 }
 
-// Event listeners for filters
 document.getElementById('filter-title').addEventListener('keyup', applyFilters);
 document.getElementById('filter-type').addEventListener('change', applyFilters);
-
-// Event listener for page size
 document.getElementById('page-size').addEventListener('change', function() {
     pageSize = parseInt(this.value);
     currentPage = 1;
     renderTable();
 });
 
-// Initial render
-renderTable();
-
-// Lightbox functionality
+// ==================== LIGHTBOX ====================
 const overlay = document.getElementById('lightbox-overlay');
-const container = document.getElementById('lightbox-container');
-const image = document.getElementById('lightbox-image');
-const info = document.getElementById('lightbox-info');
-const closeBtn = document.getElementById('lightbox-close');
+const lightboxContainer = document.getElementById('lightbox-container');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxInfo = document.getElementById('lightbox-info');
+const lightboxCloseBtn = document.getElementById('lightbox-close');
+const lightboxAddBtn = document.getElementById('lightbox-add-btn');
 
 function openLightbox(index) {
     currentIndex = index;
     const card = cardData[index];
-    image.src = card.img;
-    info.textContent = `${card.name} — ${card.type} #${card.num}`;
+    lightboxImage.src = card.img;
+    lightboxInfo.textContent = `${card.name} — ${card.type} #${card.num}`;
+    
+    // Update add button
+    lightboxAddBtn.dataset.cardIndex = index;
+    const inHand = isCardInCurrentHand(index);
+    lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
+    lightboxAddBtn.classList.toggle('in-hand', inHand);
+    
     overlay.style.display = 'block';
-    container.classList.add('active');
+    lightboxContainer.classList.add('active');
 }
 
 function closeLightbox() {
     overlay.style.display = 'none';
-    container.classList.remove('active');
+    lightboxContainer.classList.remove('active');
 }
 
-closeBtn.addEventListener('click', closeLightbox);
+lightboxCloseBtn.addEventListener('click', closeLightbox);
 overlay.addEventListener('click', closeLightbox);
 
-// Close on Escape key
+lightboxAddBtn.addEventListener('click', () => {
+    const cardIndex = parseInt(lightboxAddBtn.dataset.cardIndex);
+    if (isCardInCurrentHand(cardIndex)) {
+        removeCardFromHand(cardIndex);
+    } else {
+        addCardToHand(cardIndex);
+    }
+    // Update button
+    const inHand = isCardInCurrentHand(cardIndex);
+    lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
+    lightboxAddBtn.classList.toggle('in-hand', inHand);
+});
+
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeLightbox();
     }
 });
+
+// ==================== HAND PANEL EVENTS ====================
+document.getElementById('hand-panel-header').addEventListener('click', (e) => {
+    // Only toggle if clicking directly on header or title, not on controls
+    if (!e.target.closest('#hand-panel-controls')) {
+        const panel = document.getElementById('hand-panel');
+        const btn = document.getElementById('hand-toggle-btn');
+        panel.classList.toggle('collapsed');
+        btn.textContent = panel.classList.contains('collapsed') ? '▲' : '▼';
+    }
+});
+
+document.getElementById('hand-toggle-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const panel = document.getElementById('hand-panel');
+    panel.classList.toggle('collapsed');
+    e.target.textContent = panel.classList.contains('collapsed') ? '▲' : '▼';
+});
+
+document.getElementById('hand-selector').addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+document.getElementById('hand-selector').addEventListener('change', (e) => {
+    e.stopPropagation();
+    selectHand(e.target.value || null);
+});
+
+document.getElementById('random-card-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    addRandomCard();
+});
+
+document.getElementById('clear-hand-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearCurrentHand();
+});
+
+document.getElementById('delete-hand-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!currentHandId) {
+        alert('No hand selected to delete.');
+        return;
+    }
+    if (confirm('Delete this hand permanently?')) {
+        deleteHand(currentHandId);
+    }
+});
+
+// ==================== NEW HAND MODAL ====================
+const newHandModal = document.getElementById('new-hand-modal');
+const newHandInput = document.getElementById('new-hand-name');
+
+document.getElementById('add-hand-btn').addEventListener('click', () => {
+    newHandInput.value = '';
+    newHandModal.classList.add('active');
+    newHandInput.focus();
+});
+
+document.getElementById('modal-cancel').addEventListener('click', () => {
+    newHandModal.classList.remove('active');
+});
+
+document.getElementById('modal-confirm').addEventListener('click', () => {
+    const name = newHandInput.value.trim();
+    if (name) {
+        createHand(name);
+        newHandModal.classList.remove('active');
+    } else {
+        alert('Please enter a name for the hand.');
+    }
+});
+
+newHandInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('modal-confirm').click();
+    } else if (e.key === 'Escape') {
+        newHandModal.classList.remove('active');
+    }
+});
+
+newHandModal.addEventListener('click', (e) => {
+    if (e.target === newHandModal) {
+        newHandModal.classList.remove('active');
+    }
+});
+
+// ==================== INIT ====================
+loadHands();
+renderTable();
+renderHandPanel();
 </script>
 
 </body>
