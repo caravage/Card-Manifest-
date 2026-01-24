@@ -33,7 +33,8 @@ h1 {
     align-items: center;
 }
 
-.header-links a {
+.header-links a,
+.header-links button {
     color: #d8d8d8;
     text-decoration: none;
     font-weight: 500;
@@ -42,11 +43,20 @@ h1 {
     background: #3a3a3a;
     border: 1px solid #606060;
     transition: all 0.2s;
+    cursor: pointer;
+    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
 }
 
-.header-links a:hover {
+.header-links a:hover,
+.header-links button:hover {
     background: #4a4a4a;
     border-color: #888888;
+    color: #ffffff;
+}
+
+.header-links button.active {
+    background: #5a6a5a;
+    border-color: #8a9a8a;
     color: #ffffff;
 }
 
@@ -64,6 +74,7 @@ h1 {
     background: #3a3a3a;
     border: 1px solid #555555;
     font-size: 0.95rem;
+    flex-wrap: wrap;
 }
 
 .controls label {
@@ -188,6 +199,80 @@ td a:hover {
     font-weight: 600;
 }
 
+/* Gallery View Styles */
+#gallery-view {
+    display: none;
+    padding: 20px 0;
+}
+
+#gallery-view.active {
+    display: block;
+}
+
+#table-view.hidden {
+    display: none;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.gallery-card {
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: #888888;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid #555555;
+}
+
+.gallery-card-info {
+    padding: 12px;
+    text-align: center;
+}
+
+.gallery-card-name {
+    color: #e8e8e8;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.gallery-card-details {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+}
+
+.gallery-section {
+    margin-bottom: 30px;
+}
+
+.gallery-section-title {
+    color: #e8e8e8;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #555555;
+    letter-spacing: 0.05em;
+}
+
 /* Lightbox overlay */
 #lightbox-overlay {
     display: none;
@@ -257,6 +342,31 @@ td a:hover {
     margin-bottom: 15px;
     font-style: italic;
 }
+
+/* Gallery size selector */
+.gallery-size-control {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: #3a3a3a;
+    border: 1px solid #555555;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.gallery-size-control label {
+    color: #d8d8d8;
+    font-weight: 500;
+}
+
+.gallery-size-control select {
+    padding: 6px 10px;
+    border: 1px solid #606060;
+    background: #2a2a2a;
+    color: #d0d0d0;
+    font-family: 'Baskerville', 'Georgia', serif;
+    font-size: 0.95rem;
+}
 </style>
 </head>
 
@@ -266,12 +376,13 @@ td a:hover {
 	<div class="header-links">
 		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/rulebook_Prod_10mmBleed-upload.pdf?v=1756972319" target="_blank">Rules</a>
 		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/Playbook_Prod_10mmBleed-upload.pdf?v=1756972338" target="_blank">Playbook</a>
+		<button id="view-mode-toggle">📷 View Mode</button>
 	</div>
 </div>
 
 <div id="content">
     <div class="controls" style="margin-bottom: 15px; display: flex; gap: 15px; align-items: center;">
-        <label>Show 
+        <label class="table-only">Show 
             <select id="page-size">
                 <option value="10" selected>10</option>
                 <option value="25">25</option>
@@ -300,21 +411,41 @@ td a:hover {
         </label>
     </div>
     
-    <table cellpadding="0" cellspacing="0" border="0" id="inventory">
-  <thead>
-    <tr>
-	  <th style="width:60px;">Number</th>
-	  <th>Title</th>
-	  <th style="width:120px;">Card Type</th>
-	  <th style="width:80px;">CP (or VP)</th>
-	</tr>
-  </thead>
-  <tbody id="card-tbody">
-  </tbody>
-</table>
+    <!-- Table View -->
+    <div id="table-view">
+        <table cellpadding="0" cellspacing="0" border="0" id="inventory">
+          <thead>
+            <tr>
+              <th style="width:60px;">Number</th>
+              <th>Title</th>
+              <th style="width:120px;">Card Type</th>
+              <th style="width:80px;">CP (or VP)</th>
+            </tr>
+          </thead>
+          <tbody id="card-tbody">
+          </tbody>
+        </table>
+        
+        <div id="pagination-info" style="padding: 10px; color: #39342e;"></div>
+        <div id="pagination-controls" style="padding: 10px; text-align: center;"></div>
+    </div>
     
-    <div id="pagination-info" style="padding: 10px; color: #39342e;"></div>
-    <div id="pagination-controls" style="padding: 10px; text-align: center;"></div>
+    <!-- Gallery View -->
+    <div id="gallery-view">
+        <div class="gallery-size-control">
+            <label>Card Size:
+                <select id="gallery-size">
+                    <option value="150">Small</option>
+                    <option value="200" selected>Medium</option>
+                    <option value="280">Large</option>
+                    <option value="350">Extra Large</option>
+                </select>
+            </label>
+            <span id="gallery-count" style="color: #a0a0a0; margin-left: auto;"></span>
+        </div>
+        <div id="gallery-container" class="gallery-grid">
+        </div>
+    </div>
 </div>
 
 <!-- Lightbox -->
@@ -427,7 +558,7 @@ const cardData = [
     { name: "Reforms of the 1860s", cp: "1", num: "50", img: "Action Card 50_result.jpg", type: "Event" },
     { name: "Polish Revolt", cp: "2", num: "51", img: "Action Card 51_result.jpg", type: "Event" },
     { name: "Eastern Orthodoxy", cp: "3", num: "52", img: "Action Card 52_result.jpg", type: "Event" },
-    { name: "Power Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
+    { name: "Powder Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
     { name: "Failed reforms", cp: "3", num: "54", img: "Action Card 54_result.jpg", type: "Event" },
     { name: "Suez Canal", cp: "2", num: "55", img: "Action Card 55_result.jpg", type: "Event" },
     { name: "Nationalism", cp: "3", num: "56", img: "Action Card 56_result.jpg", type: "Event" },
@@ -498,6 +629,9 @@ const cardData = [
     { name: "Political Pressure", cp: "1", num: "9", img: "Great War Card 9.png", type: "GW Event" },
     { name: "Exhaustion", cp: "1", num: "10", img: "Great War Card 10.png", type: "GW Event" }
 ];
+
+// View mode state
+let isGalleryMode = false;
 
 // Populate table
 const tbody = document.getElementById('card-tbody');
@@ -596,6 +730,66 @@ function goToPage(page) {
     }
 }
 
+// Gallery rendering
+function renderGallery() {
+    const container = document.getElementById('gallery-container');
+    const sizeSelect = document.getElementById('gallery-size');
+    const cardSize = parseInt(sizeSelect.value);
+    
+    container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${cardSize}px, 1fr))`;
+    container.innerHTML = '';
+    
+    filteredData.forEach((card, index) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'gallery-card';
+        cardEl.innerHTML = `
+            <img src="${card.img}" alt="${card.name}" loading="lazy">
+            <div class="gallery-card-info">
+                <div class="gallery-card-name">${card.name}</div>
+                <div class="gallery-card-details">${card.type} • #${card.num} • CP: ${card.cp}</div>
+            </div>
+        `;
+        cardEl.addEventListener('click', () => {
+            openLightbox(cardData.indexOf(card));
+        });
+        container.appendChild(cardEl);
+    });
+    
+    document.getElementById('gallery-count').textContent = `Showing ${filteredData.length} cards`;
+}
+
+// Toggle view mode
+document.getElementById('view-mode-toggle').addEventListener('click', function() {
+    isGalleryMode = !isGalleryMode;
+    
+    const tableView = document.getElementById('table-view');
+    const galleryView = document.getElementById('gallery-view');
+    const pageSizeLabel = document.querySelector('.table-only');
+    
+    if (isGalleryMode) {
+        tableView.classList.add('hidden');
+        galleryView.classList.add('active');
+        this.classList.add('active');
+        this.textContent = '📋 Table Mode';
+        pageSizeLabel.style.display = 'none';
+        renderGallery();
+    } else {
+        tableView.classList.remove('hidden');
+        galleryView.classList.remove('active');
+        this.classList.remove('active');
+        this.textContent = '📷 View Mode';
+        pageSizeLabel.style.display = '';
+        renderTable();
+    }
+});
+
+// Gallery size change
+document.getElementById('gallery-size').addEventListener('change', function() {
+    if (isGalleryMode) {
+        renderGallery();
+    }
+});
+
 // Filter functionality
 function applyFilters() {
     const titleFilter = document.getElementById('filter-title').value.toLowerCase();
@@ -609,7 +803,12 @@ function applyFilters() {
     });
     
     currentPage = 1; // Reset to first page when filtering
-    renderTable();
+    
+    if (isGalleryMode) {
+        renderGallery();
+    } else {
+        renderTable();
+    }
 }
 
 // Event listeners for filters
@@ -637,7 +836,7 @@ function openLightbox(index) {
     currentIndex = index;
     const card = cardData[index];
     image.src = card.img;
-    info.textContent = `Image ${index + 1} of ${cardData.length}`;
+    info.textContent = `${card.name} — ${card.type} #${card.num}`;
     overlay.style.display = 'block';
     container.classList.add('active');
 }
