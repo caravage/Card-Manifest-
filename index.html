@@ -172,7 +172,7 @@ td a:hover {
     padding: 4px 10px;
     cursor: pointer;
     font-size: 0.85rem;
-    font-family: 'Baskerville', 'Georgia', serif;
+    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
     transition: all 0.2s;
 }
 
@@ -320,6 +320,17 @@ body.hand-mode #lightbox-add-btn {
     margin-bottom: 8px;
 }
 
+.gallery-card-spec {
+    font-size: 0.7rem;
+    color: #a0a0a0;
+    padding: 8px;
+    margin: 5px 10px;
+    border: 1px solid #555555;
+    background: #2a2a2a;
+    border-radius: 4px;
+    line-height: 1.2;
+}
+
 .gallery-card .add-to-hand-btn {
     width: calc(100% - 24px);
     margin: 0 12px 12px 12px;
@@ -407,6 +418,19 @@ body.hand-mode #lightbox-add-btn {
     font-size: 0.9rem;
     margin-bottom: 10px;
     font-style: italic;
+}
+
+.lightbox-spec {
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #555555;
+    background: #2a2a2a;
+    border-radius: 4px;
+    line-height: 1.3;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 #lightbox-add-btn {
@@ -743,7 +767,7 @@ body.hand-mode #hand-panel {
 
 <div id="content">
     <div class="controls" style="margin-bottom: 15px; display: flex; gap: 15px; align-items: center;">
-        <label class="table-only">Show 
+        <label class="table-only">Show
             <select id="page-size">
                 <option value="10" selected>10</option>
                 <option value="25">25</option>
@@ -751,11 +775,11 @@ body.hand-mode #hand-panel {
                 <option value="-1">All</option>
             </select>
         entries</label>
-        
+
         <label>Search Title:
             <input type="text" id="filter-title" placeholder="Search title..." style="padding: 5px; width: 200px;">
         </label>
-        
+
         <label>Card Type:
             <select id="filter-type" style="padding: 5px;">
                 <option value="">All</option>
@@ -771,7 +795,7 @@ body.hand-mode #hand-panel {
             </select>
         </label>
     </div>
-    
+
     <!-- Table View -->
     <div id="table-view">
         <table cellpadding="0" cellspacing="0" border="0" id="inventory">
@@ -787,11 +811,11 @@ body.hand-mode #hand-panel {
           <tbody id="card-tbody">
           </tbody>
         </table>
-        
+
         <div id="pagination-info" style="padding: 10px; color: #39342e;"></div>
         <div id="pagination-controls" style="padding: 10px; text-align: center;"></div>
     </div>
-    
+
     <!-- Gallery View -->
     <div id="gallery-view">
         <div class="gallery-size-control">
@@ -983,7 +1007,7 @@ const cardData = [
     { name: "Crack Colonial Troops", cp: "3", num: "77", img: "Action Card 77_result.jpg", type: "Event" },
     { name: "Loose Grip", cp: "3", num: "78", img: "Action Card 78_result.jpg", type: "Event" },
     { name: "Machine Guns", cp: "2", num: "79", img: "Action Card 79_result.jpg", type: "Event" },
-    { name: "Conquest of Central Asia", cp: "1", num: "80", img: "Action Card 80_result.jpg", type: "Event" },
+    { name: "Conquest of Central Asia", cp: "1", num: "80", img: "Action Card 80_result.jpg", type: "Event", spec: "errata : Central Asia becomes an RU home space. RU places a reserve army in Central Asia.<br><br>Permanent: For the rest of the game, RU can have one reserve army on the Asia submap during peacetime that does not count against RU’s peacetime manpower army limit. It is immediately eliminated if, during peacetime, it is not on the Asia submap. This army can be rebuilt using normal recruitment actions. During the demobilization step of a war RU is participating in, RU may leave one reserve army on the map. Place this card near the RU player as a reminder.<br><br>Playable if RU controls Central Asia" },
     { name: "Wilhelm II", cp: "2", num: "81", img: "Action Card 81_result.jpg", type: "Event" },
     { name: "Quagmire", cp: "3", num: "83", img: "Action Card 83_result.jpg", type: "Event" },
     { name: "Nationalist Uprising", cp: "3", num: "84", img: "Action Card 84_result.jpg", type: "Event" },
@@ -1065,7 +1089,6 @@ function deleteHand(id) {
             currentHandId = null;
             document.body.classList.remove('hand-mode');
             renderHandPanel();
-            // Re-render to hide hand column
             if (isGalleryMode) {
                 renderGallery();
             } else {
@@ -1078,21 +1101,16 @@ function deleteHand(id) {
 function selectHand(id) {
     currentHandId = id;
     document.getElementById('hand-selector').value = id || '';
-    
-    // Toggle hand-mode class on body
     if (id) {
         document.body.classList.add('hand-mode');
     } else {
         document.body.classList.remove('hand-mode');
     }
-    
     renderHandPanel();
-    // Expand panel when selecting a hand
     if (id) {
         document.getElementById('hand-panel').classList.remove('collapsed');
         document.getElementById('hand-toggle-btn').textContent = '▼';
     }
-    // Update all add buttons and re-render current view
     if (isGalleryMode) {
         renderGallery();
     } else {
@@ -1142,8 +1160,6 @@ function addRandomCard() {
     }
     const randomIndex = Math.floor(Math.random() * cardData.length);
     addCardToHand(randomIndex);
-    
-    // Visual feedback - briefly highlight the added card
     const container = document.getElementById('hand-cards-container');
     const cards = container.querySelectorAll('.hand-card');
     if (cards.length > 0) {
@@ -1164,14 +1180,12 @@ function updateHandSelector() {
     const selector = document.getElementById('hand-selector');
     const currentValue = selector.value;
     selector.innerHTML = '<option value="">-- Select Hand --</option>';
-    
     Object.keys(hands).forEach(id => {
         const option = document.createElement('option');
         option.value = id;
         option.textContent = hands[id].name + ' (' + hands[id].cards.length + ')';
         selector.appendChild(option);
     });
-    
     if (currentValue && hands[currentValue]) {
         selector.value = currentValue;
     }
@@ -1181,23 +1195,19 @@ function renderHandPanel() {
     const container = document.getElementById('hand-cards-container');
     const nameSpan = document.getElementById('current-hand-name');
     const countSpan = document.getElementById('hand-card-count');
-    
     if (!currentHandId || !hands[currentHandId]) {
         nameSpan.textContent = 'No hand selected';
         countSpan.textContent = '0 cards';
         container.innerHTML = '<div id="hand-empty-message">Select or create a hand to get started.</div>';
         return;
     }
-    
     const hand = hands[currentHandId];
     nameSpan.textContent = hand.name;
     countSpan.textContent = hand.cards.length + ' card' + (hand.cards.length !== 1 ? 's' : '');
-    
     if (hand.cards.length === 0) {
         container.innerHTML = '<div id="hand-empty-message">No cards in hand. Click "+" on cards to add them, or use the Random button.</div>';
         return;
     }
-    
     container.innerHTML = '';
     hand.cards.forEach((cardIndex, i) => {
         const card = cardData[cardIndex];
@@ -1208,34 +1218,26 @@ function renderHandPanel() {
             <img src="${card.img}" alt="${card.name}">
             <div class="hand-card-name">${card.name}</div>
         `;
-        
-        // Click card to open lightbox
         cardEl.addEventListener('click', (e) => {
             if (!e.target.classList.contains('hand-card-remove')) {
                 openLightbox(cardIndex);
             }
         });
-        
-        // Remove button
         cardEl.querySelector('.hand-card-remove').addEventListener('click', (e) => {
             e.stopPropagation();
             removeCardFromHand(cardIndex);
         });
-        
         container.appendChild(cardEl);
     });
 }
 
 function updateAllAddButtons() {
-    // Update table buttons
     document.querySelectorAll('.add-to-hand-btn').forEach(btn => {
         const cardIndex = parseInt(btn.dataset.cardIndex);
         const inHand = isCardInCurrentHand(cardIndex);
         btn.textContent = inHand ? '− Remove' : '+ Add';
         btn.classList.toggle('in-hand', inHand);
     });
-    
-    // Update lightbox button if open
     const lightboxBtn = document.getElementById('lightbox-add-btn');
     if (lightboxBtn.dataset.cardIndex) {
         const inHand = isCardInCurrentHand(parseInt(lightboxBtn.dataset.cardIndex));
@@ -1258,11 +1260,9 @@ let filteredData = [...cardData];
 function renderTable() {
     tbody.innerHTML = '';
     allRows = [];
-    
     const start = (currentPage - 1) * pageSize;
     const end = pageSize === -1 ? filteredData.length : start + pageSize;
     const pageData = filteredData.slice(start, end);
-    
     pageData.forEach((card, index) => {
         const globalIndex = cardData.indexOf(card);
         const inHand = isCardInCurrentHand(globalIndex);
@@ -1285,8 +1285,6 @@ function renderTable() {
         tbody.appendChild(row);
         allRows.push(row);
     });
-    
-    // Card link click handlers
     document.querySelectorAll('.card-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1294,8 +1292,6 @@ function renderTable() {
             openLightbox(index);
         });
     });
-    
-    // Add to hand button handlers
     document.querySelectorAll('#card-tbody .add-to-hand-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1307,7 +1303,6 @@ function renderTable() {
             }
         });
     });
-    
     updatePaginationInfo();
     updatePaginationControls();
 }
@@ -1316,7 +1311,6 @@ function updatePaginationInfo() {
     const info = document.getElementById('pagination-info');
     const start = (currentPage - 1) * pageSize + 1;
     const end = pageSize === -1 ? filteredData.length : Math.min(start + pageSize - 1, filteredData.length);
-    
     if (filteredData.length === 0) {
         info.textContent = 'Showing 0 to 0 of 0 entries';
     } else {
@@ -1327,16 +1321,13 @@ function updatePaginationInfo() {
 function updatePaginationControls() {
     const controls = document.getElementById('pagination-controls');
     const totalPages = pageSize === -1 ? 1 : Math.ceil(filteredData.length / pageSize);
-    
     if (totalPages <= 1) {
         controls.innerHTML = '';
         return;
     }
-    
     let html = '';
     html += `<a href="#" onclick="goToPage(1); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">First</a> `;
     html += `<a href="#" onclick="goToPage(${currentPage - 1}); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">Previous</a> `;
-    
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
             html += `<a href="#" onclick="goToPage(${i}); return false;" class="${i === currentPage ? 'current' : ''}">${i}</a> `;
@@ -1344,10 +1335,8 @@ function updatePaginationControls() {
             html += '... ';
         }
     }
-    
     html += `<a href="#" onclick="goToPage(${currentPage + 1}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Next</a> `;
     html += `<a href="#" onclick="goToPage(${totalPages}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Last</a>`;
-    
     controls.innerHTML = html;
 }
 
@@ -1364,10 +1353,8 @@ function renderGallery() {
     const container = document.getElementById('gallery-container');
     const sizeSelect = document.getElementById('gallery-size');
     const cardSize = parseInt(sizeSelect.value);
-    
     container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${cardSize}px, 1fr))`;
     container.innerHTML = '';
-    
     filteredData.forEach((card, index) => {
         const globalIndex = cardData.indexOf(card);
         const inHand = isCardInCurrentHand(globalIndex);
@@ -1379,17 +1366,14 @@ function renderGallery() {
                 <div class="gallery-card-name">${card.name}</div>
                 <div class="gallery-card-details">${card.type} • #${card.num} • CP: ${card.cp}</div>
             </div>
+            ${card.spec ? `<div class="gallery-card-spec">${card.spec}</div>` : ''}
             <button class="add-to-hand-btn ${inHand ? 'in-hand' : ''}" data-card-index="${globalIndex}">
                 ${inHand ? '− Remove' : '+ Add'}
             </button>
         `;
-        
-        // Click image to open lightbox
         cardEl.querySelector('img').addEventListener('click', () => {
             openLightbox(globalIndex);
         });
-        
-        // Add to hand button
         cardEl.querySelector('.add-to-hand-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             const cardIndex = parseInt(e.target.dataset.cardIndex);
@@ -1399,21 +1383,17 @@ function renderGallery() {
                 addCardToHand(cardIndex);
             }
         });
-        
         container.appendChild(cardEl);
     });
-    
     document.getElementById('gallery-count').textContent = `Showing ${filteredData.length} cards`;
 }
 
 // ==================== VIEW TOGGLE ====================
 document.getElementById('view-mode-toggle').addEventListener('click', function() {
     isGalleryMode = !isGalleryMode;
-    
     const tableView = document.getElementById('table-view');
     const galleryView = document.getElementById('gallery-view');
     const pageSizeLabel = document.querySelector('.table-only');
-    
     if (isGalleryMode) {
         tableView.classList.add('hidden');
         galleryView.classList.add('active');
@@ -1441,15 +1421,12 @@ document.getElementById('gallery-size').addEventListener('change', function() {
 function applyFilters() {
     const titleFilter = document.getElementById('filter-title').value.toLowerCase();
     const typeFilter = document.getElementById('filter-type').value;
-    
     filteredData = cardData.filter(card => {
         const matchTitle = titleFilter === '' || card.name.toLowerCase().includes(titleFilter);
         const matchType = typeFilter === '' || card.type === typeFilter;
         return matchTitle && matchType;
     });
-    
     currentPage = 1;
-    
     if (isGalleryMode) {
         renderGallery();
     } else {
@@ -1477,14 +1454,14 @@ function openLightbox(index) {
     currentIndex = index;
     const card = cardData[index];
     lightboxImage.src = card.img;
-    lightboxInfo.textContent = `${card.name} — ${card.type} #${card.num}`;
-    
-    // Update add button
+    lightboxInfo.innerHTML = `
+        <div>${card.name} — ${card.type} #${card.num}</div>
+        ${card.spec ? `<div class="lightbox-spec">${card.spec}</div>` : ''}
+    `;
     lightboxAddBtn.dataset.cardIndex = index;
     const inHand = isCardInCurrentHand(index);
     lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
     lightboxAddBtn.classList.toggle('in-hand', inHand);
-    
     overlay.style.display = 'block';
     lightboxContainer.classList.add('active');
 }
@@ -1504,7 +1481,6 @@ lightboxAddBtn.addEventListener('click', () => {
     } else {
         addCardToHand(cardIndex);
     }
-    // Update button
     const inHand = isCardInCurrentHand(cardIndex);
     lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
     lightboxAddBtn.classList.toggle('in-hand', inHand);
@@ -1518,7 +1494,6 @@ document.addEventListener('keydown', (e) => {
 
 // ==================== HAND PANEL EVENTS ====================
 document.getElementById('hand-panel-header').addEventListener('click', (e) => {
-    // Only toggle if clicking directly on header or title, not on controls
     if (!e.target.closest('#hand-panel-controls')) {
         const panel = document.getElementById('hand-panel');
         const btn = document.getElementById('hand-toggle-btn');
