@@ -1,1588 +1,1054 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <title>Action Deck Card Manifest</title>
-  <meta name="Description" content="Action Deck card manifest; filter by card type, CP; full text search">
-<style type="text/css" title="currentStyle" media="screen">
-body {
-    background: #2a2a2a;
-    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
-    margin: 0;
-    padding: 20px;
-    color: #d0d0d0;
-}
-
-body.hand-mode {
-    padding-bottom: 220px;
-}
-
-h1 {
-    margin-left: 10px;
-    margin-bottom: 10px;
-    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
-    font-weight: 600;
-    font-size: 240%;
-    color: #e8e8e8;
-    letter-spacing: 0.08em;
-    border-bottom: 3px double #707070;
-    padding-bottom: 15px;
-}
-
-.header-links {
-    margin-left: 10px;
-    margin-bottom: 20px;
-    padding: 12px 0;
-    display: flex;
-    gap: 25px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.header-links a,
-.header-links button {
-    color: #d8d8d8;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.05rem;
-    padding: 8px 16px;
-    background: #3a3a3a;
-    border: 1px solid #606060;
-    transition: all 0.2s;
-    cursor: pointer;
-    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
-}
-
-.header-links a:hover,
-.header-links button:hover {
-    background: #4a4a4a;
-    border-color: #888888;
-    color: #ffffff;
-}
-
-.header-links button.active {
-    background: #5a6a5a;
-    border-color: #8a9a8a;
-    color: #ffffff;
-}
-
-#content {
-    width: 90%;
-    margin-left: 10px;
-}
-
-.controls {
-    margin-bottom: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    padding: 15px;
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    font-size: 0.95rem;
-    flex-wrap: wrap;
-}
-
-.controls label {
-    color: #d8d8d8;
-    font-weight: 500;
-}
-
-.controls select,
-.controls input[type="text"] {
-    padding: 6px 10px;
-    border: 1px solid #606060;
-    background: #2a2a2a;
-    color: #d0d0d0;
-    font-family: 'Baskerville', 'Georgia', serif;
-    font-size: 0.95rem;
-}
-
-.controls select:focus,
-.controls input[type="text"]:focus {
-    outline: none;
-    border-color: #888888;
-    background: #323232;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #353535;
-    border: 1px solid #555555;
-}
-
-thead th {
-    background: #4a4a4a;
-    color: #e8e8e8;
-    padding: 14px 10px;
-    text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid #666666;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-tbody tr {
-    background: #353535;
-    border-bottom: 1px solid #484848;
-}
-
-tbody tr:nth-child(even) {
-    background: #3a3a3a;
-}
-
-tbody tr:hover {
-    background: #404040;
-}
-
-td {
-    padding: 12px 10px;
-    border-right: 1px solid #484848;
-    vertical-align: middle;
-    font-size: 0.95rem;
-    color: #c8c8c8;
-}
-
-td:last-child {
-    border-right: none;
-}
-
-td.center {
-    text-align: center;
-}
-
-td a {
-    color: #d8d8d8;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-td a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
-
-/* Add to hand button in table */
-.add-to-hand-btn {
-    background: #4a5a4a;
-    color: #d8d8d8;
-    border: 1px solid #6a7a6a;
-    padding: 4px 10px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: 'Baskerville', 'Georgia', 'Times New Roman', serif;
-    transition: all 0.2s;
-}
-
-.add-to-hand-btn:hover {
-    background: #5a6a5a;
-    border-color: #8a9a8a;
-    color: #ffffff;
-}
-
-.add-to-hand-btn.in-hand {
-    background: #6a5a5a;
-    border-color: #8a6a6a;
-}
-
-.add-to-hand-btn.in-hand:hover {
-    background: #7a5a5a;
-}
-
-/* Hand column - hidden by default */
-.hand-column {
-    display: none;
-}
-
-body.hand-mode .hand-column {
-    display: table-cell;
-}
-
-/* Gallery add button - hidden by default */
-.gallery-card .add-to-hand-btn {
-    display: none;
-}
-
-body.hand-mode .gallery-card .add-to-hand-btn {
-    display: block;
-}
-
-/* Lightbox add button - hidden by default */
-#lightbox-add-btn {
-    display: none;
-}
-
-body.hand-mode #lightbox-add-btn {
-    display: block;
-}
-
-#pagination-info {
-    padding: 15px 10px;
-    color: #b8b8b8;
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    border-top: none;
-    font-size: 0.9rem;
-}
-
-#pagination-controls {
-    padding: 15px 10px;
-    text-align: center;
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    border-top: none;
-}
-
-#pagination-controls a {
-    padding: 6px 12px;
-    margin: 0 3px;
-    border: 1px solid #606060;
-    background: #353535;
-    color: #d0d0d0;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
-
-#pagination-controls a:hover {
-    background: #4a4a4a;
-    border-color: #777777;
-}
-
-#pagination-controls a.current {
-    background: #555555;
-    border-color: #888888;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-/* Gallery View Styles */
-#gallery-view {
-    display: none;
-    padding: 20px 0;
-}
-
-#gallery-view.active {
-    display: block;
-}
-
-#table-view.hidden {
-    display: none;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 10px;
-}
-
-.gallery-card {
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-}
-
-.gallery-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    border-color: #888888;
-}
-
-.gallery-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-bottom: 1px solid #555555;
-}
-
-.gallery-card-info {
-    padding: 12px;
-    text-align: center;
-}
-
-.gallery-card-name {
-    color: #e8e8e8;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 5px;
-}
-
-.gallery-card-details {
-    color: #a0a0a0;
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-}
-
-.gallery-card-spec {
-    font-size: 0.7rem;
-    color: #a0a0a0;
-    padding: 8px;
-    margin: 5px 10px;
-    border: 1px solid #555555;
-    background: #2a2a2a;
-    border-radius: 4px;
-    line-height: 1.2;
-}
-
-.gallery-card .add-to-hand-btn {
-    width: calc(100% - 24px);
-    margin: 0 12px 12px 12px;
-}
-
-.gallery-section {
-    margin-bottom: 30px;
-}
-
-.gallery-section-title {
-    color: #e8e8e8;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #555555;
-    letter-spacing: 0.05em;
-}
-
-/* Lightbox overlay */
-#lightbox-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.90);
-    z-index: 9998;
-}
-
-#lightbox-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #2a2a2a;
-    padding: 25px;
-    border: 2px solid #707070;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    max-width: 90%;
-    max-height: 90%;
-}
-
-#lightbox-container.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#lightbox-image {
-    max-width: 100%;
-    max-height: 60vh;
-    display: block;
-    margin-bottom: 15px;
-    border: 1px solid #606060;
-}
-
-#lightbox-close {
-    background: #555555;
-    color: #e8e8e8;
-    border: 1px solid #707070;
-    padding: 10px 24px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    font-family: 'Baskerville', 'Georgia', serif;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    transition: all 0.2s;
-}
-
-#lightbox-close:hover {
-    background: #707070;
-    color: #ffffff;
-    border-color: #888888;
-}
-
-#lightbox-info {
-    text-align: center;
-    padding: 10px;
-    color: #b8b8b8;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    font-style: italic;
-}
-
-.lightbox-spec {
-    font-size: 0.8rem;
-    color: #a0a0a0;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #555555;
-    background: #2a2a2a;
-    border-radius: 4px;
-    line-height: 1.3;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-#lightbox-add-btn {
-    background: #4a5a4a;
-    color: #e8e8e8;
-    border: 1px solid #6a7a6a;
-    padding: 10px 24px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    font-family: 'Baskerville', 'Georgia', serif;
-    transition: all 0.2s;
-    margin-bottom: 15px;
-}
-
-#lightbox-add-btn:hover {
-    background: #5a6a5a;
-    border-color: #8a9a8a;
-}
-
-#lightbox-add-btn.in-hand {
-    background: #6a5a5a;
-    border-color: #8a6a6a;
-}
-
-/* Gallery size selector */
-.gallery-size-control {
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.gallery-size-control label {
-    color: #d8d8d8;
-    font-weight: 500;
-}
-
-.gallery-size-control select {
-    padding: 6px 10px;
-    border: 1px solid #606060;
-    background: #2a2a2a;
-    color: #d0d0d0;
-    font-family: 'Baskerville', 'Georgia', serif;
-    font-size: 0.95rem;
-}
-
-/* Hand Panel Styles */
-#hand-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #2a2a2a;
-    border-top: 3px solid #606060;
-    z-index: 9000;
-    transition: transform 0.3s ease;
-    max-height: 250px;
-    display: none;
-}
-
-body.hand-mode #hand-panel {
-    display: block;
-}
-
-#hand-panel.collapsed {
-    transform: translateY(calc(100% - 45px));
-}
-
-#hand-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background: #3a3a3a;
-    border-bottom: 1px solid #555555;
-    cursor: pointer;
-}
-
-#hand-panel-header:hover {
-    background: #454545;
-}
-
-#hand-panel-title {
-    color: #e8e8e8;
-    font-weight: 600;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-#hand-panel-title span.hand-name {
-    color: #a0c0a0;
-}
-
-#hand-card-count {
-    background: #555555;
-    color: #e8e8e8;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-}
-
-#hand-panel-controls {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-#hand-panel-controls button,
-#hand-panel-controls select {
-    background: #4a4a4a;
-    color: #d8d8d8;
-    border: 1px solid #606060;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-family: 'Baskerville', 'Georgia', serif;
-    transition: all 0.2s;
-}
-
-#hand-panel-controls button:hover,
-#hand-panel-controls select:hover {
-    background: #5a5a5a;
-    border-color: #888888;
-}
-
-#hand-panel-controls button.danger {
-    background: #5a4a4a;
-    border-color: #7a5a5a;
-}
-
-#hand-panel-controls button.danger:hover {
-    background: #6a4a4a;
-}
-
-#hand-panel-controls button.success {
-    background: #4a5a4a;
-    border-color: #5a7a5a;
-}
-
-#hand-panel-controls button.success:hover {
-    background: #5a6a5a;
-}
-
-#hand-toggle-btn {
-    background: none;
-    border: none;
-    color: #d8d8d8;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 5px;
-}
-
-#hand-cards-container {
-    display: flex;
-    gap: 15px;
-    padding: 15px 20px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    min-height: 140px;
-    align-items: flex-start;
-}
-
-.hand-card {
-    flex-shrink: 0;
-    width: 100px;
-    background: #3a3a3a;
-    border: 1px solid #555555;
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.hand-card:hover {
-    border-color: #888888;
-    transform: translateY(-3px);
-}
-
-.hand-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.hand-card-name {
-    padding: 6px;
-    font-size: 0.75rem;
-    color: #d8d8d8;
-    text-align: center;
-    background: #353535;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.hand-card-remove {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    background: rgba(100, 60, 60, 0.9);
-    color: #fff;
-    border: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 0.75rem;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.hand-card:hover .hand-card-remove {
-    opacity: 1;
-}
-
-.hand-card-remove:hover {
-    background: rgba(150, 60, 60, 1);
-}
-
-#hand-empty-message {
-    color: #808080;
-    font-style: italic;
-    padding: 20px;
-    text-align: center;
-    width: 100%;
-}
-
-/* Modal styles */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 10000;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-overlay.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #3a3a3a;
-    padding: 25px;
-    border: 2px solid #606060;
-    border-radius: 8px;
-    min-width: 300px;
-}
-
-.modal-content h3 {
-    color: #e8e8e8;
-    margin: 0 0 20px 0;
-    font-size: 1.2rem;
-}
-
-.modal-content input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #606060;
-    background: #2a2a2a;
-    color: #d0d0d0;
-    font-family: 'Baskerville', 'Georgia', serif;
-    font-size: 1rem;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-}
-
-.modal-content input[type="text"]:focus {
-    outline: none;
-    border-color: #888888;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-.modal-buttons button {
-    padding: 8px 20px;
-    border: 1px solid #606060;
-    cursor: pointer;
-    font-family: 'Baskerville', 'Georgia', serif;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-}
-
-.modal-buttons button.cancel {
-    background: #4a4a4a;
-    color: #d8d8d8;
-}
-
-.modal-buttons button.cancel:hover {
-    background: #5a5a5a;
-}
-
-.modal-buttons button.confirm {
-    background: #4a5a4a;
-    color: #e8e8e8;
-    border-color: #5a7a5a;
-}
-
-.modal-buttons button.confirm:hover {
-    background: #5a6a5a;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperial Elegy — Card Manifest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg: #1a1a1a;
+            --surface: #2a2a2a;
+            --surface-hover: #333;
+            --border: #444;
+            --text: #d4c5a0;
+            --text-muted: #8a7e6a;
+            --accent: #c9a84c;
+            --accent-dim: #8a7030;
+            --event: #6a8caf;
+            --gw: #af5b5b;
+            --home: #5aaf6a;
+            --goal: #af8a5b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Libre Baskerville', 'Georgia', serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #222 0%, var(--bg) 100%);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .controls label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .controls select,
+        .controls input[type="text"] {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.6rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            border-radius: 3px;
+        }
+
+        .controls input[type="text"] {
+            width: 180px;
+        }
+
+        .controls input[type="text"]:focus,
+        .controls select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            margin-left: auto;
+        }
+
+        .view-toggle button {
+            background: var(--bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.8rem;
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-toggle button:first-child { border-radius: 3px 0 0 3px; }
+        .view-toggle button:last-child { border-radius: 0 3px 3px 0; border-left: none; }
+
+        .view-toggle button.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: var(--accent-dim);
+        }
+
+        /* Hand management */
+        .hand-section {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0.5rem 2rem;
+            display: none;
+        }
+
+        .hand-section.visible { display: block; }
+
+        .hand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .hand-header h3 {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .hand-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .hand-cards {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            min-height: 30px;
+        }
+
+        .hand-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+
+        .hand-card:hover {
+            border-color: var(--accent);
+        }
+
+        .hand-card .remove-hand {
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.65rem;
+        }
+
+        .hand-card .remove-hand:hover {
+            color: #c55;
+        }
+
+        /* Table view */
+        .table-container {
+            padding: 1rem 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        thead th {
+            background: var(--surface);
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-dim);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        thead th:hover { color: #fff; }
+
+        thead th .sort-arrow {
+            font-size: 0.6rem;
+            margin-left: 0.3rem;
+            opacity: 0.3;
+        }
+
+        thead th.sorted .sort-arrow { opacity: 1; }
+
+        tbody tr {
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover { background: var(--surface-hover); }
+
+        td {
+            padding: 0.5rem 0.8rem;
+            vertical-align: middle;
+        }
+
+        td.card-number {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        td.card-cp {
+            color: var(--accent);
+            font-weight: bold;
+            width: 35px;
+            text-align: center;
+        }
+
+        td.card-name { font-weight: 700; }
+
+        .type-badge {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 2px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .type-badge.event { background: rgba(106,140,175,0.2); color: var(--event); }
+        .type-badge.gw-event { background: rgba(175,91,91,0.2); color: var(--gw); }
+        .type-badge.home-card { background: rgba(90,175,106,0.2); color: var(--home); }
+        .type-badge.national-goal { background: rgba(175,138,91,0.2); color: var(--goal); }
+
+        td.card-actions {
+            width: 50px;
+            text-align: center;
+        }
+
+        .add-hand-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            transition: all 0.2s;
+        }
+
+        .add-hand-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Text match indicator in table */
+        .text-match-snippet {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+            display: block;
+            margin-top: 0.2rem;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .text-match-snippet mark {
+            background: rgba(201, 168, 76, 0.3);
+            color: var(--accent);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Gallery view */
+        .gallery-container {
+            padding: 1.5rem 2rem;
+            display: none;
+        }
+
+        .gallery-container.active { display: block; }
+        .table-container.active { display: block; }
+        .table-container { display: none; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gallery-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            aspect-ratio: 5/7;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-card .card-info {
+            padding: 0.5rem;
+        }
+
+        .gallery-card .card-info .card-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+
+        .gallery-card .card-info .card-meta {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox-content {
+            display: flex;
+            gap: 2rem;
+            max-width: 1000px;
+            max-height: 90vh;
+            align-items: flex-start;
+        }
+
+        .lightbox-content img {
+            max-height: 80vh;
+            max-width: 400px;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-details {
+            color: var(--text);
+            max-width: 450px;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .lightbox-details h2 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lightbox-details .detail-row {
+            margin-bottom: 0.75rem;
+        }
+
+        .lightbox-details .detail-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .lightbox-details .detail-value {
+            font-size: 0.9rem;
+            margin-top: 0.15rem;
+        }
+
+        .lightbox-details .card-text {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent-dim);
+            margin-top: 0.5rem;
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1rem; right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .lightbox-close:hover { color: #fff; }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.5rem;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            border-radius: 3px;
+            z-index: 1001;
+        }
+
+        .lightbox-nav:hover { background: var(--surface); }
+        .lightbox-nav.prev { left: 1rem; }
+        .lightbox-nav.next { right: 1rem; }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .pagination button {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.3rem 0.6rem;
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .pagination button:hover { border-color: var(--accent); }
+        .pagination button.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-dim); }
+        .pagination button:disabled { opacity: 0.3; cursor: default; }
+
+        .results-info {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .controls { padding: 0.75rem 1rem; }
+            .table-container { padding: 0.5rem; }
+            .gallery-container { padding: 0.75rem; }
+            .lightbox-content { flex-direction: column; align-items: center; }
+            .lightbox-content img { max-width: 90vw; max-height: 50vh; }
+            .lightbox-details { max-width: 90vw; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .controls input[type="text"] { width: 140px; }
+        }
+    </style>
 </head>
-
 <body>
-<div>
-	<h1>Action Deck Card Manifest</h1>
-	<div class="header-links">
-		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/rulebook_Prod_10mmBleed-upload.pdf?v=1756972319" target="_blank">Rules</a>
-		<a href="https://cdn.shopify.com/s/files/1/0295/6650/0908/files/Playbook_Prod_10mmBleed-upload.pdf?v=1756972338" target="_blank">Playbook</a>
-		<button id="view-mode-toggle">📷 View Mode</button>
-		<button id="add-hand-btn">✋ Add Hand</button>
-	</div>
-</div>
+    <header>
+        <h1>Imperial Elegy</h1>
+        <p>Card Manifest — Complete Reference</p>
+    </header>
 
-<div id="content">
-    <div class="controls" style="margin-bottom: 15px; display: flex; gap: 15px; align-items: center;">
-        <label class="table-only">Show
-            <select id="page-size">
-                <option value="10" selected>10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="-1">All</option>
-            </select>
-        entries</label>
-
-        <label>Search Title:
-            <input type="text" id="filter-title" placeholder="Search title..." style="padding: 5px; width: 200px;">
-        </label>
-
-        <label>Card Type:
-            <select id="filter-type" style="padding: 5px;">
-                <option value="">All</option>
-                <option value="Home">Home</option>
+    <div class="controls">
+        <div class="search-group">
+            <label for="filter-name">Search Title</label>
+            <input type="text" id="filter-name" placeholder="Card name...">
+        </div>
+        <div class="search-group">
+            <label for="filter-text">Search Text</label>
+            <input type="text" id="filter-text" placeholder="Card text...">
+        </div>
+        <div class="search-group">
+            <label for="filter-type">Type</label>
+            <select id="filter-type">
+                <option value="">All Types</option>
                 <option value="Event">Event</option>
-                <option value="GE Objective">GE Objective</option>
-                <option value="UK Objective">UK Objective</option>
-                <option value="FR Objective">FR Objective</option>
-                <option value="AU Objective">AU Objective</option>
-                <option value="RU Objective">RU Objective</option>
-                <option value="OT Objective">OT Objective</option>
                 <option value="GW Event">GW Event</option>
+                <option value="Home Card">Home Card</option>
+                <option value="National Goal">National Goal</option>
             </select>
-        </label>
+        </div>
+        <div class="search-group">
+            <label for="per-page">Per Page</label>
+            <select id="per-page">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="999">All</option>
+            </select>
+        </div>
+        <div class="view-toggle">
+            <button id="btn-table" class="active" onclick="setView('table')">Table</button>
+            <button id="btn-gallery" onclick="setView('gallery')">Gallery</button>
+        </div>
     </div>
 
-    <!-- Table View -->
-    <div id="table-view">
-        <table cellpadding="0" cellspacing="0" border="0" id="inventory">
-          <thead>
-            <tr>
-              <th style="width:60px;">Number</th>
-              <th>Title</th>
-              <th style="width:120px;">Card Type</th>
-              <th style="width:80px;">CP (or VP)</th>
-              <th style="width:100px;" class="hand-column">Hand</th>
-            </tr>
-          </thead>
-          <tbody id="card-tbody">
-          </tbody>
+    <div class="hand-section" id="hand-section">
+        <div class="hand-header">
+            <h3>🃏 Your Hand</h3>
+            <span class="hand-count" id="hand-count">0 cards</span>
+        </div>
+        <div class="hand-cards" id="hand-cards"></div>
+    </div>
+
+    <div class="results-info" id="results-info"></div>
+
+    <div class="table-container active" id="table-view">
+        <table>
+            <thead>
+                <tr>
+                    <th data-sort="number"># <span class="sort-arrow">▲</span></th>
+                    <th data-sort="cp">CP <span class="sort-arrow">▲</span></th>
+                    <th data-sort="name">Name <span class="sort-arrow">▲</span></th>
+                    <th data-sort="type">Type <span class="sort-arrow">▲</span></th>
+                    <th>Hand</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
         </table>
-
-        <div id="pagination-info" style="padding: 10px; color: #39342e;"></div>
-        <div id="pagination-controls" style="padding: 10px; text-align: center;"></div>
     </div>
 
-    <!-- Gallery View -->
-    <div id="gallery-view">
-        <div class="gallery-size-control">
-            <label>Card Size:
-                <select id="gallery-size">
-                    <option value="150">Small</option>
-                    <option value="200" selected>Medium</option>
-                    <option value="280">Large</option>
-                    <option value="350">Extra Large</option>
-                </select>
-            </label>
-            <span id="gallery-count" style="color: #a0a0a0; margin-left: auto;"></span>
-        </div>
-        <div id="gallery-container" class="gallery-grid">
-        </div>
+    <div class="gallery-container" id="gallery-view">
+        <div class="gallery-grid" id="gallery-grid"></div>
     </div>
-</div>
 
-<!-- Hand Panel -->
-<div id="hand-panel" class="collapsed">
-    <div id="hand-panel-header">
-        <div id="hand-panel-title">
-            🃏 Hand: <span class="hand-name" id="current-hand-name">No hand selected</span>
-            <span id="hand-card-count">0 cards</span>
-        </div>
-        <div id="hand-panel-controls">
-            <select id="hand-selector" title="Select a hand">
-                <option value="">-- Select Hand --</option>
-            </select>
-            <button id="random-card-btn" class="success" title="Add a random card">🎲 Random</button>
-            <button id="clear-hand-btn" class="danger" title="Clear current hand">🗑️ Clear</button>
-            <button id="delete-hand-btn" class="danger" title="Delete current hand">❌ Delete</button>
-            <button id="hand-toggle-btn">▲</button>
-        </div>
-    </div>
-    <div id="hand-cards-container">
-        <div id="hand-empty-message">No cards in hand. Click "+" on cards to add them, or use the Random button.</div>
-    </div>
-</div>
+    <div class="pagination" id="pagination"></div>
 
-<!-- Lightbox -->
-<div id="lightbox-overlay"></div>
-<div id="lightbox-container">
-    <div id="lightbox-info"></div>
-    <img id="lightbox-image" src="" alt="">
-    <button id="lightbox-add-btn">+ Add to Hand</button>
-    <button id="lightbox-close">CLOSE ✕</button>
-</div>
-
-<!-- New Hand Modal -->
-<div id="new-hand-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Create New Hand</h3>
-        <input type="text" id="new-hand-name" placeholder="Enter hand name...">
-        <div class="modal-buttons">
-            <button class="cancel" id="modal-cancel">Cancel</button>
-            <button class="confirm" id="modal-confirm">Create</button>
-        </div>
-    </div>
-</div>
-
-<script>
-const cardData = [
-    { name: "Otto von Bismarck", cp: "3", num: "1", img: "Home Card 1 GE.png", type: "Home" },
-    { name: "German General Staff", cp: "3", num: "2", img: "Home Card 2 GE.png", type: "Home" },  
-    { name: "Sun Never Sets", cp: "3", num: "3", img: "Home Card 3 UK.png", type: "Home" },
-    { name: "Balance of Power", cp: "3", num: "4", img: "Home Card 4 UK.png", type: "Home" },
-    { name: "The City of Light", cp: "3", num: "5", img: "Home Card 5 FR.png", type: "Home" },
-    { name: "Aux Armes, Citoyens!", cp: "3", num: "6", img: "Home Card 6 FR.png", type: "Home" },
-    { name: "Habsburg Dynasty", cp: "3", num: "7", img: "Home Card 7 AU.png", type: "Home" },
-    { name: "Kaiserreich", cp: "3", num: "8", img: "Home Card 8 AU.png", type: "Home" },
-    { name: "Russo-Turkish Wars", cp: "3", num: "9", img: "Home Card 9 RU.png", type: "Home" },
-    { name: "God Save the Tsar", cp: "3", num: "10", img: "Home Card 10 RU.png", type: "Home" },
-    { name: "Modernization", cp: "3", num: "11", img: "Home Card 11 OT.png", type: "Home" },
-    { name: "Jihad", cp: "3", num: "12", img: "Home Card 12 OT.png", type: "Home" },
-    { name: "European Keys", cp: "* VP", num: "1", img: "Card GE Objective 1.png", type: "GE Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "2", img: "Card GE Objective 2.png", type: "GE Objective" },
-    { name: "Look to Berlin", cp: "* VP", num: "3", img: "Card GE Objective 3.png", type: "GE Objective" },
-    { name: "Stability", cp: "* VP", num: "4", img: "Card GE Objective 4.png", type: "GE Objective" },
-    { name: "Our Place in the Sun", cp: "3 VP", num: "5", img: "Card GE Objective 5.png", type: "GE Objective" },
-    { name: "Peace in Our Time", cp: "3 VP", num: "6", img: "Card GE Objective 6.png", type: "GE Objective" },
-    { name: "Surrounded", cp: "3 VP", num: "7", img: "Card GE Objective 7.png", type: "GE Objective" },
-    { name: "Unification", cp: "4 VP", num: "8", img: "Card GE Objective 8.png", type: "GE Objective" },
-    { name: "Scramble for Africa", cp: "* VP", num: "9", img: "Card UK Objective 9.png", type: "UK Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "10", img: "Card UK Objective 10.png", type: "UK Objective" },
-    { name: "Look to London", cp: "* VP", num: "11", img: "Card UK Objective 11.png", type: "UK Objective" },
-    { name: "Stability", cp: "* VP", num: "12", img: "Card UK Objective 12.png", type: "UK Objective" },
-    { name: "Two Power Standard", cp: "3 VP", num: "13", img: "Card UK Objective 13.png", type: "UK Objective" },
-    { name: "Peace in Our Time", cp: "3 VP", num: "14", img: "Card UK Objective 14.png", type: "UK Objective" },
-    { name: "Rule Britannia", cp: "3 VP", num: "15", img: "Card UK Objective 15.png", type: "UK Objective" },
-    { name: "Balance of Power", cp: "4 VP", num: "16", img: "Card UK Objective 16.png", type: "UK Objective" },
-    { name: "European Keys", cp: "* VP", num: "17", img: "Card FR Objective 17.png", type: "FR Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "18", img: "Card FR Objective 18.png", type: "FR Objective" },
-    { name: "Look to Paris", cp: "* VP", num: "19", img: "Card FR Objective 19.png", type: "FR Objective" },
-    { name: "Stability", cp: "* VP", num: "20", img: "Card FR Objective 20.png", type: "FR Objective" },
-    { name: "France Resurgent", cp: "3 VP", num: "21", img: "Card FR Objective 21.png", type: "FR Objective" },
-    { name: "City of Light", cp: "3 VP", num: "23", img: "Card FR Objective 23.png", type: "FR Objective" },
-    { name: "Napoleon's Legacy", cp: "4 VP", num: "24", img: "Card FR Objective 24.png", type: "FR Objective" },
-    { name: "European Keys", cp: "* VP", num: "25", img: "Card AU Objective 25.png", type: "AU Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "26", img: "Card AU Objective 26.png", type: "AU Objective" },
-    { name: "Look to Vienna", cp: "* VP", num: "27", img: "Card AU Objective 27.png", type: "AU Objective" },
-    { name: "Stability", cp: "* VP", num: "28", img: "Card AU Objective 28.png", type: "AU Objective" },
-    { name: "Contain Italy", cp: "3 VP", num: "29", img: "Card AU Objective 29.png", type: "AU Objective" },
-    { name: "Contain Prussia", cp: "3 VP", num: "30", img: "Card AU Objective 30.png", type: "AU Objective" },
-    { name: "Precarious Position", cp: "3 VP", num: "31", img: "Card AU Objective 31.png", type: "AU Objective" },
-    { name: "Peace in Our Time", cp: "3 VP", num: "32", img: "Card AU Objective 32.png", type: "AU Objective" },
-    { name: "Bind Them Together", cp: "4 VP", num: "33", img: "Card AU Objective 33.png", type: "AU Objective" },
-    { name: "European Keys", cp: "* VP", num: "34", img: "Card RU Objective 34.png", type: "RU Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "35", img: "Card RU Objective 35.png", type: "RU Objective" },
-    { name: "Look to St. Petersburg", cp: "* VP", num: "36", img: "Card RU Objective 36.png", type: "RU Objective" },
-    { name: "Stability", cp: "* VP", num: "37", img: "Card RU Objective 37.png", type: "RU Objective" },
-    { name: "Eastern Ambitions", cp: "3 VP", num: "38", img: "Card RU Objective 38.png", type: "RU Objective" },
-    { name: "Peace in Our Time", cp: "3 VP", num: "39", img: "Card RU Objective 39.png", type: "RU Objective" },
-    { name: "Finish off the Turks", cp: "3 VP", num: "40", img: "Card RU Objective 40.png", type: "RU Objective" },
-    { name: "Russian Hegemony", cp: "4 VP", num: "41", img: "Card RU Objective 41.png", type: "RU Objective" },
-    { name: "Scramble for Africa", cp: "* VP", num: "42", img: "Card OT Objective 42.png", type: "OT Objective" },
-    { name: "Flashpoints", cp: "* VP", num: "43", img: "Card OT Objective 43.png", type: "OT Objective" },
-    { name: "Look to Istanbul", cp: "* VP", num: "44", img: "Card OT Objective 44.png", type: "OT Objective" },
-    { name: "Stability", cp: "* VP", num: "45", img: "Card OT Objective 45.png", type: "OT Objective" },
-    { name: "Precarious Position", cp: "3 VP", num: "46", img: "Card OT Objective 46.png", type: "OT Objective" },
-    { name: "Peace in Our Time", cp: "3 VP", num: "47", img: "Card OT Objective 47.png", type: "OT Objective" },
-    { name: "Europeanization", cp: "3 VP", num: "48", img: "Card OT Objective 48.png", type: "OT Objective" },
-    { name: "Death Grip", cp: "4 VP", num: "49", img: "Card OT Objective 49.png", type: "OT Objective" },
-    { name: "Colonial Conflict", cp: "2", num: "13", img: "Action Card 13_result.jpg", type: "Event" },
-    { name: "Colonial Conflict", cp: "2", num: "14", img: "Action Card 14_result.jpg", type: "Event" },
-    { name: "Shifting Alliances", cp: "2", num: "15", img: "Action Card 15_result.jpg", type: "Event" },
-    { name: "Liberal Reforms", cp: "2", num: "16", img: "Action Card 16_result.jpg", type: "Event" },
-    { name: "Assassination!", cp: "2", num: "17", img: "Action Card 17_result.jpg", type: "Event" },
-    { name: "Socialist Musings", cp: "1", num: "18", img: "Action Card 18_result.jpg", type: "Event" },
-    { name: "Skilled Diplomats", cp: "2", num: "19", img: "Action Card 19_result.jpg", type: "Event" },
-    { name: "Diplomatic Incident", cp: "1", num: "20", img: "Action Card 20_result.jpg", type: "Event" },
-    { name: "National Railroad", cp: "3", num: "21", img: "Action Card 21_result.jpg", type: "Event" },
-    { name: "New Administration", cp: "2", num: "22", img: "Action Card 22_result.jpg", type: "Event" },
-    { name: "New Rifles", cp: "3", num: "23", img: "Action Card 23_result.jpg", type: "Event" },
-    { name: "New Artillery", cp: "3", num: "24", img: "Action Card 24_result.jpg", type: "Event" },
-    { name: "Divide and Conquer", cp: "2", num: "25", img: "Action Card 25_result.jpg", type: "Event" },
-    { name: "Chinese Intervention", cp: "2", num: "26", img: "Action Card 26_result.jpg", type: "Event" },
-    { name: "Foreign Investment", cp: "2", num: "27", img: "Action Card 27_result.jpg", type: "Event" },
-    { name: "The Influence of Sea Power", cp: "2", num: "28", img: "Action Card 28_result.jpg", type: "Event" },
-    { name: "Economic Boom", cp: "-", num: "29", img: "Action Card 29_result.jpg", type: "Event" },
-    { name: "Italy", cp: "2", num: "30", img: "Action Card 30_result.jpg", type: "Event" },
-    { name: "Graveyard of Empires", cp: "2", num: "31", img: "Action Card 31_result.jpg", type: "Event" },
-    { name: "American Civil War", cp: "2", num: "32", img: "Action Card 32_result.jpg", type: "Event" },
-    { name: "Sepoy Mutiny", cp: "2", num: "33", img: "Action Card 33_result.jpg", type: "Event" },
-    { name: "Decline of the Qing", cp: "2", num: "34", img: "Action Card 34_result.jpg", type: "Event" },
-    { name: "Sick Man of Europe", cp: "3", num: "35", img: "Action Card 35_result.jpg", type: "Event" },
-    { name: "Rebellions in China", cp: "2", num: "36", img: "Action Card 36_result.jpg", type: "Event" },
-    { name: "The Great Game", cp: "2", num: "37", img: "Action Card 37_result.jpg", type: "Event" },
-    { name: "The Second Opium War", cp: "1", num: "38", img: "Action Card 38_result.jpg", type: "Event" },
-    { name: "Uprising in Ireland", cp: "2", num: "39", img: "Action Card 39_result.jpg", type: "Event" },
-    { name: "British Trade", cp: "1", num: "40", img: "Action Card 40_result.jpg", type: "Event" },
-    { name: "Prussian Military Tradition", cp: "2", num: "41", img: "Action Card 41_result.jpg", type: "Event" },
-    { name: "The Ruhr", cp: "4", num: "42", img: "Action Card 42_result.jpg", type: "Event" },
-    { name: "At Any Cost", cp: "2", num: "43", img: "Action Card 43_result.jpg", type: "Event" },
-    { name: "Paris Commune", cp: "1", num: "44", img: "Action Card 44_result.jpg", type: "Event" },
-    { name: "Folie de Grandeur", cp: "3", num: "45", img: "Action Card 45_result.jpg", type: "Event" },
-    { name: "French Intervention", cp: "1", num: "46", img: "Action Card 46_result.jpg", type: "Event" },
-    { name: "The Dual Monarchy", cp: "2", num: "47", img: "Action Card 47_result.jpg", type: "Event" },
-    { name: "Multicultural Empire", cp: "1", num: "48", img: "Action Card 48_result.jpg", type: "Event" },
-    { name: "South German Confederation", cp: "3", num: "49", img: "Action Card 49_result.jpg", type: "Event" },
-    { name: "Reforms of the 1860s", cp: "1", num: "50", img: "Action Card 50_result.jpg", type: "Event" },
-    { name: "Polish Revolt", cp: "2", num: "51", img: "Action Card 51_result.jpg", type: "Event" },
-    { name: "Eastern Orthodoxy", cp: "3", num: "52", img: "Action Card 52_result.jpg", type: "Event" },
-    { name: "Powder Keg", cp: "2", num: "53", img: "Action Card 53_result.jpg", type: "Event" },
-    { name: "Failed reforms", cp: "3", num: "54", img: "Action Card 54_result.jpg", type: "Event" },
-    { name: "Suez Canal", cp: "2", num: "55", img: "Action Card 55_result.jpg", type: "Event" },
-    { name: "Nationalism", cp: "3", num: "56", img: "Action Card 56_result.jpg", type: "Event" },
-    { name: "Impregnable", cp: "3", num: "57", img: "Action Card 57_result.jpg", type: "Event" },
-    { name: "Siege Guns", cp: "1", num: "58", img: "Action Card 58_result.jpg", type: "Event" },
-    { name: "Flank Attack", cp: "1", num: "59", img: "Action Card 59_result.jpg", type: "Event" },
-    { name: "Charge of the Light Brigade", cp: "1", num: "60", img: "Action Card 60_result.jpg", type: "Event" },
-    { name: "Ironclads", cp: "2", num: "61", img: "Action Card 61_result.jpg", type: "Event" },
-    { name: "Miscommunication", cp: "2", num: "62", img: "Action Card 62_result.jpg", type: "Event" },
-    { name: "Rapid Mobilization", cp: "1", num: "63", img: "Action Card 63_result.jpg", type: "Event" },
-    { name: "Secret Treaty", cp: "3", num: "64", img: "Action Card 64_result.jpg", type: "Event" },
-    { name: "Indian Ocean Arms Trade", cp: "1", num: "65", img: "Action Card 65_result.jpg", type: "Event" },
-    { name: "Damn the Torpedoes", cp: "2", num: "66", img: "Action Card 66_result.jpg", type: "Event" },
-    { name: "International Conference", cp: "4", num: "67", img: "Action Card 67_result.jpg", type: "Event" },
-    { name: "The United States", cp: "4", num: "68", img: "Action Card 68_result.jpg", type: "Event" },
-    { name: "Concert of Europe", cp: "2", num: "69", img: "Action Card 69_result.jpg", type: "Event" },
-    { name: "Papal Influence", cp: "2", num: "70", img: "Action Card 70_result.jpg", type: "Event" },
-    { name: "Urabi Revolt", cp: "2", num: "71", img: "Action Card 71_result.jpg", type: "Event" },
-    { name: "Meiji Restoration", cp: "2", num: "72", img: "Action Card 72_result.jpg", type: "Event" },
-    { name: "Economic Panic", cp: "2", num: "73", img: "Action Card 73_result.jpg", type: "Event" },
-    { name: "Berlin Conference", cp: "2", num: "74", img: "Action Card 74_result.jpg", type: "Event" },
-    { name: "Second Industrial Revolution", cp: "4", num: "75", img: "Action Card 75_result.jpg", type: "Event" },
-    { name: "Zulus", cp: "1", num: "76", img: "Action Card 76_result.jpg", type: "Event" },
-    { name: "Indian Nationalism", cp: "2", num: "77", img: "Action Card 77ab_result.png", type: "Event" },
-    { name: "Crack Colonial Troops", cp: "3", num: "77", img: "Action Card 77_result.jpg", type: "Event" },
-    { name: "Loose Grip", cp: "3", num: "78", img: "Action Card 78_result.jpg", type: "Event" },
-    { name: "Machine Guns", cp: "2", num: "79", img: "Action Card 79_result.jpg", type: "Event" },
-    { name: "Conquest of Central Asia", cp: "1", num: "80", img: "Action Card 80_result.jpg", type: "Event", spec: "errata : Central Asia becomes an RU home space. RU places a reserve army in Central Asia.<br><br>Permanent: For the rest of the game, RU can have one reserve army on the Asia submap during peacetime that does not count against RU’s peacetime manpower army limit. It is immediately eliminated if, during peacetime, it is not on the Asia submap. This army can be rebuilt using normal recruitment actions. During the demobilization step of a war RU is participating in, RU may leave one reserve army on the map. Place this card near the RU player as a reminder.<br><br>Playable if RU controls Central Asia" },
-    { name: "Wilhelm II", cp: "2", num: "81", img: "Action Card 81_result.jpg", type: "Event" },
-    { name: "Quagmire", cp: "3", num: "83", img: "Action Card 83_result.jpg", type: "Event" },
-    { name: "Nationalist Uprising", cp: "3", num: "84", img: "Action Card 84_result.jpg", type: "Event" },
-    { name: "Hungarian Obstinacy", cp: "2", num: "85", img: "Action Card 85_result.jpg", type: "Event" },
-    { name: "Boer Wars", cp: "1", num: "86", img: "Action Card 86_result.jpg", type: "Event" },
-    { name: "Mahdist War", cp: "1", num: "87", img: "Action Card 87_result.jpg", type: "Event" },
-    { name: "Our Place in the Sun", cp: "3", num: "88", img: "Action Card 88_result.jpg", type: "Event" },
-    { name: "Cossacks", cp: "2", num: "89", img: "Action Card 89_result.jpg", type: "Event" },
-    { name: "The Eiffel Tower", cp: "1", num: "90", img: "Action Card 90_result.jpg", type: "Event" },
-    { name: "Hydraulic Recoil", cp: "2", num: "91", img: "Action Card 91_result.jpg", type: "Event" },
-    { name: "Naval Arms race", cp: "2", num: "92", img: "Action Card 92_result.jpg", type: "Event" },
-    { name: "Nicholas II", cp: "2", num: "93", img: "Action Card 93_result.jpg", type: "Event" },
-    { name: "The Boxer Rebellion", cp: "2", num: "94", img: "Action Card 94_result.jpg", type: "Event" },
-    { name: "Death of Franz Joseph", cp: "2", num: "95", img: "Action Card 95_result.jpg", type: "Event" },
-    { name: "Empire of the Sun", cp: "1", num: "96", img: "Action Card 96_result.jpg", type: "Event" },
-    { name: "Diplomatic Recognition", cp: "1", num: "97", img: "Action Card 97_result.jpg", type: "Event" },
-    { name: "Dreyfus Affair", cp: "1", num: "98", img: "Action Card 98_result.jpg", type: "Event" },
-    { name: "Dreadnaught", cp: "1", num: "99", img: "Action Card 99_result.jpg", type: "Event" },
-    { name: "The Balkan Wars", cp: "2", num: "100", img: "Action Card 100_result.jpg", type: "Event" },
-    { name: "The Black Hand", cp: "2", num: "101", img: "Action Card 101_result.jpg", type: "Event" },
-    { name: "Moroccan Crisis", cp: "3", num: "102", img: "Action Card 102_result.jpg", type: "Event" },
-    { name: "Bosnian Crisis", cp: "1", num: "103", img: "Action Card 103_result.jpg", type: "Event" },
-    { name: "The Funeral of Edward VII", cp: "2", num: "104", img: "Action Card 104_result.jpg", type: "Event" },
-    { name: "Impulsive Ruler", cp: "2", num: "105", img: "Action Card 105_result.jpg", type: "Event" },
-    { name: "The Young Turks", cp: "2", num: "106", img: "Action Card 106_result.jpg", type: "Event" },
-    { name: "World's Fair", cp: "3", num: "107", img: "Action Card 107_result.jpg", type: "Event" },
-    { name: "High Seas Fleet", cp: "1", num: "108", img: "Action Card 108_result.jpg", type: "Event" },
-    { name: "Revolution of 1905", cp: "2", num: "109", img: "Action Card 109_result.jpg", type: "Event" },
-    { name: "Extreme Militarism", cp: "2", num: "110", img: "Action Card 110_result.jpg", type: "Event" },
-    { name: "The Alliance System", cp: "2", num: "111", img: "Action Card 111_result.jpg", type: "Event" },
-    { name: "Franz Ferdinand", cp: "1", num: "112", img: "Action Card 112_result.jpg", type: "Event" },
-    { name: "Minor Power Entry", cp: "1", num: "1", img: "Great War Card 1.png", type: "GW Event" },
-    { name: "Major Power Entry", cp: "1", num: "2", img: "Great War Card 2.png", type: "GW Event" },
-    { name: "Technological Terror", cp: "1", num: "3", img: "Great War Card 3.png", type: "GW Event" },
-    { name: "Dawn of Modern Warfare", cp: "1", num: "4", img: "Great War Card 4.png", type: "GW Event" },
-    { name: "Capable Commander", cp: "1", num: "5", img: "Great War Card 5.png", type: "GW Event" },
-    { name: "They Shall Not Pass", cp: "1", num: "6", img: "Great War Card 6.png", type: "GW Event" },
-    { name: "Submarines", cp: "1", num: "7", img: "Great War Card 7.png", type: "GW Event" },
-    { name: "Political Pressure", cp: "1", num: "8", img: "Great War Card 8.png", type: "GW Event" },
-    { name: "Political Pressure", cp: "1", num: "9", img: "Great War Card 9.png", type: "GW Event" },
-    { name: "Exhaustion", cp: "1", num: "10", img: "Great War Card 10.png", type: "GW Event" },
-	{ name: "Peace in Our Time", cp: "3 VP", num: "22", img: "Card FR Objective 22.png", type: "FR Objective", spec: "The Great War does not occur." }
-];
-
-// ==================== HAND MANAGEMENT ====================
-let hands = {};
-let currentHandId = null;
-
-function loadHands() {
-    const saved = localStorage.getItem('cardManifestHands');
-    if (saved) {
-        hands = JSON.parse(saved);
-    }
-    updateHandSelector();
-}
-
-function saveHands() {
-    localStorage.setItem('cardManifestHands', JSON.stringify(hands));
-}
-
-function createHand(name) {
-    const id = 'hand_' + Date.now();
-    hands[id] = {
-        name: name,
-        cards: []
-    };
-    saveHands();
-    updateHandSelector();
-    selectHand(id);
-    return id;
-}
-
-function deleteHand(id) {
-    if (hands[id]) {
-        delete hands[id];
-        saveHands();
-        updateHandSelector();
-        if (currentHandId === id) {
-            currentHandId = null;
-            document.body.classList.remove('hand-mode');
-            renderHandPanel();
-            if (isGalleryMode) {
-                renderGallery();
-            } else {
-                renderTable();
-            }
-        }
-    }
-}
-
-function selectHand(id) {
-    currentHandId = id;
-    document.getElementById('hand-selector').value = id || '';
-    if (id) {
-        document.body.classList.add('hand-mode');
-    } else {
-        document.body.classList.remove('hand-mode');
-    }
-    renderHandPanel();
-    if (id) {
-        document.getElementById('hand-panel').classList.remove('collapsed');
-        document.getElementById('hand-toggle-btn').textContent = '▼';
-    }
-    if (isGalleryMode) {
-        renderGallery();
-    } else {
-        renderTable();
-    }
-    updateAllAddButtons();
-}
-
-function addCardToHand(cardIndex) {
-    if (!currentHandId) {
-        alert('Please create or select a hand first!');
-        return;
-    }
-    if (!hands[currentHandId].cards.includes(cardIndex)) {
-        hands[currentHandId].cards.push(cardIndex);
-        saveHands();
-        renderHandPanel();
-        updateAllAddButtons();
-    }
-}
-
-function removeCardFromHand(cardIndex) {
-    if (!currentHandId) return;
-    const idx = hands[currentHandId].cards.indexOf(cardIndex);
-    if (idx > -1) {
-        hands[currentHandId].cards.splice(idx, 1);
-        saveHands();
-        renderHandPanel();
-        updateAllAddButtons();
-    }
-}
-
-function clearCurrentHand() {
-    if (!currentHandId) return;
-    if (confirm('Clear all cards from this hand?')) {
-        hands[currentHandId].cards = [];
-        saveHands();
-        renderHandPanel();
-        updateAllAddButtons();
-    }
-}
-
-function addRandomCard() {
-    if (!currentHandId) {
-        alert('Please create or select a hand first!');
-        return;
-    }
-    const randomIndex = Math.floor(Math.random() * cardData.length);
-    addCardToHand(randomIndex);
-    const container = document.getElementById('hand-cards-container');
-    const cards = container.querySelectorAll('.hand-card');
-    if (cards.length > 0) {
-        const lastCard = cards[cards.length - 1];
-        lastCard.style.boxShadow = '0 0 15px #8a9a8a';
-        setTimeout(() => {
-            lastCard.style.boxShadow = '';
-        }, 500);
-    }
-}
-
-function isCardInCurrentHand(cardIndex) {
-    if (!currentHandId || !hands[currentHandId]) return false;
-    return hands[currentHandId].cards.includes(cardIndex);
-}
-
-function updateHandSelector() {
-    const selector = document.getElementById('hand-selector');
-    const currentValue = selector.value;
-    selector.innerHTML = '<option value="">-- Select Hand --</option>';
-    Object.keys(hands).forEach(id => {
-        const option = document.createElement('option');
-        option.value = id;
-        option.textContent = hands[id].name + ' (' + hands[id].cards.length + ')';
-        selector.appendChild(option);
-    });
-    if (currentValue && hands[currentValue]) {
-        selector.value = currentValue;
-    }
-}
-
-function renderHandPanel() {
-    const container = document.getElementById('hand-cards-container');
-    const nameSpan = document.getElementById('current-hand-name');
-    const countSpan = document.getElementById('hand-card-count');
-    if (!currentHandId || !hands[currentHandId]) {
-        nameSpan.textContent = 'No hand selected';
-        countSpan.textContent = '0 cards';
-        container.innerHTML = '<div id="hand-empty-message">Select or create a hand to get started.</div>';
-        return;
-    }
-    const hand = hands[currentHandId];
-    nameSpan.textContent = hand.name;
-    countSpan.textContent = hand.cards.length + ' card' + (hand.cards.length !== 1 ? 's' : '');
-    if (hand.cards.length === 0) {
-        container.innerHTML = '<div id="hand-empty-message">No cards in hand. Click "+" on cards to add them, or use the Random button.</div>';
-        return;
-    }
-    container.innerHTML = '';
-    hand.cards.forEach((cardIndex, i) => {
-        const card = cardData[cardIndex];
-        const cardEl = document.createElement('div');
-        cardEl.className = 'hand-card';
-        cardEl.innerHTML = `
-            <button class="hand-card-remove" title="Remove from hand">✕</button>
-            <img src="${card.img}" alt="${card.name}">
-            <div class="hand-card-name">${card.name}</div>
-        `;
-        cardEl.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('hand-card-remove')) {
-                openLightbox(cardIndex);
-            }
-        });
-        cardEl.querySelector('.hand-card-remove').addEventListener('click', (e) => {
-            e.stopPropagation();
-            removeCardFromHand(cardIndex);
-        });
-        container.appendChild(cardEl);
-    });
-}
-
-function updateAllAddButtons() {
-    document.querySelectorAll('.add-to-hand-btn').forEach(btn => {
-        const cardIndex = parseInt(btn.dataset.cardIndex);
-        const inHand = isCardInCurrentHand(cardIndex);
-        btn.textContent = inHand ? '− Remove' : '+ Add';
-        btn.classList.toggle('in-hand', inHand);
-    });
-    const lightboxBtn = document.getElementById('lightbox-add-btn');
-    if (lightboxBtn.dataset.cardIndex) {
-        const inHand = isCardInCurrentHand(parseInt(lightboxBtn.dataset.cardIndex));
-        lightboxBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
-        lightboxBtn.classList.toggle('in-hand', inHand);
-    }
-}
-
-// ==================== VIEW MODE ====================
-let isGalleryMode = false;
-
-// ==================== TABLE ====================
-const tbody = document.getElementById('card-tbody');
-let currentIndex = 0;
-let allRows = [];
-let currentPage = 1;
-let pageSize = 10;
-let filteredData = [...cardData];
-
-function renderTable() {
-    tbody.innerHTML = '';
-    allRows = [];
-    const start = (currentPage - 1) * pageSize;
-    const end = pageSize === -1 ? filteredData.length : start + pageSize;
-    const pageData = filteredData.slice(start, end);
-    pageData.forEach((card, index) => {
-        const globalIndex = cardData.indexOf(card);
-        const inHand = isCardInCurrentHand(globalIndex);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="center">${card.num}</td>
-            <td><a href="#" class="card-link" data-index="${globalIndex}">${card.name}</a></td>
-            <td class="center">${card.type}</td>
-            <td class="center">${card.cp}</td>
-            <td class="center hand-column">
-                <button class="add-to-hand-btn ${inHand ? 'in-hand' : ''}" data-card-index="${globalIndex}">
-                    ${inHand ? '− Remove' : '+ Add'}
-                </button>
-            </td>
-        `;
-        row.dataset.number = card.num;
-        row.dataset.title = card.name.toLowerCase();
-        row.dataset.type = card.type;
-        row.dataset.cp = card.cp;
-        tbody.appendChild(row);
-        allRows.push(row);
-    });
-    document.querySelectorAll('.card-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const index = parseInt(e.target.getAttribute('data-index'));
-            openLightbox(index);
-        });
-    });
-    document.querySelectorAll('#card-tbody .add-to-hand-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const cardIndex = parseInt(btn.dataset.cardIndex);
-            if (isCardInCurrentHand(cardIndex)) {
-                removeCardFromHand(cardIndex);
-            } else {
-                addCardToHand(cardIndex);
-            }
-        });
-    });
-    updatePaginationInfo();
-    updatePaginationControls();
-}
-
-function updatePaginationInfo() {
-    const info = document.getElementById('pagination-info');
-    const start = (currentPage - 1) * pageSize + 1;
-    const end = pageSize === -1 ? filteredData.length : Math.min(start + pageSize - 1, filteredData.length);
-    if (filteredData.length === 0) {
-        info.textContent = 'Showing 0 to 0 of 0 entries';
-    } else {
-        info.textContent = `Showing ${start} to ${end} of ${filteredData.length} entries`;
-    }
-}
-
-function updatePaginationControls() {
-    const controls = document.getElementById('pagination-controls');
-    const totalPages = pageSize === -1 ? 1 : Math.ceil(filteredData.length / pageSize);
-    if (totalPages <= 1) {
-        controls.innerHTML = '';
-        return;
-    }
-    let html = '';
-    html += `<a href="#" onclick="goToPage(1); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">First</a> `;
-    html += `<a href="#" onclick="goToPage(${currentPage - 1}); return false;" style="${currentPage === 1 ? 'pointer-events:none;opacity:0.5;' : ''}">Previous</a> `;
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-            html += `<a href="#" onclick="goToPage(${i}); return false;" class="${i === currentPage ? 'current' : ''}">${i}</a> `;
-        } else if (i === currentPage - 3 || i === currentPage + 3) {
-            html += '... ';
-        }
-    }
-    html += `<a href="#" onclick="goToPage(${currentPage + 1}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Next</a> `;
-    html += `<a href="#" onclick="goToPage(${totalPages}); return false;" style="${currentPage === totalPages ? 'pointer-events:none;opacity:0.5;' : ''}">Last</a>`;
-    controls.innerHTML = html;
-}
-
-function goToPage(page) {
-    const totalPages = pageSize === -1 ? 1 : Math.ceil(filteredData.length / pageSize);
-    if (page >= 1 && page <= totalPages) {
-        currentPage = page;
-        renderTable();
-    }
-}
-
-// ==================== GALLERY ====================
-function renderGallery() {
-    const container = document.getElementById('gallery-container');
-    const sizeSelect = document.getElementById('gallery-size');
-    const cardSize = parseInt(sizeSelect.value);
-    container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${cardSize}px, 1fr))`;
-    container.innerHTML = '';
-    filteredData.forEach((card, index) => {
-        const globalIndex = cardData.indexOf(card);
-        const inHand = isCardInCurrentHand(globalIndex);
-        const cardEl = document.createElement('div');
-        cardEl.className = 'gallery-card';
-        cardEl.innerHTML = `
-            <img src="${card.img}" alt="${card.name}" loading="lazy">
-            <div class="gallery-card-info">
-                <div class="gallery-card-name">${card.name}</div>
-                <div class="gallery-card-details">${card.type} • #${card.num} • CP: ${card.cp}</div>
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-nav prev" onclick="navLightbox(-1)">‹</button>
+        <button class="lightbox-nav next" onclick="navLightbox(1)">›</button>
+        <div class="lightbox-content">
+            <img id="lb-img" src="" alt="">
+            <div class="lightbox-details">
+                <h2 id="lb-name"></h2>
+                <div class="detail-row">
+                    <div class="detail-label">Type</div>
+                    <div class="detail-value" id="lb-type"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Number</div>
+                    <div class="detail-value" id="lb-number"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Command Points</div>
+                    <div class="detail-value" id="lb-cp"></div>
+                </div>
+                <div class="detail-row" id="lb-spec-row">
+                    <div class="detail-label">Card Text</div>
+                    <div class="card-text" id="lb-spec"></div>
+                </div>
             </div>
-            ${card.spec ? `<div class="gallery-card-spec">${card.spec}</div>` : ''}
-            <button class="add-to-hand-btn ${inHand ? 'in-hand' : ''}" data-card-index="${globalIndex}">
-                ${inHand ? '− Remove' : '+ Add'}
-            </button>
+        </div>
+    </div>
+
+    <script>
+    let cardData = [
+      {name:"Colonial Conflict", cp:2, number:13, image:"Event/13.jpg", type:"Event", spec:`Colonial Conflict. Choose a space in Asia, Africa, or North America that is controlled by a player but is not a home space belonging to that player, place a 0 pacification marker in that space. As each space can only contain a single pacification marker it is possible that there are no eligible spaces for this event, in which case this event has no effect. Exception: if a naval base is chosen, place a pacification 2 marker instead.`},
+      {name:"Colonial Conflict", cp:2, number:14, image:"Event/14.jpg", type:"Event", spec:`Colonial Conflict. Choose a space in Asia, Africa, or North America that is controlled by a player but is not a home space belonging to that player, place a 0 pacification marker in that space. As each space can only contain a single pacification marker it is possible that there are no eligible spaces for this event, in which case this event has no effect. Exception: if a naval base is chosen, place a pacification 2 marker instead.`},
+      {name:"Shifting Alliances", cp:2, number:15, image:"Event/15.jpg", type:"Event", spec:`Shifting Alliances. Shift your chit on the Alliance Track. Then immediately conduct an alliance resolution step. Special: If you began this impulse in the neutral box, you cannot shift back into neutrality during this alliance resolution step. After alliances are resolved, increase the WTT by one if there are more players in alliance boxes than in the neutral box OR if one alliance has three players in it.`},
+      {name:"Liberal Reforms", cp:2, number:16, image:"Event/16.jpg", type:"Event", spec:`Liberal Reforms. All players, eliminate 2 reserve army steps in their reserve armies holding box. The CP from this card cannot be used to build new armies.`},
+      {name:"Assassination!", cp:2, number:17, image:"Event/17.jpg", type:"Event", spec:`Assassination!. Increase the WTT by 1. Choose a player. That player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card).`},
+      {name:"Socialist Musings", cp:1, number:18, image:"Event/18.jpg", type:"Event", spec:`Socialist Musings. Choose a player, that player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card). Roll a die, on a roll of a 1 you suffer the same effect.`},
+      {name:"Skilled Diplomats", cp:2, number:19, image:"Event/19.jpg", type:"Event", spec:`Skilled Diplomats. Spend 4 CP on the Major Power Influence Track.`},
+      {name:"Diplomatic Incident", cp:1, number:20, image:"Event/20.jpg", type:"Event", spec:`Diplomatic Incident. Remove an alliance marker from one minor power of your choice.`},
+      {name:"National Railroad", cp:3, number:21, image:"Event/21.jpg", type:"Event", spec:`National Railroad. If played into industrialization automatically increase your Industry by 1 during the end phase. Cannot be played by OT`},
+      {name:"New Administration", cp:2, number:22, image:"Event/22.jpg", type:"Event", spec:`New Administration. Draw three NG cards. Secretly select one and return the other two to your NG deck. Then if you have 4 NG cards return one to the deck.`},
+      {name:"New Rifles", cp:3, number:23, image:"Event/23.jpg", type:"Event", spec:`New Rifles. Your armies gain a +1 land battle modifier in each battle fought during this war. This modifier is a total of +1, not +1 per army, and your armies only provide this bonus if they are in the main attack force or main defense force. Cannot be played during the Great War. Play at the start of the maneuver step of a war you are participating in`},
+      {name:"New Artillery", cp:3, number:24, image:"Event/24.jpg", type:"Event", spec:`New Artillery. Your armies gain a +1 land battle modifier in each battle fought during this war. This modifier is a total of +1, not +1 per army, and your armies only provide this bonus if they are in the main attack force or main defense force. Cannot be played during the Great War. Play at the start of the maneuver step of a war you are participating in`},
+      {name:"Divide and Conquer", cp:2, number:25, image:"Event/25.jpg", type:"Event", spec:`Divide and Conquer. Add two to the pacification value in a space. Roll to pacify that space. Eliminate a rebel army in a space you control or influence. Then you may place an EF in (or move an existing EF to) the chosen space, and you may immediately make a pacification attempt. Special: This card can be used to eliminate the Egyptian army if Egypt is an independent minor power, and the active player has a diplomacy marker in Egypt. If this occurs all Egyptian spaces immediately revert to OT control.`},
+      {name:"Chinese Intervention", cp:2, number:26, image:"Event/26.jpg", type:"Event", spec:`Chinese Intervention. Place a reduced Qing army in a player or Japanese controlled space in Qing China, treat the Qing army as a rebel army for retreating purposes. If the Qing army is not eliminated by the end of the turn remove the Qing army and the control marker from the space. If the control marker is removed as described above, the owning player must either decrease their stability by 1 or a gain -1 card marker.`},
+      {name:"Foreign Investment", cp:2, number:27, image:"Event/27.jpg", type:"Event", spec:`Foreign Investment. Place this card face up in front of the OT or RU player as that player’s industrialization card. This card automatically increases OT or RU industry during the End Phase if played as their industrialization card. Playable by all players (including OT)`},
+      {name:"The Influence of Sea Power", cp:2, number:28, image:"Event/28.jpg", type:"Event", spec:`The Influence of Sea Power. Give the players that dominate the power projection flashpoint a +1 card marker. The UK player only gains a +1 card marker for dominating power projection if they have the most power projection, and their power projection is at least double the next highest player.`},
+      {name:"Economic Boom", cp:4, number:29, image:"Event/29.jpg", type:"Event", spec:`Economic Boom. Increase your stability by 1.`},
+      {name:"Italy", cp:2, number:30, image:"Event/30.jpg", type:"Event", spec:`Italy. If Italy is not unified, roll on the Italian Minor Power Table. If Italy is unified, roll on the Kingdom of Italy table.`},
+      {name:"American Civil War", cp:2, number:32, image:"Event/32.jpg", type:"Event", spec:`American Civil War. The American South rebels against the USA. At the start of the end phase roll a die, on a result ≥ 6 the CSA becomes an independent country. The UK and FR may add positive a DRM to the roll by placing diplomacy markers in and by moving naval units to The South space. Add a +1 DRM for each diplomacy marker and naval unit in The South space. Both the UK and FR may place a maximum of one diplomacy marker and one naval squadron in The South space while this event is in effect. If the CSA gains independence the player with the most counters in The South (roll to break a tie) gains a permanent alliance with the CSA, this alliance also increases that player’s colonial keys by 1. Then, if the CSA gained independence, give all powers that supported the CSA a -1 card marker for supporting a slave state.`},
+      {name:"Sepoy Mutiny", cp:2, number:33, image:"Event/33.jpg", type:"Event", spec:`Sepoy Mutiny. The UK player flips the Indian Stability marker to its unstable side. Place 1 Sepoy rebel army and a 0 War of Independence marker in India.`},
+      {name:"Sick Man of Europe", cp:3, number:35, image:"Event/35.jpg", type:"Event", spec:`Sick Man of Europe. Decrease the stability of both the Austrians and the Ottomans. The AU player ignores this card if 4 or more minority nationalities have citizenship. The OT player ignores this card if their industry level is ≥ 4.`},
+      {name:"Rebellions in China", cp:2, number:36, image:"Event/36.jpg", type:"Event", spec:`Rebellions in China. Place a control marker in a Qing controlled space in China then choose another player to do the same. This event does not allow players to place control markers in spaces that already contain control markers. Playable by UK, FR, RU or GE (GE can only play this event after Germany unifies)`},
+      {name:"The Great Game", cp:2, number:37, image:"Event/37.jpg", type:"Event", spec:`The Great Game. Place an influence marker and an EF in either Kuwait, Balochistan, Central Asia, or Afghanistan. If you already have an influence marker, just place the EF. You must follow normal placement restrictions. Then immediately make pacification roll in the chosen space. Playable by UK, OT, FR or RU`},
+      {name:"Second Opium War", cp:1, number:38, image:"Event/38.jpg", type:"Event", spec:`Second Opium War. The UK player and French player place a control marker in China (the UK places first).`},
+      {name:"Uprising in Ireland", cp:2, number:39, image:"Event/39.jpg", type:"Event", spec:`Uprising in Ireland. Place an Irish army and a 0 WoI marker in Ireland. The player that controls Ireland decreases their stability by 1 and gains a -1 card marker. The UK player may immediately discard a 3 or 4 CP card of their choice to ignore this event.`},
+      {name:"British Trade", cp:1, number:40, image:"Event/40.jpg", type:"Event", spec:`British Trade. The UK player takes the home card they did not choose for this turn and places it in their hand.`},
+      {name:"Prussian Military Tradition", cp:2, number:41, image:"Event/41.jpg", type:"Event", spec:`Prussian Military Tradition. The GE player gains a +1 battle modifier in all land battles in which they are the attacker for the remainder of the turn. This event has no effect during the GW. This can also be played as a standard event during your impulse. Playable at the start of the GE player’s impulse (including a wartime impulse)`},
+      {name:"The Ruhr", cp:4, number:42, image:"Event/42.jpg", type:"Event", spec:`The Ruhr. Increase GE industry by one. This does not count as the one card spent to industrialize.`},
+      {name:"Paris Commune", cp:2, number:44, image:"Event/44.jpg", type:"Event", spec:`Paris Commune. Decrease French stability by 1. Draw a replacement card. Play during the Victory Step of a war in which FR lost or if FR stability decreases`},
+      {name:"Folie de Grandeur", cp:3, number:45, image:"Event/45.jpg", type:"Event", spec:`Folie de Grandeur. Place a pacification marker in a space in Asia, Africa, or North America that France controls. France decreases their stability by 1 and gains a -1 card marker.`},
+      {name:"French Intervention", cp:1, number:46, image:"Event/46.jpg", type:"Event", spec:`French Intervention. France places an influence marker and an EF (or moves an EF) to an eligible uncontrolled space. They then immediately make a pacification roll in the chosen space. Special: FR can target Indochina or Mexico with this event if those spaces are not controlled by a player or the US.`},
+      {name:"The Dual Monarchy", cp:2, number:47, image:"Event/47.jpg", type:"Event", spec:`The Dual Monarchy. The Austrian Empire becomes the Austro-Hungarian Empire. Austria gains 1 stability. The Hungarians gain full citizenship. Add to the Austrian player’s hand as an extra card if not played on turn 1. Special: You cannot pass with this card in your hand.`},
+      {name:"Multicultural Empire", cp:1, number:48, image:"Event/48.jpg", type:"Event", spec:`Multicultural Empire. If the Dual Monarchy has been played choose one of the following options: (1) Austria grants rights to one nationality, or (2) Austria attempts to grant citizenship to a nationality, this attempt succeeds on a roll of ≥4 on one d6. Decrease Austrian stability by 1.`},
+      {name:"South German Confederation", cp:3, number:49, image:"Event/49.jpg", type:"Event", spec:`South German Confederation. AU gains control of Bavaria. Bavaria becomes an AU home space. The Bavaria minor power ceases to exist. Special: As long as AU controls Bavaria, AU is still treated as being allied to the Bavaria minor power for the purpose of NGs. Playable if Bavaria is independent and an Austrian ally`},
+      {name:"Reforms of the 1860s", cp:1, number:50, image:"Event/50.jpg", type:"Event", spec:`Reforms of the 1860s. Roll a die: On a result of 1-2, RU decreases their stability by 1. On a result of 3-4, RU increases their stability by 1. On a result of 5-6, RU increases their stability by 1 and gains a +1 card marker.`},
+      {name:"Polish Revolt", cp:2, number:51, image:"Event/51.jpg", type:"Event", spec:`Polish Revolt. Choose a player that controls a space with Polish nationality. Place a Polish Army and a 0 War of Independence marker in two Polish spaces that player controls. If that player only controls one space then only place one army and one marker. That player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card).`},
+      {name:"Eastern Orthodoxy", cp:3, number:52, image:"Event/52.jpg", type:"Event", spec:`Eastern Orthodoxy. The Russian player chooses a Balkan minor power (They cannot choose Bosnia). Remove any diplomatic markers belonging to another power. RU gains an alliance with that power. This event can replace another player’s alliance marker.`},
+      {name:"Powder Keg", cp:2, number:53, image:"Event/53.jpg", type:"Event", spec:`Powder Keg. Increase the WTT by 1. Place 2 rebel armies in OT controlled spaces in the Balkans (they cannot be placed in Istanbul), and place a 0 War of Independence marker in each space. Increase the WTT by 1. Choose an independent Balkan minor power, that power gains an army (if able). It will then look for a player ally using the minor power alliance table, even if it already has an alliance (this means it can switch alliances).`},
+      {name:"Failed Reforms", cp:3, number:54, image:"Event/54.jpg", type:"Event", spec:`Failed Reforms. Cannot be played after The Young Turks (which is added to the deck on turn 6). The OT player must flip two full strength armies to reduced. Draw an additional card. Playable at the start of the OT player’s impulse (including a wartime impulse)`},
+      {name:"Suez Canal", cp:2, number:55, image:"Event/55.jpg", type:"Event", spec:`Suez Canal. The Suez Canal is complete. Egypt is now a port in the Mediterranean Sea and the Indian Ocean, and the two naval boxes are now connected. The Egypt space now constitutes the Suez Canal Flashpoint, giving the player who controls Egypt +1/2 card per turn. If Egypt is controlled by a minor power, the player who is allied with Egypt gets +1/2 card per turn. Flip the Suez Canal marker to its “check” side.`},
+      {name:"Nationalism", cp:3, number:56, image:"Event/56.jpg", type:"Event", spec:`Nationalism. Choose a player that controls a space with a minority nationality. That player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card). Gain 1 stability.`},
+      {name:"Impregnable", cp:3, number:57, image:"Event/57.jpg", type:"Event", spec:`Impregnable. Place a level 3 Fort in a friendly controlled space on the Europe map.`},
+      {name:"Flank Attack", cp:1, number:59, image:"Event/59.jpg", type:"Event", spec:`Flank Attack. Inflict a step loss on an enemy army in the main defense force. This step loss is inflicted before dice are rolled. If this eliminates the last step in a space it triggers a decisive victory. Draw an additional card at the end of this battle. Play if you are the attacker in a land battle`},
+      {name:"Charge of the Light Brigade", cp:1, number:60, image:"Event/60.jpg", type:"Event", spec:`Charge of the Light Brigade. Your opponent receives a -1 land battle modifier in this battle for outdated tactics. Draw an additional card at the end of this battle. Play at the start of a land battle`},
+      {name:"Ironclads", cp:2, number:61, image:"Event/61.jpg", type:"Event", spec:`Ironclads. Cannot be used after Dreadnought. You receive a +2 naval battle modifier. Additionally, the defender does not roll for mines in this battle. Draw an additional card at the end of the battle. Special: If you draw this card after Dreadnought has been played remove this card from the game and draw another card. Play at the start of a naval battle`},
+      {name:"Miscommunication", cp:1, number:62, image:"Event/62.jpg", type:"Event", spec:`Miscommunication. Choose a space, that space cannot provide support during this battle. Draw an additional card at the end of the battle. Play at the start of a land battle`},
+      {name:"Rapid Mobilization", cp:1, number:63, image:"Event/63.jpg", type:"Event", spec:`Rapid Mobilization. You automatically move first during the Maneuver Step of this war. Additionally, you gain the following benefits during this war: (1) during your first impulse you may conduct one free deploy reserves action, and (2) your deploy reserves actions deploy an extra reserve army (to a maximum of three). This card has no effect during the GW. Play at the start of the Maneuver Step of a war`},
+      {name:"Secret Treaty", cp:3, number:64, image:"Event/64.jpg", type:"Event", spec:`Secret Treaty. Choose a minor power allied with an enemy player. Remove that player’s ally marker and replace it with your own. Play during the alliance step of a war in which you are participating`},
+      {name:"Indian Ocean Arms Trade", cp:1, number:65, image:"Event/65.jpg", type:"Event", spec:`Indian Ocean Arms Trade. Decrease the value of a pacification marker by 1 (to a minimum of 0). Draw a card. Play as a normal event to flip a rebel army from reduced to full strength. Draw an additional card. Play prior to a pacification roll`},
+      {name:"Damn the Torpedoes", cp:2, number:66, image:"Event/66.jpg", type:"Event", spec:`Damn the Torpedoes. The defender does not roll for mines in this battle. Draw an additional card at the end of the battle. Give one side a +1 naval battle modifier. Draw an additional card at the end of the battle. Play at the start of a naval battle`},
+      {name:"International Conference", cp:4, number:67, image:"Event/67.jpg", type:"Event", spec:`International Conference. Apply a +2 DRM to the crisis roll (positive DRMs make a GW less likely to occur). Playable as a normal event (not as a response) to decrease the WTT by 1. Play when the WTT reaches 5 (Exception: cannot be played in response to the Impulsive Ruler card)`},
+      {name:"The United States", cp:4, number:68, image:"Event/68.jpg", type:"Event", spec:`The United States. American Trade: Draw one card and gain a +1 card marker. Carry a Big Stick: place an American Control marker in either Mexico or Japan, remove any diplomatic markers already in that space and displace any units belonging to other players. Then take 3 CP worth of actions. Cannot play as an event if the American Civil War event is in effect or if CSA gained independence`},
+      {name:"Concert of Europe", cp:2, number:69, image:"Event/69.jpg", type:"Event", spec:`Concert of Europe. Decrease the WTT by 1. Remove from the game if played during or after turn 5.`},
+      {name:"Papal Influence", cp:2, number:70, image:"Event/70.jpg", type:"Event", spec:`Papal Influence. Remove an opposing player’s diplomacy or ally marker in the Rome space if one is present. Then gain an alliance with the Papal States (Rome). If you are already allied with the Papal States, you can target any Italian minor power with this event. Special: If, after playing this event, you allied to the Papal States and at least one other Italian minor power, gain a +1 card marker. You cannot trigger this special effect if you dominate the Italy flashpoint. Remove from the game if played for CP and Italy is unified Playable by FR and AU; event cannot be played after Italy unifies`},
+      {name:"Meiji Restoration", cp:2, number:72, image:"Event/72.jpg", type:"Event", spec:`Meiji Restoration. 1870s Place 1 Japanese army and 1 naval squadron in Japan. Players may now place diplomacy and ally markers in Japan.`},
+      {name:"Economic Panic", cp:2, number:73, image:"Event/73.jpg", type:"Event", spec:`Economic Panic. 1870s All players must either discard a random card or lose one stability. If a player chooses to discard a card but cannot do so they receive a -1 card marker. Discarded mandatory events trigger in turn order.`},
+      {name:"Berlin Conference", cp:2, number:74, image:"Event/74.jpg", type:"Event", spec:`Berlin Conference. 1870s The limit of one influence marker in Africa is lifted for the rest of the game. First, the active player places one influence maker on the Africa submap. Then proceeding in the following order, the UK, FR, GE and a unified Italy (IT), players place one influence marker on the Africa submap until all uncontrolled spaces on the submap contain a player marker. A player allied with IT places the IT markers, if IT does not have an ally the active player places them. The player allied with Belgium may also place the Belgian control marker in addition to their own once during this sequence. LoCs are not required to place influence markers for this card.`},
+      {name:"1870s", cp:4, number:75, image:"Event/75.jpg", type:"Event", spec:`1870s. Second Industrial Revolution Increase your industry by one. This does not count as the one card spent to industrialize. Additionally, all other players receive a +2 DRM to their industrialization rolls this turn. Cannot be played by OT`},
+      {name:"Zulus", cp:1, number:76, image:"Event/76.jpg", type:"Event", spec:`Zulus. 1870s Place the Zulu army in South Africa on its reduced side. The player who controls South Africa gains a -1 card marker.`},
+      {name:"Indian Nationalism", cp:2, number:77, image:"Event/77.jpg", type:"Event", spec:`Indian Nationalism. 1870s The UK player flips the Indian Stability marker to its unstable side. If the Indian Stability marker was already on its unstable side India immediately gains independence [33.2.2].`},
+      {name:"1870s", cp:3, number:78, image:"Event/78.jpg", type:"Event", spec:`1870s. Crack Colonial Troops Place an elite colonial EF in a colonial key you control (RU can place it in any space they control on the Asian submap). This unit provides a +1 modifier during pacification actions and may provide a +1 modifier during land battles. If destroyed it can be rebuilt for 1 CP. Playable by UK, FR, RU or GE`},
+      {name:"Loose Grip", cp:3, number:79, image:"Event/79.jpg", type:"Event", spec:`Loose Grip. 1870s Take control of the two spaces in Libya (Tripoli and Benghazi) if they are Ottoman controlled. Take control of Tunisia if it is Ottoman controlled. Remove from the game if Tunisia and Libya are no longer Ottoman controlled. Playable by UK, FR or GE (GE can only play this event after Germany unifies)`},
+      {name:"Machine Guns", cp:2, number:80, image:"Event/80.jpg", type:"Event", spec:`Machine Guns. 1870s Permanent: during land battles, nonrebel units now have a minimum die roll of a 3. In other words, rolls of 1 or 2 are now 3s. Permanent: For the rest of the game, ECs and elite colonial EFs are automatically eliminated if their combat bonus is used against a non-rebel army in a land battle. This is in addendum to the original rule for ECs: when a player takes losses, if they eliminate an army, they must also eliminate an EC in that army’s stack if one is present.`},
+      {name:"Wilhelm II", cp:2, number:82, image:"Event/82.jpg", type:"Event", spec:`Wilhelm II. 1880s At the end of this turn remove the German home card Otto von Bismarck from the game. Place this card in front of the German player as a reminder.`},
+      {name:"Quagmire", cp:3, number:83, image:"Event/83.jpg", type:"Event", spec:`Quagmire. 1880s Give a -1 card marker to any player that is pacifying a space. Additionally, decrease the value of their pacification marker by 2 to a minimum of 0.`},
+      {name:"Nationalist Uprising", cp:3, number:84, image:"Event/84.jpg", type:"Event", spec:`Nationalist Uprising. 1880s Place a rebel army and a 0 War of Independence marker in any a space controlled by a player that contains a minority nationality. The controlling player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card).`},
+      {name:"1880s", cp:2, number:85, image:"Event/85.jpg", type:"Event", spec:`1880s. Hungarian Obstinacy Austria-Hungary cannot grant citizenship or rights for the rest of the turn.`},
+      {name:"Boer Wars", cp:1, number:86, image:"Event/86.jpg", type:"Event", spec:`Boer Wars. 1880s Place the Boer pacification marker in South Africa. The Boers are pacified on a roll ≥ 11. The player that controls South Africa gains a -1 card marker.`},
+      {name:"Mahdist War", cp:1, number:87, image:"Event/87.jpg", type:"Event", spec:`Mahdist War. 1880s Place the reduced Mahdist army and a pacification marker in the chosen space (if the space already contains a pacification marker reduce its value by 1 to a minimum of 0). The owner of the chosen space gains a -1 card marker. Playable on an African space that contains a player influence or control marker`},
+      {name:"Cossacks", cp:2, number:89, image:"Event/89.jpg", type:"Event", spec:`Cossacks. 1880s Russia gains 1 stability. Draw an additional card. Play if RU stability has been decreased`},
+      {name:"The Eiffel Tower", cp:1, number:90, image:"Event/90.jpg", type:"Event", spec:`The Eiffel Tower. 1880s The French player gains one City of Light point.`},
+      {name:"Hydraulic Recoil", cp:2, number:91, image:"Event/91.jpg", type:"Event", spec:`Hydraulic Recoil. 1880s Permanent: apply the asterisk and double asterisk results in both land and naval combat. Permanent: For the rest of the game, ECs and elite colonial EFs are automatically eliminated if their combat bonus is used against a non-rebel army in a land battle. This is in addendum to the original rule for ECs: when a player takes losses, if they eliminate an army, they must also eliminate an EC in that army’s stack if one is present.`},
+      {name:"Naval Arms Race", cp:2, number:92, image:"Event/92.jpg", type:"Event", spec:`Naval Arms Race. 1890s Choose one player with whom you are not allied. The chosen player must either: (1) be the UK, or (2) be adjacent to a naval box you are also adjacent to. You and the chosen power receive a 1 CP discount when constructing naval squadrons or dreadnoughts for the rest of this turn and during the next turn. Shift both powers away from each other on the Alliance Systems Track. If both are neutral, determine their shifts randomly. Increase the WTT by 1. If OT, AU and/or GE receive the discount, increase their naval counter limit to four squadrons and four dreadnoughts.`},
+      {name:"Nicholas II", cp:2, number:93, image:"Event/93.jpg", type:"Event", spec:`Nicholas II. 1890s Permanent: Russia’s God Save the Tsar Home Card only grants a stability on a roll of 3+. Place this card in front of the Russian player as a reminder.`},
+      {name:"The Boxer Rebellion", cp:2, number:94, image:"Event/94.jpg", type:"Event", spec:`The Boxer Rebellion. 1890s Place a reduced Boxer army in Shandong Peninsula, Shanghai, and Guangzhou if they contain a player control marker. All players with control markers in Qing China gain a -1 card marker until all the rebels are destroyed. Special: players do not lose this -1 card marker until all the Boxers are eliminated. Additionally, all player units can enter spaces containing Boxer armies. When a Boxer army is eliminated, displace any units belonging to players that do not control the space.`},
+      {name:"1890s", cp:2, number:95, image:"Event/95.jpg", type:"Event", spec:`1890s. Death of Franz Joseph Austria-Hungary grants full citizenship to a nationality that already has rights. Austria-Hungary grants rights to a nationality`},
+      {name:"Empire of the Sun", cp:1, number:96, image:"Event/96.jpg", type:"Event", spec:`Empire of the Sun. 1890s Japan gains 1 naval unit. Japan attempts to conquer either Korea or Manchuria (active player’s choice). Do not increase the WTT. If the chosen space is not controlled by a player, Japan gains control of it. Otherwise roll a die. On a result ≥ 3 Japan wins the war and gains control of the chosen space. Additionally, the defending player decreases their stability by 1 and they eliminate all their naval units in or adjacent to the Pacific Ocean. Add the following modifiers to the die roll: -1 for each naval unit the defending player has in or adjacent to the Pacific Ocean, -1 if the defending player immediately discards a random card. At the end of the war the active player becomes the ally of Japan. Playable after Meiji Restoration and if Japan is not controlled by another player`},
+      {name:"1890s", cp:1, number:97, image:"Event/97.jpg", type:"Event", spec:`1890s. Diplomatic Recognition Flip a 0 WoI (War of Independence) marker to its +1 side. A space with a +1 WoI marker immediately gains independence.`},
+      {name:"Dreyfus Affair", cp:1, number:98, image:"Event/98.jpg", type:"Event", spec:`Dreyfus Affair. 1890s France receives a -1 land battle modifier for the rest of the turn. This card has no effect during the GW. Draw another card. Playable at the start of the FR player’s impulse (including a wartime impulse)`},
+      {name:"Dreadnought", cp:1, number:99, image:"Event/99.jpg", type:"Event", spec:`Dreadnought. 1890s Gain a dreadnought, and place it in a friendly port space in Europe. All players may now build dreadnoughts. Special: If this is the first card you play this turn, gain an additional dreadnought.`},
+      {name:"1900s", cp:2, number:100, image:"Event/100.jpg", type:"Event", spec:`1900s. The Balkan Wars Increase the WTT by 1. If OT controls a space(s) in the Balkans, other than Istanbul, remove all OT ally markers in the Balkans and roll a die. Add a +1 DRM non-player army in the Balkans, including armies rebelling against OT. Add a -1 DRM for each OT army in the Balkans. On a result ≥ 5, two OT controlled Balkan spaces gain independence (active player’s choice, cannot choose Istanbul). Displace units to controlled spaces where necessary. On any other result, all rebel armies in the Balkans and each independent Balkan minor power army suffer a step loss. Increase the WTT by 1. The active player gives Macedonia to Greece, Bulgaria, Serbia or OT. A minor power must be independent to be chosen. Displace units to controlled spaces where necessary.`},
+      {name:"The Black Hand", cp:2, number:101, image:"Event/101.jpg", type:"Event", spec:`The Black Hand. 1900s Increase the WTT by 1.`},
+      {name:"Moroccan Crisis", cp:3, number:102, image:"Event/102.jpg", type:"Event", spec:`Moroccan Crisis. 1900s You and the player currently controlling Morocco may play a card facedown (this card cannot be a mandatory event). Then, if not already involved, the UK may play a card to help either side. The chosen players then roll a die adding the CP of the card they played. The player with the higher total gains control of Morocco. Reroll ties. Increase the WTT by 1 if two or more players played a card for this event. Playable if a player, other than you, controls Morocco`},
+      {name:"Bosnian Crisis", cp:1, number:103, image:"Event/103.jpg", type:"Event", spec:`Bosnian Crisis. 1900s Austria gains control of BosniaHerzegovina and AU immediately grants Bosnians rights. Bosnia-Herzegovina becomes an AU home space. Then roll a die, on a result of 4 or more increase the WTT by 1. Playable if OT does not control the Balkans flashpoint`},
+      {name:"1900s", cp:2, number:104, image:"Event/104.jpg", type:"Event", spec:`1900s. The Funeral of Edward VII Decrease the WTT by 1.`},
+      {name:"Impulsive Ruler", cp:2, number:105, image:"Event/105.jpg", type:"Event", spec:`Impulsive Ruler. 1900s If played as a response card increase the WTT by 1. When played as a mandatory response card you do not receive 2 CP, but you do draw an additional card. May be played for CP if you have ≤3 cards in your hand (including this). If played for CP the event does not trigger. You cannot hold this card until next turn. MUST be played as a response card if the WTT increases`},
+      {name:"The Young Turks", cp:2, number:106, image:"Event/106.jpg", type:"Event", spec:`The Young Turks. 1900s Place an OT elite corps (EC) with an OT army. Permanent Effects: (1) increase Turkish manpower by one and (2) the OT player can field 2 ECs instead of one.`},
+      {name:"World’s Fair", cp:3, number:107, image:"Event/107.jpg", type:"Event", spec:`World’s Fair. 1900s In turn order, each player (including you) may discard a card of their choice (players cannot discard a mandatory event). If at least 3 players discard a card decrease the WWT by 1. If 5 or more players discard a card, decrease the WWT by 2. These decreases are not cumulative.`},
+      {name:"High Seas Fleet", cp:1, number:108, image:"Event/108.jpg", type:"Event", spec:`High Seas Fleet. 1900s A non-British player of your choice gains one Dreadnought. Playable after Dreadnoughts has been played`},
+      {name:"Revolution of 1905", cp:2, number:109, image:"Event/109.jpg", type:"Event", spec:`Revolution of 1905. 1900s The Russian player must either decrease their stability by 1 or discard a random card (they must decrease their stability if they cannot discard a card). Draw an addtional card. Play if RU stability decreases`},
+      {name:"Extreme Militarism", cp:2, number:110, image:"Event/110.jpg", type:"Event", spec:`Extreme Militarism. 1900s Gain one reserve army. Your reserve armies holding box limit is increased by 1 until the end of the game. If the GW does not occur you receive -1 VP for playing this event. Place this event near your player display as a reminder. Cannot be played by UK`},
+      {name:"The Alliance System", cp:2, number:111, image:"Event/111.jpg", type:"Event", spec:`The Alliance System. 1900s Shift your chit on the Alliance Track. Then immediately conduct an alliance resolution step. Special: If you began this impulse in the neutral box, you cannot shift back into neutrality during this alliance resolution step. After alliances are resolved, increase the WTT by one if there are more players in alliance boxes than in the neutral box OR if one alliance has three players in it.`},
+      {name:"Franz Ferdinand", cp:1, number:112, image:"Event/112.jpg", type:"Event", spec:`Franz Ferdinand. 1900s Austria-Hungary grants full citizenship to a nationality that already has rights. Austria-Hungary grants rights to a nationality Playable if Death of Franz Joseph has been played`},
+      {name:"Minor Power Entry", cp:1, number:1, image:"GW Event/1.jpg", type:"GW Event", spec:`Minor Power Entry. Choose an independent minor power and roll a die. On a roll ≥3 that power joins the GW on a side of your choice. This event cannot cause a minor power to join the war against its pre-GW player ally (Exception: Balkan powers do not follow this rule). The minor power gains one army (if able). Choose a member of their alliance to control the minor power, place that player’s alliance marker in the minor power’s space. When a power enters the GW their units cannot move or attack until after the active player’s next impulse; place this card in front of the active player as a reminder and discard it at the end of the active players next turn. Place a strict neutrality marker on a minor power. Powers with a strict neutrality marker cannot join the GW.`},
+      {name:"Major Power Entry", cp:1, number:2, image:"GW Event/2.jpg", type:"GW Event", spec:`Major Power Entry. Choose to shift either Italy or the US on the Alliance Track. If Italy is chosen roll a die, on a 4-6 Italy shifts into the chosen alliance and joins the GW, otherwise this event has no effect. If the US is chosen it automatically shifts into the chosen alliance. However, the US will only join the GW once it reaches the committed box. See 32.1 for the US setup. When a power enters the GW their units cannot move or attack until after the active player’s next impulse; place this card in front of the active player as a reminder and discard it at the end of the active players next turn. Remove from the game and draw another card if neither Italy nor the US can join the GW. Cannot be played on GW turn 0`},
+      {name:"Technological Terror", cp:1, number:3, image:"GW Event/3.jpg", type:"GW Event", spec:`Technological Terror. Gain a +2 land battle modifier during this battle, after the battle place this card face down in front of your opponent. If attacking during or after GW turn 3: gain a +2 land battle modifier and cancel all the effects of trenches in this battle. After the battle place this card face down in front of your opponent. Play at the start of a land battle in which you are the attacker`},
+      {name:"Dawn of Modern Warfare", cp:1, number:4, image:"GW Event/4.jpg", type:"GW Event", spec:`Dawn of Modern Warfare. Gain a +2 land battle modifier during this battle, after the battle place this card face down in front of your opponent. If attacking during or after GW turn 3: gain a +2 land battle modifier and cancel all the effects of trenches in this battle. After the battle place this card face down in front of your opponent. Play at the start of a land battle in which you are the attacker`},
+      {name:"Capable Commander", cp:1, number:5, image:"GW Event/5.jpg", type:"GW Event", spec:`Capable Commander. Force a player to reroll their battle die. Playable as a normal event or a response card (at the start of a player’s impulse) to flip a facedown GW combat card faceup. Play during a battle after dice have been rolled`},
+      {name:"They Shall Not Pass", cp:1, number:6, image:"GW Event/6.jpg", type:"GW Event", spec:`They Shall Not Pass. The losing units do not retreat and remain in the space. Play when a player is forced to retreat out of a space`},
+      {name:"Submarines", cp:1, number:7, image:"GW Event/7.jpg", type:"GW Event", spec:`Submarines. Choose a player that is not currently blockaded and was not blockaded last turn, then roll a die. Prior to rolling, you may to add a +2 or -2 DRM to your roll. Apply the following results: 1-3 lower the chosen player’s war budget by 1 4-5 lower the chosen player’s war budget by 2 6 lower the chosen player’s war budget by 2, and shift the US alliance chit towards the chosen player’s alliance. Remember, the US must shift into a committed box in order to enter the GW. Exception: on results 4-6 the second war budget loss cannot reduce a player’s war budget below 1.`},
+      {name:"Political Pressure", cp:1, number:8, image:"GW Event/8.jpg", type:"GW Event", spec:`Political Pressure. Choose a player with a war budget of at least 2 CP. That player must make an attack later this turn. If they do not make an attack they lose one stability at the end of this GW turn. This card can only mandate that a land battle takes place and a player that is not adjacent to any enemy armies can neither be targeted nor affected by this event. Occupying an empty key that was controlled (or occupied) by an enemy power also counts as satisfying the attack condition for this event.`},
+      {name:"Political Pressure", cp:1, number:9, image:"GW Event/9.jpg", type:"GW Event", spec:`Political Pressure. Choose a player with a war budget of at least 2 CP. That player must make an attack later this turn. If they do not make an attack they lose one stability at the end of this GW turn. This card can only mandate that a land battle takes place and a player that is not adjacent to any enemy armies can neither be targeted nor affected by this event. Occupying an empty key that was controlled (or occupied) by an enemy power also counts as satisfying the attack condition for this event.`},
+      {name:"Otto von Bismarck", cp:3, number:1, image:"Home Card/1.jpg", type:"Home Card", spec:`Otto von Bismarck. Gain 1 stability. Declare a war of unification using this card’s CP value. You may target two different powers with this declaration of war. After declaring war you may choose to forbid other players from joining the war. Minor power allies may join the war as normal. Clarification: Remember that declaring war on a minor power with a player ally still counts as declaring war on that player [13.4]. This event can prevent that player from calling their player allies, but the defending player will still have the option to aid their minor power ally.`},
+      {name:"German General Staff", cp:3, number:2, image:"Home Card/2.jpg", type:"Home Card", spec:`German General Staff. Gain 1 stability. Take any response or combat card from the discard pile. It cannot be played this impulse. Gain 1 stability and two elite corps.`},
+      {name:"Sun Never Sets", cp:3, number:3, image:"Home Card/3.jpg", type:"Home Card", spec:`Sun Never Sets. Gain 1 stability. Build 1 naval squadron or Dreadnought and then spend 2 CP on expeditionary force, pacification, and/or naval movement actions. Flip the Indian Stability marker to its “Stable” side. Spend up to 2 CP to build Indian army steps or an EF in India or Bengal. Place the Indian Fort in India or upgrade it to level 2. This is a special fort that does not degrade during the end phase but can only be built or upgraded using this card.`},
+      {name:"Balance of Power", cp:3, number:4, image:"Home Card/4.jpg", type:"Home Card", spec:`Balance of Power. Gain 1 stability. If the defender agrees, you become the primary belligerent and you enter the war on the defending side. Use this card’s CP value for your CP war budget. If you enter the war, draw a card at the end of the war. One player (your choice) that you invited (and that joined) also draws a card at the end of the war. Additionally, if intervening to help the Ottomans, take control of an Ottoman naval base in the Eastern Mediterranean as soon as you enter the war. If the defender does not agree draw a card. Playable as an event to gain 1 stability. Draw a card. Play when another player declares war. Cannot be played in response to Otto von Bismarck.`},
+      {name:"The City of Light", cp:3, number:5, image:"Home Card/5.jpg", type:"Home Card", spec:`The City of Light. Gain 1 stability and 3 CP to spend. Roll a die. If the result is less than or equal to the current turn gain 1 City of Light point. Before rolling, you may forgo X CP to apply a -X DRM to the die roll.`},
+      {name:"Aux Armes, Citoyens!", cp:3, number:6, image:"Home Card/6.jpg", type:"Home Card", spec:`Aux Armes, Citoyens!. Gain 2 reserve army steps, then declare war using this card’s CP value. If you choose a conquest war aim you may target up to two keys and you may also target two different powers. However, if you do either, neutral powers can join the war against you. If France wins the war gain 1 stability. Take either the French Intervention or Papal Influence card from the discard pile. You may play it immediately.`},
+      {name:"Habsburg Dynasty", cp:3, number:7, image:"Home Card/7.jpg", type:"Home Card", spec:`Habsburg Dynasty. Choose an independent minor power in Europe. Remove an opposing player’s diplomacy marker, if present and gain an alliance with that minor power. Special: If you choose a German minor power (Bavaria, Saxony or Hanover) you may remove an opposing player’s alliance marker from the chosen space. After playing this card, if you’re allied with at least two German minor powers gain a + 1 card marker.`},
+      {name:"Kaiserreich", cp:3, number:8, image:"Home Card/8.jpg", type:"Home Card", spec:`Kaiserreich. Gain 1 stability. Grant rights to a nationality. Gain 1 stability. Attempt to grant citizenship to a nationality that already has rights. Roll one die. A roll ≥ 3 succeeds. Increase the difficulty of the roll by one for each nationality that already has citizenship. Before rolling, you may forgo the stability increase to apply a +2 DRM to the citizenship roll. Playable after Dual Monarchy has been played`},
+      {name:"Russo-Turkish Wars", cp:3, number:9, image:"Home Card/9.jpg", type:"Home Card", spec:`Russo-Turkish Wars. If possible, gain an alliance with a minor power in the Balkans with which you have a diplomacy marker. Then declare war against the Ottomans using this card’s CP value. If a liberation war aim is chosen, this card can liberate Balkan nationalities that are not currently in rebellion. If a conquest war aim is chosen, do not increase the WTT or decrease your stability. If Russia wins the war gain 1 stability.`},
+      {name:"God Save the Tsar", cp:3, number:10, image:"Home Card/10.jpg", type:"Home Card", spec:`God Save the Tsar. Gain 1 stability. Spend 4 CP on recruitment and construct fort actions (you can only gain 1 elite corps through this event). Gain 1 stability. Attempt to build the Trans-Siberian Railroad. Roll a die, if your roll is less than or equal to the current turn the RR is complete.`},
+      {name:"Modernization", cp:3, number:11, image:"Home Card/11.jpg", type:"Home Card", spec:`Modernization. Gain 1 stability. Another player can give you a card to put into industrialization, that power draws a card. They must tell you the true CP value of the card they are giving you. If no player gives you a card you may use this card for 3 CP.`},
+      {name:"Jihad", cp:3, number:12, image:"Home Card/12.jpg", type:"Home Card", spec:`Jihad. Declare war against a power that controls an OT home space or RU using this card’s CP value (declaring war on a RU Minor power ally counts as declaring war on RU). Do not increase the WTT or decrease your stability. Gain 2 Jihad markers (your player display explains how Jihad markers function). Gain 1 stability if you win the war.`},
+      {name:"European Keys", number:1, image:"National Goal/1.jpg", type:"National Goal", spec:`European Keys. Control the most European keys. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers, and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. GE National Goal`},
+      {name:"Flashpoints", number:2, image:"National Goal/2.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. GE National Goal`},
+      {name:"Look to Berlin", number:3, image:"National Goal/3.jpg", type:"National Goal", spec:`Look to Berlin. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. GE National Goal`},
+      {name:"Stability", number:4, image:"National Goal/4.jpg", type:"National Goal", spec:`Stability. Have the highest stability. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. GE National Goal`},
+      {name:"Our Place in the Sun", cp:3, number:5, image:"National Goal/5.jpg", type:"National Goal", spec:`Our Place in the Sun. Control 4 colonial keys, at least one of which must be on the Asia map. Control 2 colonial keys and dominate the power projection flashpoint. Clarification: You receive 3 VPs if you complete one of the above options, you do not receive 6 VPs if you complete both. GE National Goal`},
+      {name:"Peace in Our Time", cp:3, number:6, image:"National Goal/6.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. GE National Goal`},
+      {name:"Surrounded", cp:3, number:7, image:"National Goal/7.jpg", type:"National Goal", spec:`Surrounded. This National Goal has two conditions: (1) FR is either neutral or not in the opposing alliance, (2) AU and RU are not both in the opposing alliance. Important: for the purpose of this card, while GE is in the neutral box both alliances are considered opposing alliances. GE National Goal`},
+      {name:"Unification", cp:4, number:8, image:"National Goal/8.jpg", type:"National Goal", spec:`Unification. Control all German home spaces. Clarification: Unification is not sufficient to complete this NG. If you lose a German home space after Unification then you do not control all German home spaces. Score 2 VPs if you control ≥ 8 German home spaces. GE National Goal`},
+      {name:"Scramble for Africa", number:9, image:"National Goal/9.jpg", type:"National Goal", spec:`Scramble for Africa. Control the most keys in Africa (including North Africa). Minor power alliances in Africa count as control for the purposes of this card. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. UK National Goal`},
+      {name:"Flashpoints", number:10, image:"National Goal/10.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. UK National Goal`},
+      {name:"Look to London", number:11, image:"National Goal/11.jpg", type:"National Goal", spec:`Look to London. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. UK National Goal`},
+      {name:"Stability", number:12, image:"National Goal/12.jpg", type:"National Goal", spec:`Stability. Have the highest stability. Only UK stability counts. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. UK National Goal`},
+      {name:"Two Power Standard", cp:3, number:13, image:"National Goal/13.jpg", type:"National Goal", spec:`Two Power Standard. The UK has the most power projection, and UK power projection is at least double the next highest player. UK National Goal`},
+      {name:"Peace in Our Time", cp:3, number:14, image:"National Goal/14.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. UK National Goal`},
+      {name:"Rule Britannia", cp:3, number:15, image:"National Goal/15.jpg", type:"National Goal", spec:`Rule Britannia. Control 8 colonial keys that you did not control at the beginning of the game. Controlling 2 naval bases (that you did not control at the beginning of the game) count as controlling 1 key for the purpose of this National Goal. UK National Goal`},
+      {name:"Balance of Power", cp:4, number:16, image:"National Goal/16.jpg", type:"National Goal", spec:`Balance of Power. No player controls ≥1 non-home keys in Europe. Gain 2 VPs if no player controls ≥2 non home keys in Europe. Clarification: “non-home keys” refers to keys that are not that player’s home spaces. However, certain events convert spaces into home spaces. Additionally, whenever the GE player takes controls of a German unification space it becomes a permanent GE home space. UK National Goal`},
+      {name:"European Keys", number:17, image:"National Goal/17.jpg", type:"National Goal", spec:`European Keys. Control the most European keys. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. FR National Goal`},
+      {name:"Flashpoints", number:18, image:"National Goal/18.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. FR National Goal`},
+      {name:"Look to Paris", number:19, image:"National Goal/19.jpg", type:"National Goal", spec:`Look to Paris. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. FR National Goal`},
+      {name:"Stability", number:20, image:"National Goal/20.jpg", type:"National Goal", spec:`Stability. Have the highest stability. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. FR National Goal`},
+      {name:"France Resurgent", cp:3, number:21, image:"National Goal/21.jpg", type:"National Goal", spec:`France Resurgent. Control 6 colonial keys, at least two of which must be on the Asia map. Mexico counts as 2 keys for the purposes of this card. Control 3 colonial keys (Mexico still counts as 2) and dominate the power projection flashpoint. Clarification: You receive 3 VPs if you complete one of the above options, you do not receive 6 VPs if you complete both. FR National Goal`},
+      {name:"Peace in Our Time", cp:3, number:22, image:"National Goal/22.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. FR National Goal`},
+      {name:"City of Light", cp:3, number:23, image:"National Goal/23.jpg", type:"National Goal", spec:`City of Light. Have 4 City of Lights Points. FR National Goal`},
+      {name:"Napoleon’s Legacy", cp:4, number:24, image:"National Goal/24.jpg", type:"National Goal", spec:`Napoleon’s Legacy. Control 4 European keys that you did not control at the beginning of the game, of which one of these can be substituted by a minor power alliance in Europe. You may reveal this National Goal when you launch a war of conquest. While this NG is revealed, decrease your stability loss for declaring wars of conquest by 2 (you still increase the WTT by 1). Gain 2 VPs if you control 3 European keys you did not control at the beginning of the game (one of which can be substituted by a minor power alliance in Europe). FR National Goal`},
+      {name:"European Keys", number:25, image:"National Goal/25.jpg", type:"National Goal", spec:`European Keys. Control the most European keys. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. AU National Goal`},
+      {name:"Flashpoints", number:26, image:"National Goal/26.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. AU National Goal`},
+      {name:"Look to Vienna", number:27, image:"National Goal/27.jpg", type:"National Goal", spec:`Look to Vienna. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. AU National Goal`},
+      {name:"Stability", number:28, image:"National Goal/28.jpg", type:"National Goal", spec:`Stability. Have the highest stability. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. AU National Goal`},
+      {name:"Contain Italy", cp:3, number:29, image:"National Goal/29.jpg", type:"National Goal", spec:`Contain Italy. Italian unification does not occur. A unified Italy controls ≤ 3 Italian keys. AU National Goal`},
+      {name:"Contain Prussia", cp:3, number:30, image:"National Goal/30.jpg", type:"National Goal", spec:`Contain Prussia. German unification does not occur. A unified Germany controls ≤ 8 German keys. AU National Goal`},
+      {name:"Precarious Position", cp:3, number:31, image:"National Goal/31.jpg", type:"National Goal", spec:`Precarious Position. This NG is only available in the 1870 scenario and the 1880 scenario. Be in a committed alliance box with another player. AU National Goal`},
+      {name:"Peace in Our Time", cp:3, number:32, image:"National Goal/32.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. AU National Goal`},
+      {name:"Bind Them Together", cp:4, number:33, image:"National Goal/33.jpg", type:"National Goal", spec:`Bind Them Together. Grant citizenship to 4 minority nationalities. You must control a space with that nationality for it to count towards this National Goal. Gain 2 VPs if you grant citizenship to 3 minority nationalities. You must control a space with that nationality for it to count towards this National Goal. AU National Goal`},
+      {name:"European Keys", number:34, image:"National Goal/34.jpg", type:"National Goal", spec:`European Keys. Control the most European keys. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. RU National Goal`},
+      {name:"Flashpoints", number:35, image:"National Goal/35.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. RU National Goal`},
+      {name:"Look to St. Petersburg", number:36, image:"National Goal/36.jpg", type:"National Goal", spec:`Look to St. Petersburg. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. RU National Goal`},
+      {name:"Stability", number:37, image:"National Goal/37.jpg", type:"National Goal", spec:`Stability. Have the highest stability. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. RU National Goal`},
+      {name:"Eastern Ambitions", cp:3, number:38, image:"National Goal/38.jpg", type:"National Goal", spec:`Eastern Ambitions. Control 4 keys in Asia that you did not control at the beginning of the game. Control 2 colonial keys on the Asia map and dominate the power projection flashpoint. Clarification: You receive 3 VPs if you complete one of the above options, you do not receive 6 VPs if you complete both. Special: RU may spend 3 CP to reveal this card and take control of either Manchuria or Korea. RU cannot use this ability if this card is already revealed. RU National Goal`},
+      {name:"Peace in Our Time", cp:3, number:39, image:"National Goal/39.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. RU National Goal`},
+      {name:"Finish off the Turks", cp:3, number:40, image:"National Goal/40.jpg", type:"National Goal", spec:`Finish off the Turks. The Ottomans control ≤ 2 Balkan spaces. The Ottomans control no spaces in the Caucasus. RU National Goal`},
+      {name:"Russian Hegemony", cp:4, number:41, image:"National Goal/41.jpg", type:"National Goal", spec:`Russian Hegemony. Control 5 European keys that you did not control at the beginning of the game. For this National Goal, alliances with minor powers in the Balkans count as control for the purposes of this card. Gain 2 VPs if you control 4 European keys that you did not control at the beginning of the game. Alliances with minor powers in the Balkans count as control. RU National Goal`},
+      {name:"Scramble for Africa", number:42, image:"National Goal/42.jpg", type:"National Goal", spec:`Scramble for Africa. Control the most keys in Africa (including North Africa). Minor power alliances in Africa count as control for the purposes of this card. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. OT National Goal`},
+      {name:"Flashpoints", number:43, image:"National Goal/43.jpg", type:"National Goal", spec:`Flashpoints. Control the most flashpoints. Both 1st and 2nd place in Power Projection count as controlling 1 flashpoint. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. OT National Goal`},
+      {name:"Look to Istanbul", number:44, image:"National Goal/44.jpg", type:"National Goal", spec:`Look to Istanbul. Have the most minor power alliances. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. OT National Goal`},
+      {name:"Stability", number:45, image:"National Goal/45.jpg", type:"National Goal", spec:`Stability. Have the highest stability. This is a ranked National Goal, meaning you compare your total with the other players. You gain 3 VPs if you are in first place, 2 for second and 1 for third. There are no tie breakers and if two players are tied for a place the next place VP reward is skipped. Similarly if three or more players are tied for a place all subsequent VP rewards are skipped. OT National Goal`},
+      {name:"Precarious Position", cp:3, number:46, image:"National Goal/46.jpg", type:"National Goal", spec:`Precarious Position. Be in a committed alliance box with another player. OT National Goal`},
+      {name:"Peace in Our Time", cp:3, number:47, image:"National Goal/47.jpg", type:"National Goal", spec:`Peace in Our Time. The GW does not occur. OT National Goal`},
+      {name:"Europeanization", cp:3, number:48, image:"National Goal/48.jpg", type:"National Goal", spec:`Europeanization. Have industry level 4. OT National Goal`},
+      {name:"Death Grip", cp:4, number:49, image:"National Goal/49.jpg", type:"National Goal", spec:`Death Grip. You accomplish this National Goal if the total home keys you’ve lost is less than (not equal to) the current turn. Egypt starts the game as a “lost” key. Remember that you score National Goals at the end of turn 7 or at the start of the GW. Gain 2 VPs if you’ve lost keys less than the current turn +1. OT National Goal`},
+    ];
+
+    let currentView = 'table';
+    let currentPage = 1;
+    let perPage = 50;
+    let filteredData = [...cardData];
+    let sortField = 'number';
+    let sortDir = 1;
+    let hand = [];
+    let currentLightboxIndex = 0;
+    let textSearchTerm = '';
+
+    // DOM refs
+    const filterName = document.getElementById('filter-name');
+    const filterText = document.getElementById('filter-text');
+    const filterType = document.getElementById('filter-type');
+    const perPageSelect = document.getElementById('per-page');
+    const tableBody = document.getElementById('table-body');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const paginationEl = document.getElementById('pagination');
+    const resultsInfo = document.getElementById('results-info');
+    const handSection = document.getElementById('hand-section');
+    const handCards = document.getElementById('hand-cards');
+    const handCount = document.getElementById('hand-count');
+
+    function applyFilters() {
+      const nameQuery = filterName.value.toLowerCase().trim();
+      const textQuery = filterText.value.toLowerCase().trim();
+      const typeQuery = filterType.value;
+
+      textSearchTerm = textQuery;
+
+      filteredData = cardData.filter(card => {
+        const matchName = !nameQuery || card.name.toLowerCase().includes(nameQuery);
+        const matchType = !typeQuery || card.type === typeQuery;
+        const matchText = !textQuery || (card.spec && card.spec.toLowerCase().includes(textQuery));
+        return matchName && matchType && matchText;
+      });
+
+      sortData();
+      currentPage = 1;
+      render();
+    }
+
+    function sortData() {
+      filteredData.sort((a, b) => {
+        let va = a[sortField] ?? '';
+        let vb = b[sortField] ?? '';
+        if (sortField === 'number' || sortField === 'cp') {
+          va = Number(va) || 0;
+          vb = Number(vb) || 0;
+        } else if (typeof va === 'string') {
+          va = va.toLowerCase();
+          vb = vb.toLowerCase();
+        }
+        if (va < vb) return -1 * sortDir;
+        if (va > vb) return 1 * sortDir;
+        return 0;
+      });
+    }
+
+    function getSnippet(spec, query) {
+      if (!spec || !query) return '';
+      const lowerSpec = spec.toLowerCase();
+      const idx = lowerSpec.indexOf(query);
+      if (idx === -1) return '';
+      const start = Math.max(0, idx - 30);
+      const end = Math.min(spec.length, idx + query.length + 50);
+      let snippet = (start > 0 ? '...' : '') + spec.substring(start, end) + (end < spec.length ? '...' : '');
+      // Highlight the match
+      const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      snippet = snippet.replace(re, '<mark>$1</mark>');
+      return snippet;
+    }
+
+    function render() {
+      const start = (currentPage - 1) * perPage;
+      const pageData = filteredData.slice(start, start + perPage);
+
+      // Results info
+      resultsInfo.textContent = `Showing ${start + 1}–${Math.min(start + perPage, filteredData.length)} of ${filteredData.length} cards`;
+
+      // Table
+      tableBody.innerHTML = '';
+      pageData.forEach((card, i) => {
+        const tr = document.createElement('tr');
+        tr.onclick = () => openLightbox(start + i);
+
+        const typeCls = card.type.toLowerCase().replace(/\s+/g, '-');
+
+        let nameCell = `<span>${card.name}</span>`;
+        if (textSearchTerm && card.spec) {
+          const snippet = getSnippet(card.spec, textSearchTerm);
+          if (snippet) {
+            nameCell += `<span class="text-match-snippet">${snippet}</span>`;
+          }
+        }
+
+        tr.innerHTML = `
+          <td class="card-number">${card.number}</td>
+          <td class="card-cp">${card.cp ?? '—'}</td>
+          <td class="card-name">${nameCell}</td>
+          <td><span class="type-badge ${typeCls}">${card.type}</span></td>
+          <td class="card-actions"><button class="add-hand-btn" onclick="event.stopPropagation(); addToHand(${cardData.indexOf(card)})">+ Hand</button></td>
         `;
-        cardEl.querySelector('img').addEventListener('click', () => {
-            openLightbox(globalIndex);
-        });
-        cardEl.querySelector('.add-to-hand-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            const cardIndex = parseInt(e.target.dataset.cardIndex);
-            if (isCardInCurrentHand(cardIndex)) {
-                removeCardFromHand(cardIndex);
-            } else {
-                addCardToHand(cardIndex);
-            }
-        });
-        container.appendChild(cardEl);
+        tableBody.appendChild(tr);
+      });
+
+      // Gallery
+      galleryGrid.innerHTML = '';
+      pageData.forEach((card, i) => {
+        const div = document.createElement('div');
+        div.className = 'gallery-card';
+        div.onclick = () => openLightbox(start + i);
+        div.innerHTML = `
+          <img src="${card.image}" alt="${card.name}" loading="lazy" onerror="this.style.display='none'">
+          <div class="card-info">
+            <div class="card-title">${card.name}</div>
+            <div class="card-meta">
+              <span>#${card.number}</span>
+              <span>${card.cp ? card.cp + ' CP' : ''}</span>
+            </div>
+          </div>
+        `;
+        galleryGrid.appendChild(div);
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const total = Math.ceil(filteredData.length / perPage);
+      paginationEl.innerHTML = '';
+
+      if (total <= 1) return;
+
+      const prev = document.createElement('button');
+      prev.textContent = '‹ Prev';
+      prev.disabled = currentPage === 1;
+      prev.onclick = () => { currentPage--; render(); window.scrollTo(0, 0); };
+      paginationEl.appendChild(prev);
+
+      for (let p = 1; p <= total; p++) {
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        if (p === currentPage) btn.className = 'active';
+        btn.onclick = () => { currentPage = p; render(); window.scrollTo(0, 0); };
+        paginationEl.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.textContent = 'Next ›';
+      next.disabled = currentPage === total;
+      next.onclick = () => { currentPage++; render(); window.scrollTo(0, 0); };
+      paginationEl.appendChild(next);
+    }
+
+    function setView(view) {
+      currentView = view;
+      document.getElementById('table-view').classList.toggle('active', view === 'table');
+      document.getElementById('gallery-view').classList.toggle('active', view === 'gallery');
+      document.getElementById('btn-table').classList.toggle('active', view === 'table');
+      document.getElementById('btn-gallery').classList.toggle('active', view === 'gallery');
+    }
+
+    // Sorting
+    document.querySelectorAll('thead th[data-sort]').forEach(th => {
+      th.onclick = () => {
+        const field = th.dataset.sort;
+        if (sortField === field) {
+          sortDir *= -1;
+        } else {
+          sortField = field;
+          sortDir = 1;
+        }
+        document.querySelectorAll('thead th').forEach(t => t.classList.remove('sorted'));
+        th.classList.add('sorted');
+        th.querySelector('.sort-arrow').textContent = sortDir === 1 ? '▲' : '▼';
+        sortData();
+        render();
+      };
     });
-    document.getElementById('gallery-count').textContent = `Showing ${filteredData.length} cards`;
-}
 
-// ==================== VIEW TOGGLE ====================
-document.getElementById('view-mode-toggle').addEventListener('click', function() {
-    isGalleryMode = !isGalleryMode;
-    const tableView = document.getElementById('table-view');
-    const galleryView = document.getElementById('gallery-view');
-    const pageSizeLabel = document.querySelector('.table-only');
-    if (isGalleryMode) {
-        tableView.classList.add('hidden');
-        galleryView.classList.add('active');
-        this.classList.add('active');
-        this.textContent = '📋 Table Mode';
-        pageSizeLabel.style.display = 'none';
-        renderGallery();
-    } else {
-        tableView.classList.remove('hidden');
-        galleryView.classList.remove('active');
-        this.classList.remove('active');
-        this.textContent = '📷 View Mode';
-        pageSizeLabel.style.display = '';
-        renderTable();
+    // Lightbox
+    function openLightbox(filteredIndex) {
+      currentLightboxIndex = filteredIndex;
+      const card = filteredData[filteredIndex];
+      document.getElementById('lb-img').src = card.image;
+      document.getElementById('lb-name').textContent = card.name;
+      document.getElementById('lb-type').innerHTML = `<span class="type-badge ${card.type.toLowerCase().replace(/\s+/g, '-')}">${card.type}</span>`;
+      document.getElementById('lb-number').textContent = '#' + card.number;
+      document.getElementById('lb-cp').textContent = card.cp ? card.cp + ' CP' : '—';
+
+      const specRow = document.getElementById('lb-spec-row');
+      const specEl = document.getElementById('lb-spec');
+      if (card.spec) {
+        specRow.style.display = 'block';
+        let specHtml = card.spec;
+        if (textSearchTerm) {
+          const re = new RegExp(`(${textSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          specHtml = specHtml.replace(re, '<mark>$1</mark>');
+        }
+        specEl.innerHTML = specHtml;
+      } else {
+        specRow.style.display = 'none';
+      }
+
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
-});
 
-document.getElementById('gallery-size').addEventListener('change', function() {
-    if (isGalleryMode) {
-        renderGallery();
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
     }
-});
 
-// ==================== FILTERS ====================
-function applyFilters() {
-    const titleFilter = document.getElementById('filter-title').value.toLowerCase();
-    const typeFilter = document.getElementById('filter-type').value;
-    filteredData = cardData.filter(card => {
-        const matchTitle = titleFilter === '' || card.name.toLowerCase().includes(titleFilter);
-        const matchType = typeFilter === '' || card.type === typeFilter;
-        return matchTitle && matchType;
+    function navLightbox(dir) {
+      currentLightboxIndex = Math.max(0, Math.min(filteredData.length - 1, currentLightboxIndex + dir));
+      openLightbox(currentLightboxIndex);
+    }
+
+    // Hand management
+    function addToHand(globalIndex) {
+      if (hand.includes(globalIndex)) return;
+      hand.push(globalIndex);
+      renderHand();
+    }
+
+    function removeFromHand(globalIndex) {
+      hand = hand.filter(i => i !== globalIndex);
+      renderHand();
+    }
+
+    function renderHand() {
+      handSection.classList.toggle('visible', hand.length > 0);
+      handCount.textContent = hand.length + ' card' + (hand.length !== 1 ? 's' : '');
+      handCards.innerHTML = '';
+      hand.forEach(idx => {
+        const card = cardData[idx];
+        const div = document.createElement('div');
+        div.className = 'hand-card';
+        div.innerHTML = `
+          <span onclick="openLightbox(${filteredData.indexOf(card)})">${card.name} (#${card.number})</span>
+          <span class="remove-hand" onclick="removeFromHand(${idx})">✕</span>
+        `;
+        handCards.appendChild(div);
+      });
+    }
+
+    // Event listeners
+    filterName.addEventListener('input', applyFilters);
+    filterText.addEventListener('input', applyFilters);
+    filterType.addEventListener('change', applyFilters);
+    perPageSelect.addEventListener('change', () => {
+      perPage = parseInt(perPageSelect.value);
+      currentPage = 1;
+      render();
     });
-    currentPage = 1;
-    if (isGalleryMode) {
-        renderGallery();
-    } else {
-        renderTable();
-    }
-}
 
-document.getElementById('filter-title').addEventListener('keyup', applyFilters);
-document.getElementById('filter-type').addEventListener('change', applyFilters);
-document.getElementById('page-size').addEventListener('change', function() {
-    pageSize = parseInt(this.value);
-    currentPage = 1;
-    renderTable();
-});
+    // Keyboard nav
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+    });
 
-// ==================== LIGHTBOX ====================
-const overlay = document.getElementById('lightbox-overlay');
-const lightboxContainer = document.getElementById('lightbox-container');
-const lightboxImage = document.getElementById('lightbox-image');
-const lightboxInfo = document.getElementById('lightbox-info');
-const lightboxCloseBtn = document.getElementById('lightbox-close');
-const lightboxAddBtn = document.getElementById('lightbox-add-btn');
+    // Click outside lightbox
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    });
 
-function openLightbox(index) {
-    currentIndex = index;
-    const card = cardData[index];
-    lightboxImage.src = card.img;
-    lightboxInfo.innerHTML = `
-        <div>${card.name} — ${card.type} #${card.num}</div>
-        ${card.spec ? `<div class="lightbox-spec">${card.spec}</div>` : ''}
-    `;
-    lightboxAddBtn.dataset.cardIndex = index;
-    const inHand = isCardInCurrentHand(index);
-    lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
-    lightboxAddBtn.classList.toggle('in-hand', inHand);
-    overlay.style.display = 'block';
-    lightboxContainer.classList.add('active');
-}
-
-function closeLightbox() {
-    overlay.style.display = 'none';
-    lightboxContainer.classList.remove('active');
-}
-
-lightboxCloseBtn.addEventListener('click', closeLightbox);
-overlay.addEventListener('click', closeLightbox);
-
-lightboxAddBtn.addEventListener('click', () => {
-    const cardIndex = parseInt(lightboxAddBtn.dataset.cardIndex);
-    if (isCardInCurrentHand(cardIndex)) {
-        removeCardFromHand(cardIndex);
-    } else {
-        addCardToHand(cardIndex);
-    }
-    const inHand = isCardInCurrentHand(cardIndex);
-    lightboxAddBtn.textContent = inHand ? '− Remove from Hand' : '+ Add to Hand';
-    lightboxAddBtn.classList.toggle('in-hand', inHand);
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeLightbox();
-    }
-});
-
-// ==================== HAND PANEL EVENTS ====================
-document.getElementById('hand-panel-header').addEventListener('click', (e) => {
-    if (!e.target.closest('#hand-panel-controls')) {
-        const panel = document.getElementById('hand-panel');
-        const btn = document.getElementById('hand-toggle-btn');
-        panel.classList.toggle('collapsed');
-        btn.textContent = panel.classList.contains('collapsed') ? '▲' : '▼';
-    }
-});
-
-document.getElementById('hand-toggle-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const panel = document.getElementById('hand-panel');
-    panel.classList.toggle('collapsed');
-    e.target.textContent = panel.classList.contains('collapsed') ? '▲' : '▼';
-});
-
-document.getElementById('hand-selector').addEventListener('click', (e) => {
-    e.stopPropagation();
-});
-
-document.getElementById('hand-selector').addEventListener('change', (e) => {
-    e.stopPropagation();
-    selectHand(e.target.value || null);
-});
-
-document.getElementById('random-card-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    addRandomCard();
-});
-
-document.getElementById('clear-hand-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    clearCurrentHand();
-});
-
-document.getElementById('delete-hand-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!currentHandId) {
-        alert('No hand selected to delete.');
-        return;
-    }
-    if (confirm('Delete this hand permanently?')) {
-        deleteHand(currentHandId);
-    }
-});
-
-// ==================== NEW HAND MODAL ====================
-const newHandModal = document.getElementById('new-hand-modal');
-const newHandInput = document.getElementById('new-hand-name');
-
-document.getElementById('add-hand-btn').addEventListener('click', () => {
-    newHandInput.value = '';
-    newHandModal.classList.add('active');
-    newHandInput.focus();
-});
-
-document.getElementById('modal-cancel').addEventListener('click', () => {
-    newHandModal.classList.remove('active');
-});
-
-document.getElementById('modal-confirm').addEventListener('click', () => {
-    const name = newHandInput.value.trim();
-    if (name) {
-        createHand(name);
-        newHandModal.classList.remove('active');
-    } else {
-        alert('Please enter a name for the hand.');
-    }
-});
-
-newHandInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        document.getElementById('modal-confirm').click();
-    } else if (e.key === 'Escape') {
-        newHandModal.classList.remove('active');
-    }
-});
-
-newHandModal.addEventListener('click', (e) => {
-    if (e.target === newHandModal) {
-        newHandModal.classList.remove('active');
-    }
-});
-
-// ==================== INIT ====================
-loadHands();
-renderTable();
-renderHandPanel();
-</script>
-
+    // Init
+    applyFilters();
+    </script>
 </body>
 </html>
