@@ -34,7 +34,15 @@ function applyFilters() {
 
   filteredData = cardData.filter(card => {
     const matchName = !nameQuery || card.name.toLowerCase().includes(nameQuery);
-    const matchType = !typeQuery || card.type === typeQuery;
+    let matchType = true;
+    if (typeQuery) {
+      if (typeQuery.startsWith('Event-')) {
+        const sub = typeQuery.split('-')[1];
+        matchType = card.type === 'Event' && card.subtypes && card.subtypes.includes(sub);
+      } else {
+        matchType = card.type === typeQuery;
+      }
+    }
     const matchText = !textQuery || (card.spec && card.spec.toLowerCase().includes(textQuery));
     return matchName && matchType && matchText;
   });
