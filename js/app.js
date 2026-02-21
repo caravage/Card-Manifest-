@@ -49,8 +49,8 @@ function sortData() {
     let va = a[sortField] ?? '';
     let vb = b[sortField] ?? '';
     if (sortField === 'number' || sortField === 'cp') {
-      va = Number(va) || 0;
-      vb = Number(vb) || 0;
+      va = (va === null || va === '') ? Infinity : Number(va) || 0;
+      vb = (vb === null || vb === '') ? Infinity : Number(vb) || 0;
     } else if (typeof va === 'string') {
       va = va.toLowerCase();
       vb = vb.toLowerCase();
@@ -97,8 +97,8 @@ function render() {
     }
 
     tr.innerHTML = `
-      <td class="card-number">${card.number}</td>
-      <td class="card-cp">${card.cp ?? '—'}</td>
+      <td class="card-number">${card.number ?? ''}</td>
+      <td class="card-cp">${card.cp || ''}</td>
       <td class="card-name">${nameCell}</td>
       <td><span class="type-badge ${typeCls}">${card.type}</span></td>
     `;
@@ -116,7 +116,7 @@ function render() {
       <div class="card-info">
         <div class="card-title">${card.name}</div>
         <div class="card-meta">
-          <span>#${card.number}</span>
+          <span>${card.number ? '#' + card.number : ''}</span>
           <span>${card.cp ? card.cp + ' CP' : ''}</span>
         </div>
       </div>
@@ -187,8 +187,8 @@ function openLightbox(filteredIndex) {
   document.getElementById('lb-img').src = card.image;
   document.getElementById('lb-name').textContent = card.name;
   document.getElementById('lb-type').innerHTML = `<span class="type-badge ${card.type.toLowerCase().replace(/\s+/g, '-')}">${card.type}</span>`;
-  document.getElementById('lb-number').textContent = '#' + card.number;
-  document.getElementById('lb-cp').textContent = card.cp ? card.cp + ' CP' : '—';
+  document.getElementById('lb-number').textContent = card.number ? '#' + card.number : '';
+  document.getElementById('lb-cp').textContent = card.cp ? card.cp + ' CP' : '';
 
   const specRow = document.getElementById('lb-spec-row');
   const specEl = document.getElementById('lb-spec');
