@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imperial Elegy — Card Manifest</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>Imperial Elegy</h1>
-        <p>Card Manifest</p>
+        <p>Card Manifest — Complete Reference</p>
     </header>
 
     <div class="controls">
@@ -25,7 +25,10 @@
             <label for="filter-type">Type</label>
             <select id="filter-type">
                 <option value="">All Types</option>
-                <option value="Event">Event</option>
+                <option value="Event" selected>Event (all)</option>
+                <option value="Event-mandatory">Event — Mandatory</option>
+                <option value="Event-response">Event — Response</option>
+                <option value="Event-combat">Event — Combat</option>
                 <option value="GW Event">GW Event</option>
                 <option value="Home">Home</option>
                 <option value="GE Objective">GE Objective</option>
