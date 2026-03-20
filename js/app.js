@@ -251,3 +251,99 @@ document.getElementById('lightbox').addEventListener('click', e => {
 
 // Init
 applyFilters();
+
+
+/* ════════════════════════════════════════════════════
+   PDF DRAWER
+════════════════════════════════════════════════════ */
+
+// ↓ Remplacez par l'URL de votre PDF ↓
+const PDF_URL = 'https://caravage.github.io/Card-Manifest-/rulebook_V1.1_Lowrez.pdf';
+
+(function () {
+  const trigger  = document.getElementById('pdfTrigger');
+  const drawer   = document.getElementById('pdfDrawer');
+  const overlay  = document.getElementById('drawerOverlay');
+  const closeBtn = document.getElementById('closeBtn');
+  const frame    = document.getElementById('pdfFrame');
+  const loading  = document.getElementById('pdfLoading');
+  const dlBtn    = document.getElementById('downloadBtn');
+  const ntBtn    = document.getElementById('newTabBtn');
+  const handle   = document.getElementById('resizeHandle');
+
+  let isOpen = false;
+  let loaded = false;
+
+  /* ── Ouvrir ── */
+  function openDrawer() {
+    if (!loaded) {
+      frame.src  = PDF_URL;
+      dlBtn.href = PDF_URL;
+      ntBtn.href = PDF_URL;
+      frame.addEventListener('load', () => {
+        loading.classList.add('hidden');
+        frame.classList.add('loaded');
+        loaded = true;
+      }, { once: true });
+    }
+    drawer.classList.remove('closing');
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    isOpen = true;
+    trigger.style.opacity       = '0';
+    trigger.style.pointerEvents = 'none';
+    drawer.focus();
+  }
+
+  /* ── Fermer ── */
+  function closeDrawer() {
+    drawer.classList.add('closing');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    isOpen = false;
+    trigger.style.opacity       = '';
+    trigger.style.pointerEvents = '';
+    setTimeout(() => drawer.classList.remove('open', 'closing'), 400);
+  }
+
+  trigger.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // Échap — compatible avec la lightbox existante :
+  // on intercepte seulement si le drawer est ouvert ET la lightbox est fermée
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isOpen && !document.getElementById('lightbox').classList.contains('active')) {
+      closeDrawer();
+    }
+  });
+
+  /* ── Redimensionnement ── */
+  let resizing = false, startX, startW;
+
+  handle.addEventListener('mousedown', e => {
+    resizing = true;
+    startX   = e.clientX;
+    startW   = drawer.offsetWidth;
+    handle.classList.add('dragging');
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor     = 'col-resize';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!resizing) return;
+    const delta = e.clientX - startX;
+    const newW  = Math.min(Math.max(startW + delta, 300), window.innerWidth * 0.92);
+    drawer.style.width = newW + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!resizing) return;
+    resizing = false;
+    handle.classList.remove('dragging');
+    document.body.style.userSelect = '';
+    document.body.style.cursor     = '';
+  });
+})();
