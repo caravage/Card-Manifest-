@@ -420,3 +420,377 @@
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .controls input[type="text"] { width: 140px; }
         }
+
+
+/* ════════════════════════════════════════════════════
+   PDF DRAWER
+   (ajouté à la fin — ne touche pas au reste)
+════════════════════════════════════════════════════ */
+
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    z-index: 1000;
+    pointer-events: none;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: background 0.5s cubic-bezier(0.16,1,0.3,1), backdrop-filter 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.drawer-overlay.open {
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    pointer-events: all;
+}
+
+/* ── Bouton déclencheur ── */
+.pdf-trigger {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 1.3rem 0.7rem 1rem;
+    background: #18181e;
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px);
+    transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.15s, opacity 0.3s;
+    outline: none;
+}
+.pdf-trigger:hover {
+    background: #1e1e26;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(201,162,39,0.1), 0 0 24px rgba(201,162,39,0.15), inset 0 0 20px rgba(201,162,39,0.04);
+    transform: translateY(-2px);
+}
+.pdf-trigger:active { transform: translateY(0); }
+
+.pdf-trigger .trigger-icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+.pdf-trigger:hover .trigger-icon { transform: translateX(2px); }
+
+.trigger-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: drawer-blink 2.4s ease-in-out infinite;
+}
+@keyframes drawer-blink {
+    0%, 100% { opacity: 0.2; }
+    50%       { opacity: 1; }
+}
+
+/* ── Drawer ── */
+.drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 52vw;
+    max-width: 860px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 12px 0 80px rgba(0,0,0,0.7);
+    outline: none;
+}
+.drawer.open    { transform: translateX(0); }
+.drawer.closing {
+    transform: translateX(-100%);
+    transition: transform 0.38s cubic-bezier(0.7,0,0.84,0);
+}
+
+/* Liseré doré sur le bord droit */
+.drawer::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        var(--accent-dim) 30%,
+        var(--accent) 50%,
+        var(--accent-dim) 70%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease 0.3s;
+}
+.drawer.open::after { opacity: 1; }
+
+/* Coins décoratifs */
+.corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--accent-dim);
+    border-style: solid;
+    pointer-events: none;
+    opacity: 0.45;
+    transition: opacity 0.4s ease 0.4s;
+}
+.drawer.open .corner { opacity: 0.7; }
+.corner-tl { top: 10px;    left: 10px;  border-width: 1px 0 0 1px; }
+.corner-tr { top: 10px;    right: 10px; border-width: 1px 1px 0 0; }
+.corner-bl { bottom: 10px; left: 10px;  border-width: 0 0 1px 1px; }
+.corner-br { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+/* ── Header ── */
+.drawer-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #16161c 0%, var(--surface) 100%);
+    position: relative;
+}
+.drawer-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.header-emblem {
+    width: 32px;
+    height: 32px;
+    color: var(--accent);
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(201,162,39,0.3));
+}
+.header-meta { display: flex; flex-direction: column; }
+.header-title {
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+.header-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    font-style: italic;
+    margin-top: 1px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.hdr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.38rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    clip-path: polygon(6px 0%, 100% 0%, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0% 100%, 0% 6px);
+    transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.hdr-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+    background: rgba(201,162,39,0.08);
+    box-shadow: 0 0 10px rgba(201,162,39,0.08);
+}
+.hdr-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.close-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    clip-path: polygon(6px 0%, 100% 0%, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0% 100%, 0% 6px);
+    transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.25s;
+}
+.close-btn:hover {
+    border-color: #8b2020;
+    color: #e05555;
+    background: rgba(139,32,32,0.12);
+    transform: rotate(90deg);
+}
+.close-btn svg { width: 13px; height: 13px; }
+
+/* ── Body ── */
+.drawer-body {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+}
+
+.pdf-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    background: var(--surface);
+    z-index: 2;
+    transition: opacity 0.35s ease;
+}
+.pdf-loading.hidden { opacity: 0; pointer-events: none; }
+
+.spinner-wrap {
+    position: relative;
+    width: 44px;
+    height: 44px;
+}
+.spinner-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+}
+.spinner-ring:nth-child(1) {
+    border-top-color: var(--accent);
+    animation: drawer-spin 0.9s linear infinite;
+}
+.spinner-ring:nth-child(2) {
+    inset: 6px;
+    border-top-color: var(--accent-dim);
+    animation: drawer-spin 1.3s linear infinite reverse;
+}
+@keyframes drawer-spin { to { transform: rotate(360deg); } }
+
+.loading-label {
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.pdf-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.1s;
+    background: #fff;
+}
+.pdf-frame.loaded { opacity: 1; }
+
+/* ── Resize handle ── */
+.resize-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+    z-index: 5;
+    transition: background 0.2s;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+    background: rgba(201,162,39,0.2);
+}
+
+/* ── Footer ── */
+.drawer-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 1.1rem;
+    border-top: 1px solid var(--border);
+    background: #111115;
+    position: relative;
+}
+.drawer-footer::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+}
+.footer-text {
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+.footer-divider {
+    width: 1px;
+    height: 10px;
+    background: var(--border);
+}
+.footer-pulse {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.footer-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: drawer-blink 2.4s ease-in-out infinite;
+}
+.footer-status {
+    font-family: 'Cinzel', 'Libre Baskerville', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+}
+
+/* ── Responsive drawer ── */
+@media (max-width: 768px) {
+    .drawer { width: 91vw; }
+    .hdr-btn span { display: none; }
+    .hdr-btn { padding: 0.38rem 0.5rem; }
+}
