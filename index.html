@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imperial Elegy — Card Manifest</title>
+    <!-- Polices pour le drawer -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -104,7 +107,98 @@
         </div>
     </div>
 
-    <!-- Card data -->
+    <!-- ═══════════════════════════════════════════
+         PDF DRAWER
+    ════════════════════════════════════════════ -->
+
+    <!-- Overlay -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- Bouton déclencheur — fixe bas-gauche -->
+    <button class="pdf-trigger" id="pdfTrigger" aria-label="Ouvrir le rulebook PDF">
+        <svg class="trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Rulebook
+        <div class="trigger-dot"></div>
+    </button>
+
+    <!-- Drawer -->
+    <aside class="drawer" id="pdfDrawer" role="dialog" aria-modal="true" aria-label="Rulebook PDF" tabindex="-1">
+
+        <!-- Coins décoratifs -->
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <!-- Handle de redimensionnement -->
+        <div class="resize-handle" id="resizeHandle"></div>
+
+        <!-- Header -->
+        <header class="drawer-header">
+            <div class="header-left">
+                <svg class="header-emblem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <div class="header-meta">
+                    <span class="header-title">Imperial Elegy</span>
+                    <span class="header-sub">Rulebook &amp; Card Reference</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <a class="hdr-btn" href="#" id="downloadBtn" download aria-label="Télécharger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span>Télécharger</span>
+                </a>
+                <a class="hdr-btn" href="#" id="newTabBtn" target="_blank" rel="noopener" aria-label="Nouvel onglet">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    <span>Nouvel onglet</span>
+                </a>
+                <button class="close-btn" id="closeBtn" aria-label="Fermer le volet">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Corps PDF -->
+        <div class="drawer-body">
+            <div class="pdf-loading" id="pdfLoading">
+                <div class="spinner-wrap">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <span class="loading-label">Chargement du document…</span>
+            </div>
+            <iframe
+                class="pdf-frame"
+                id="pdfFrame"
+                src=""
+                title="Imperial Elegy Rulebook"
+            ></iframe>
+        </div>
+
+        <!-- Footer -->
+        <footer class="drawer-footer">
+            <span class="footer-text">Card Manifest</span>
+            <div class="footer-divider"></div>
+            <div class="footer-pulse">
+                <div class="footer-dot"></div>
+                <span class="footer-status">PDF Reference</span>
+            </div>
+        </footer>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════════════
+         Card data
+    ════════════════════════════════════════════ -->
     <script src="js/cards_event.js"></script>
     <script src="js/cards_gw.js"></script>
     <script src="js/cards_home.js"></script>
